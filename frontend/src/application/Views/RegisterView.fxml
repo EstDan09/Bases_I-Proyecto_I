@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.RegisterController">
+   <children>
+      <Pane prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: #eeeee4;">
+         <children>
+            <ImageView fitHeight="103.0" fitWidth="313.0" layoutX="50.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/logo.png" />
+               </image>
+            </ImageView>
+            <Hyperlink fx:id="loginBtn" layoutX="198.0" layoutY="563.0" onAction="#switchToLoginScene" text="Login" />
+            <Label layoutX="63.0" layoutY="566.0" text="Already have an account?" />
+            <Label layoutX="58.0" layoutY="309.0" text="REGISTER PAGE">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <PasswordField fx:id="password" layoutX="310.0" layoutY="501.0" prefHeight="25.0" prefWidth="380.0" promptText="******" />
+      <TextField fx:id="identification" layoutX="310.0" layoutY="90.0" prefHeight="25.0" prefWidth="180.0" promptText="Document identification" />
+      <Button fx:id="registerBtn" layoutX="593.0" layoutY="561.0" mnemonicParsing="false" onAction="#register" prefHeight="25.0" prefWidth="75.0" text="Register" />
+      <Label layoutX="310.0" layoutY="75.0" text="Identification" />
+      <Label layoutX="311.0" layoutY="484.0" text="Password" />
+      <TextField fx:id="first_name" layoutX="310.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="John" />
+      <Label layoutX="310.0" layoutY="25.0" text="First Name" />
+      <TextField fx:id="last_name" layoutX="510.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="Doe" />
+      <Label layoutX="510.0" layoutY="26.0" text="Last Name" />
+      <ComboBox fx:id="documentType" layoutX="510.0" layoutY="90.0" prefHeight="25.0" prefWidth="180.0" promptText="Choose a type" />
+      <Label layoutX="510.0" layoutY="75.0" text="Document Type" />
+      <DatePicker fx:id="birth_date" layoutX="510.0" layoutY="140.0" prefHeight="25.0" prefWidth="180.0" promptText="DD/MM/YY" />
+      <Label layoutX="510.0" layoutY="125.0" text="Birth Date" />
+      <ComboBox fx:id="nationality" layoutX="310.0" layoutY="140.0" prefHeight="25.0" prefWidth="180.0" promptText="Enter document nationality" />
+      <Label layoutX="310.0" layoutY="125.0" text="Nationality" />
+      <ComboBox fx:id="gender" layoutX="310.0" layoutY="190.0" prefHeight="25.0" prefWidth="180.0" promptText="Choose a gender" />
+      <Label layoutX="310.0" layoutY="175.0" text="Gender" />
+      <Button fx:id="photo" layoutX="510.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="180.0" text="Upload photo" />
+      <Label layoutX="311.0" layoutY="436.0" text="Username" />
+      <TextField fx:id="username" layoutX="310.0" layoutY="453.0" prefHeight="25.0" prefWidth="380.0" promptText="Create a username" />
+      <Label fx:id="errorMsg" layoutX="318.0" layoutY="565.0" prefHeight="17.0" prefWidth="248.0" text="Error message label" textFill="RED" visible="false" />
+      <Label layoutX="311.0" layoutY="388.0" text="Email" />
+      <TextField fx:id="email" layoutX="310.0" layoutY="405.0" prefHeight="25.0" prefWidth="380.0" promptText="john.doe@email.com" />
+      <Label layoutX="510.0" layoutY="175.0" text="Picture of you" />
+      <ComboBox fx:id="country" layoutX="310.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="province" layoutX="510.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="region" layoutX="310.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="district" layoutX="510.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" />
+      <Label layoutX="310.0" layoutY="225.0" text="Country of Residence" />
+      <Label layoutX="510.0" layoutY="225.0" text="Province of residence" />
+      <Label layoutX="310.0" layoutY="275.0" text="Region of Residence" />
+      <Label layoutX="510.0" layoutY="275.0" text="District of Residence" />
+      <TextField fx:id="phone" layoutX="310.0" layoutY="340.0" prefHeight="25.0" prefWidth="180.0" promptText="(+000) 000-000" />
+      <Label layoutX="310.0" layoutY="325.0" text="Primary phone number" />
+      <TextField fx:id="phone_2" layoutX="510.0" layoutY="340.0" prefHeight="25.0" prefWidth="180.0" promptText="(+000) 000-000" />
+      <Label layoutX="510.0" layoutY="325.0" text="Secondary phone number" />
+   </children>
+</AnchorPane>
