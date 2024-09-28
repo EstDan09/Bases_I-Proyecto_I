@@ -10,7 +10,7 @@
    <children>
       <FlowPane alignment="CENTER" hgap="30.0" prefHeight="50.0" prefWidth="1280.0" style="-fx-background-color: #000;">
          <children>
-            <Hyperlink text="Home" textFill="WHITE">
+            <Hyperlink text="Home" textFill="WHITE" onAction="#changeToHomeScene">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -25,12 +25,12 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Sports" textFill="WHITE">
+            <Hyperlink text="Sports" textFill="WHITE" onAction="#changeToSportsScene">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Records" textFill="WHITE">
+            <Hyperlink text="Records" textFill="WHITE" onAction="#changeToRecordsScene">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
