@@ -35,12 +35,12 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Countries" textFill="WHITE">
+            <Hyperlink text="Countries" textFill="WHITE" onAction="#changeToCountriesScene">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Athletes" textFill="WHITE">
+            <Hyperlink text="Athletes" textFill="WHITE" onAction="#changeToAthletesScene">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
