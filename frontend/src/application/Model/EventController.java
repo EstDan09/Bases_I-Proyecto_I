@@ -35,9 +35,12 @@ public class EventController implements Initializable{
     @FXML
     private TableView<Event> table;
     
+    @FXML
+    private TableColumn<Event, String> participants;
+    
     ObservableList<Event> eventList = FXCollections.observableArrayList(
-    		new Event("Final Badminton", "Femenine", "Badminton", "19/09/24", "19:00"),
-    		new Event("Final Gymnastic Show", "Femenine", "Gymnastic", "20/09/24", "20:00")
+    		new Event("Final Badminton", "Femenine", "Badminton", "19/09/24", "19:00", "South Korea Team, Japan Team"),
+    		new Event("Final Gymnastic Show", "Femenine", "Gymnastic", "20/09/24", "20:00", "Russian Team, USA Team")
 	);
     
 
@@ -48,6 +51,7 @@ public class EventController implements Initializable{
 		sport.setCellValueFactory(new PropertyValueFactory<Event, String>("sport"));
 		date.setCellValueFactory(new PropertyValueFactory<Event, String>("date"));
 		startingTime.setCellValueFactory(new PropertyValueFactory<Event, String>("startingTime"));
+		participants.setCellValueFactory(new PropertyValueFactory<Event, String>("participants"));
 		
 		table.setItems(eventList);
 		

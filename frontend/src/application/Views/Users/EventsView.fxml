@@ -44,11 +44,12 @@
                            <children>
                               <TableView fx:id="table" prefHeight="173.0" prefWidth="965.0">
                                 <columns>
-                                  <TableColumn fx:id="event" prefWidth="150.0" text="Event" />
-                                  <TableColumn fx:id="sport" minWidth="0.0" prefWidth="140.5" text="Sport" />
-                                 	<TableColumn fx:id="category" minWidth="0.0" prefWidth="140.5" text="Category" />
-                                  <TableColumn fx:id="date" minWidth="0.0" prefWidth="140.5" text="Date" />
-                                  <TableColumn fx:id="startingTime" minWidth="0.0" prefWidth="100.0" text="Starting time" />
+                                  	<TableColumn fx:id="event" prefWidth="150.0" text="Event" />
+                                  	<TableColumn fx:id="sport" minWidth="0.0" prefWidth="140.5" text="Sport" />
+                               		<TableColumn fx:id="category" minWidth="0.0" prefWidth="140.5" text="Category" />
+                                  	<TableColumn fx:id="date" minWidth="0.0" prefWidth="140.5" text="Date" />
+                                  	<TableColumn fx:id="startingTime" minWidth="0.0" prefWidth="100.0" text="Starting time" />
+                                  	<TableColumn fx:id="participants" minWidth="0.0" prefWidth="290.0" text="Participants" />
                                 </columns>
                               </TableView>
                            </children>
@@ -77,6 +78,12 @@
                               <Insets />
                            </VBox.margin>
                         </DatePicker>
+                        <Label text="Olympic">
+                           <padding>
+                              <Insets top="50.0" />
+                           </padding>
+                        </Label>
+                        <ComboBox prefWidth="150.0" promptText="Choose by Olympic" />
                         <HBox prefHeight="50.0" prefWidth="200.0" />
                         <Separator prefWidth="200.0">
                            <padding>
