@@ -1,3 +1,6 @@
+# JetBrains settings files
+.idea
+
 # Compiled class files
 *.class
 

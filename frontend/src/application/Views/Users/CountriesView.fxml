@@ -18,16 +18,11 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="99.0" prefWidth="605.0">
-                     <children>
-                        <Label text="Sports">
-                           <font>
-                              <Font name="System Bold" size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Get to know the top 5 best scores in each sport" />
-                     </children>
-                  </VBox>
+                  <Label text="Countries">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
@@ -37,7 +32,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="40.0" prefWidth="963.0">
                            <children>
-                              <Label text="Sport Ranking - Olympic Name">
+                              <Label text="Medal Ranking - Olympic Name">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -47,10 +42,12 @@
                            <children>
                               <TableView prefHeight="558.0" prefWidth="1000.0">
                                 <columns>
-                                  <TableColumn prefWidth="145.6666717529297" text="Sport" />
-                                  <TableColumn prefWidth="339.3333282470703" text="Competitor" />
-                                    <TableColumn prefWidth="113.33332824707031" text="Country" />
-                                    <TableColumn prefWidth="121.33331298828125" text="Score" />
+                                  <TableColumn prefWidth="145.6666717529297" text="Flag" />
+                                  <TableColumn prefWidth="339.3333282470703" text="Country" />
+                                    <TableColumn prefWidth="113.33332824707031" text="Bronze" />
+                                    <TableColumn prefWidth="121.33331298828125" text="Silver" />
+                                    <TableColumn prefWidth="133.83331298828125" text="Gold" />
+                                    <TableColumn prefWidth="121.66665649414062" text="Total" />
                                 </columns>
                               </TableView>
                            </children></HBox>
@@ -78,12 +75,12 @@
                         </Separator>
                         <Label text="Olympic" />
                         <ComboBox prefWidth="150.0" promptText="Filter by Olympic" />
-                        <Label text="Sport">
+                        <Label text="Country">
                            <padding>
                               <Insets top="50.0" />
                            </padding>
                         </Label>
-                        <ComboBox prefWidth="150.0" promptText="Filter by Sport" />
+                        <ComboBox prefWidth="150.0" promptText="Filter by Country" />
                         <Separator prefWidth="200.0">
                            <padding>
                               <Insets top="50.0" />
