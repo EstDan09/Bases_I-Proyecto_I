@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 public class UsersController {
 	
 	private Parent root;
-	private Stage stage;
 	
 	@FXML
 	BorderPane contentPanel;
@@ -28,10 +27,9 @@ public class UsersController {
 		contentPanel.setCenter(root);
 	}
 	
-	public void changeToHomeScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("../Views/Users/HomeView.fxml"));
+	public void changeToTrainersScene(ActionEvent event) throws IOException {
+		root = FXMLLoader.load(getClass().getResource("../Views/Users/Trainers.fxml"));
 		contentPanel.setCenter(root);
-
 	}
 	
 	public void changeToSportsScene(ActionEvent event) throws IOException {
@@ -56,6 +54,11 @@ public class UsersController {
 	
 	public void changeToAthletesScene(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource("../Views/Users/AthletesView.fxml"));
+		contentPanel.setCenter(root);
+	}
+	
+	public void changeToOlympicScene(ActionEvent event) throws IOException {
+		root = FXMLLoader.load(getClass().getResource("../Views/Users/OlympicGames.fxml"));
 		contentPanel.setCenter(root);
 	}
 }

@@ -20,12 +20,12 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="274.0">
                      <children>
-                        <Label text="Athletes">
+                        <Label text="Trainers">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
                         </Label>
-                        <Label text="Check who is representing your country" />
+                        <Label text="Check who is training our athletes" />
                      </children>
                   </VBox>
                </children>

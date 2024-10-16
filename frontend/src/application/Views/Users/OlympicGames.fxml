@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: #eeeeee;">
+         <children>
+            <Label text="Olympic Games">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="See the overview of each Olympic Game" />
+         </children>
+      </VBox>
+      <HBox layoutY="80.0" prefHeight="670.0" prefWidth="1280.0">
+         <children>
+            <VBox prefHeight="670.0" prefWidth="1280.0">
+               <children>
+                  <TableView prefHeight="670.0" prefWidth="930.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Olympic" />
+                      <TableColumn prefWidth="121.5" text="Hosted in" />
+                        <TableColumn prefWidth="72.5" text="Year" />
+                        <TableColumn prefWidth="138.5" text="Total participants" />
+                        <TableColumn prefWidth="140.0" text="Total countries" />
+                        <TableColumn prefWidth="180.0" text="Total medals" />
+                        <TableColumn prefWidth="151.5" text="Total events" />
+                    </columns>
+                  </TableView>
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
