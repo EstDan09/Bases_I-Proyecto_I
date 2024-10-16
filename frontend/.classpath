@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/123/Downloads/ojdbc6-11.2.0.4.jar"/>
+	<classpathentry kind="lib" path="src/resources/ojdbc6-11.2.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
