@@ -1,0 +1,6 @@
+Add JDBC Driver to Eclipse
+
+1. Right click on project
+2. Build Path
+3. Add External Libraries
+4. Select JDBC Jar File
