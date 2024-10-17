@@ -44,6 +44,7 @@ public class LoginController implements Initializable {
 		stage.show();
 	}
 	
+		
 	public void login(ActionEvent event) throws IOException {
 		String title = "";
 		// CHANGE SCENE
