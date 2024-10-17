@@ -30,7 +30,7 @@
       </Pane>
       <ComboBox fx:id="role" layoutX="322.0" layoutY="61.0" prefWidth="150.0" promptText="Choose a role" />
       <Label layoutX="325.0" layoutY="44.0" text="Role" />
-      <PasswordField fx:id="pasword" layoutX="323.0" layoutY="258.0" prefHeight="25.0" prefWidth="351.0" promptText="******" />
+      <PasswordField fx:id="password" layoutX="323.0" layoutY="258.0" prefHeight="25.0" prefWidth="351.0" promptText="******" />
       <TextField fx:id="username" layoutX="322.0" layoutY="182.0" prefHeight="25.0" prefWidth="351.0" promptText="Enter your username" />
       <Button fx:id="loginBtn" layoutX="598.0" layoutY="295.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="75.0" text="Login" />
       <Label layoutX="325.0" layoutY="165.0" text="Username" />
