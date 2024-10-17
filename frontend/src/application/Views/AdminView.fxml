@@ -27,7 +27,12 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="locationBtn" text="Records / Scores" textFill="WHITE">
+            <Hyperlink fx:id="locationBtn3" text="Teams" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="locationBtn" text=" Scores" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -37,7 +42,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <AnchorPane prefHeight="139.0" prefWidth="200.0" />
+            <AnchorPane prefHeight="189.0" prefWidth="200.0" />
             <Hyperlink fx:id="locationBtn1" onAction="#exitAdmin" text="Exit" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
