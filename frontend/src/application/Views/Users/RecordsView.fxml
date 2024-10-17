@@ -79,19 +79,19 @@
                                  </VBox.margin>
                               </Separator>
                               <Label text="Sport" />
-                              <ComboBox prefWidth="150.0" promptText="Filter by sport" />
+                              <ComboBox fx:id="sportCB" prefWidth="150.0" promptText="Filter by sport" />
                               <Label text="Category">
                                  <VBox.margin>
                                     <Insets top="30.0" />
                                  </VBox.margin>
                               </Label>
-                              <ComboBox prefWidth="150.0" promptText="Filter by category" />
+                              <ComboBox fx:id="categoryCB" prefWidth="150.0" promptText="Filter by category" />
                               <Separator prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets left="25.0" right="25.0" top="30.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button mnemonicParsing="false" text="Filter" />
+                              <Button fx:id="filter" mnemonicParsing="false" text="Filter" />
                            </children>
                         </VBox>
                      </children></VBox>

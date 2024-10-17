@@ -47,6 +47,10 @@ public class ConnectDB {
 		stmt.executeQuery();
 		ResultSet r = (ResultSet)stmt.getObject(1);
 		return r;
-		
+	}
+	
+	public static boolean login(String role, String username, String password) {
+		System.out.println(username);
+		return true;
 	}
 }

@@ -33,7 +33,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="40.0" prefWidth="963.0">
                            <children>
-                              <Label fx:id="subtitle" text="Next events">
+                              <Label fx:id="subtitle" text="Events - Olympic">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -70,10 +70,10 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="65.0" prefWidth="255.0" />
                         <Label text="Sport" />
-                        <ComboBox prefWidth="150.0" promptText="Filter by sport" />
+                        <ComboBox fx:id="sportCB" prefWidth="150.0" promptText="Filter by sport" />
                         <HBox prefHeight="25.0" prefWidth="255.0" />
                         <Label text="Date" />
-                        <DatePicker promptText="Filter by date">
+                        <DatePicker fx:id="dateChooser" promptText="Filter by date">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -83,14 +83,14 @@
                               <Insets top="50.0" />
                            </padding>
                         </Label>
-                        <ComboBox prefWidth="150.0" promptText="Choose by Olympic" />
+                        <ComboBox fx:id="olympicCB" prefWidth="150.0" promptText="Choose by Olympic" />
                         <HBox prefHeight="50.0" prefWidth="200.0" />
                         <Separator prefWidth="200.0">
                            <padding>
                               <Insets left="25.0" right="25.0" />
                            </padding>
                         </Separator>
-                        <Button mnemonicParsing="false" text="Filter" />
+                        <Button fx:id="filterBtn" mnemonicParsing="false" text="Filter" />
                      </children>
                   </VBox>
                </children>
