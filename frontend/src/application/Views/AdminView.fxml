@@ -60,19 +60,19 @@
          <center>
             <Pane prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: #eeeee4;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="227.0" fitWidth="412.0" layoutX="310.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="234.0" fitWidth="485.0" layoutX="291.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/logo.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="381.0" layoutY="438.0" prefHeight="42.0" prefWidth="273.0" text="ADMINISTRATOR PAGE" textFill="#08446e">
+                  <Label layoutX="370.0" layoutY="426.0" prefHeight="42.0" prefWidth="295.0" text="ADMINISTRATOR PAGE" textFill="#08446e">
                      <font>
-                        <Font name="Roboto Black" size="24.0" />
+                        <Font name="Roboto Black" size="27.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="129.0" fitWidth="134.0" layoutX="958.0" layoutY="681.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="129.0" fitWidth="134.0" layoutX="951.0" layoutY="664.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../Downloads/EBA_company-removebg-preview.png" />
+                        <Image url="@../../../../../../../Downloads/EBA_company__1_-removebg-preview.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="895.0" prefHeight="83.0" prefWidth="185.0" text="OLYMPICS" textFill="#0d5b8fc5">

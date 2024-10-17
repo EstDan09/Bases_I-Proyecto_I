@@ -15,7 +15,7 @@
       <Pane layoutY="-6.0" prefHeight="647.0" prefWidth="239.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
          <children>
             <Hyperlink fx:id="loginBtn" layoutX="198.0" layoutY="563.0" onAction="#switchToLoginScene" text="Login" />
-            <Label fx:id="title" layoutX="46.0" layoutY="274.0" text="Add Score" textFill="WHITE">
+            <Label fx:id="title" layoutX="46.0" layoutY="274.0" text="Create Score" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
