@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.User.EventController">
    <children>
       <VBox prefHeight="750.0" prefWidth="1280.0">
@@ -48,8 +49,8 @@
                                   	<TableColumn fx:id="sport" minWidth="0.0" prefWidth="140.5" text="Sport" />
                                		<TableColumn fx:id="category" minWidth="0.0" prefWidth="140.5" text="Category" />
                                   	<TableColumn fx:id="date" minWidth="0.0" prefWidth="140.5" text="Date" />
-                                  	<TableColumn fx:id="startingTime" minWidth="0.0" prefWidth="100.0" text="Starting time" />
-                                  	<TableColumn fx:id="participants" minWidth="0.0" prefWidth="290.0" text="Participants" />
+                                  	<TableColumn fx:id="startingTime" minWidth="0.0" prefWidth="161.0" text="Starting time" />
+                                  	<TableColumn fx:id="participants" minWidth="0.0" prefWidth="229.0" text="Teams" />
                                 </columns>
                               </TableView>
                            </children>
