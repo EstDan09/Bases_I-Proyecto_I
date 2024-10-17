@@ -9,21 +9,26 @@ import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
 public class AdminController {
-	
+
 	@FXML
 	BorderPane contentPanel;
-	
+
 	private Parent root;
-	
+
 	public void changeToPeopleScene(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource("../Views/Admin/PeopleView.fxml"));
 		contentPanel.setCenter(root);
-		
+
 	}
-	
+
 	public void changeToOlympicScene(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource("../Views/Admin/OlympicView.fxml"));
 		contentPanel.setCenter(root);
-		
+
+	}
+	
+	public void exitAdmin(ActionEvent event) throws IOException {
+		root = FXMLLoader.load(getClass().getResource("../Views/LoginView.fxml"));
+		contentPanel.setCenter(root);
 	}
 }
