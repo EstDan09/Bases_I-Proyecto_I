@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.User.AthleteController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="1280.0">
          <children>
@@ -35,15 +35,15 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="645.0" prefWidth="990.0">
                      <children>
-                        <TableView prefHeight="583.0" prefWidth="990.0">
+                        <TableView fx:id="table" prefHeight="583.0" prefWidth="990.0">
                           <columns>
-                              <TableColumn prefWidth="132.0" text="Name" />
-                              <TableColumn prefWidth="159.0" text="Surname" />
-                              <TableColumn prefWidth="69.0" text="Age" />
-                              <TableColumn prefWidth="153.0" text="Olympic" />
-                            <TableColumn prefWidth="127.0" text="Representing" />
-                            <TableColumn prefWidth="113.5" text="Flag" />
-                              <TableColumn prefWidth="198.0" text="Photo" />
+                              <TableColumn fx:id="name" prefWidth="132.0" text="Name" />
+                              <TableColumn fx:id="surname" prefWidth="159.0" text="Surname" />
+                              <TableColumn fx:id="age" prefWidth="69.0" text="Age" />
+                              <TableColumn fx:id="olympic" prefWidth="153.0" text="Olympic" />
+                            <TableColumn fx:id="representing" prefWidth="127.0" text="Representing" />
+                            <TableColumn fx:id="flag" prefWidth="113.5" text="Flag" />
+                              <TableColumn fx:id="photo" prefWidth="198.0" text="Photo" />
                           </columns>
                         </TableView>
                      </children>
@@ -77,13 +77,13 @@
                               <Insets top="30.0" />
                            </VBox.margin>
                         </Label>
-                        <ComboBox prefWidth="150.0" promptText="Filter by Olympic" />
+                        <ComboBox fx:id="olympicCB" prefWidth="150.0" promptText="Filter by Olympic" />
                         <Label text="Country">
                            <VBox.margin>
                               <Insets top="30.0" />
                            </VBox.margin>
                         </Label>
-                        <ComboBox prefWidth="150.0" promptText="Filter by Country" />
+                        <ComboBox fx:id="countryCB" prefWidth="150.0" promptText="Filter by Country" />
                         <Separator prefWidth="200.0">
                            <padding>
                               <Insets top="50.0" />
@@ -92,7 +92,7 @@
                               <Insets left="25.0" right="25.0" />
                            </VBox.margin>
                         </Separator>
-                        <Button mnemonicParsing="false" text="Filter" />
+                        <Button fx:id="filterBtn" mnemonicParsing="false" text="Filter" />
                      </children>
                      <padding>
                         <Insets bottom="25.0" />
