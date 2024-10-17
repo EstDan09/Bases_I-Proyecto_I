@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.User.CountryController">
    <children>
       <VBox prefHeight="750.0" prefWidth="1280.0">
          <children>
@@ -40,14 +40,14 @@
                            </children></HBox>
                         <HBox prefHeight="558.0" prefWidth="963.0">
                            <children>
-                              <TableView prefHeight="558.0" prefWidth="1000.0">
+                              <TableView fx:id="table" prefHeight="558.0" prefWidth="1000.0">
                                 <columns>
-                                  <TableColumn prefWidth="145.6666717529297" text="Flag" />
-                                  <TableColumn prefWidth="339.3333282470703" text="Country" />
-                                    <TableColumn prefWidth="113.33332824707031" text="Bronze" />
-                                    <TableColumn prefWidth="121.33331298828125" text="Silver" />
-                                    <TableColumn prefWidth="133.83331298828125" text="Gold" />
-                                    <TableColumn prefWidth="121.66665649414062" text="Total" />
+                                  <TableColumn fx:id="flag" prefWidth="145.6666717529297" style="-fx-alignment: CENTER;" text="Flag" />
+                                  <TableColumn fx:id="name" prefWidth="339.3333282470703" text="Country" />
+                                    <TableColumn fx:id="bronze" prefWidth="113.33332824707031" text="Bronze" />
+                                    <TableColumn fx:id="silver" prefWidth="121.33331298828125" text="Silver" />
+                                    <TableColumn fx:id="gold" prefWidth="133.83331298828125" text="Gold" />
+                                    <TableColumn fx:id="total" prefWidth="121.66665649414062" text="Total" />
                                 </columns>
                               </TableView>
                            </children></HBox>
@@ -74,13 +74,13 @@
                            </VBox.margin>
                         </Separator>
                         <Label text="Olympic" />
-                        <ComboBox prefWidth="150.0" promptText="Filter by Olympic" />
+                        <ComboBox fx:id="olympicCB" prefWidth="150.0" promptText="Filter by Olympic" />
                         <Label text="Country">
                            <padding>
                               <Insets top="50.0" />
                            </padding>
                         </Label>
-                        <ComboBox prefWidth="150.0" promptText="Filter by Country" />
+                        <ComboBox fx:id="countryCB" prefWidth="150.0" promptText="Filter by Country" />
                         <Separator prefWidth="200.0">
                            <padding>
                               <Insets top="50.0" />
@@ -89,7 +89,7 @@
                               <Insets left="10.0" right="10.0" />
                            </VBox.margin>
                         </Separator>
-                        <Button mnemonicParsing="false" text="Filter" />
+                        <Button fx:id="filterBtn" onAction="#filter" mnemonicParsing="false" text="Filter" />
                      </children>
                      <padding>
                         <Insets top="10.0" />

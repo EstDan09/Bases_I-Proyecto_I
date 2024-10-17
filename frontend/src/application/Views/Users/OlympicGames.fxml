@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.User.OlympicGameController">
    <children>
       <VBox alignment="CENTER" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: #eeeeee;">
          <children>
@@ -26,15 +25,15 @@
          <children>
             <VBox prefHeight="670.0" prefWidth="1280.0">
                <children>
-                  <TableView prefHeight="670.0" prefWidth="930.0">
+                  <TableView fx:id="table" prefHeight="670.0" prefWidth="930.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Olympic" />
-                      <TableColumn prefWidth="121.5" text="Hosted in" />
-                        <TableColumn prefWidth="72.5" text="Year" />
-                        <TableColumn prefWidth="138.5" text="Total participants" />
-                        <TableColumn prefWidth="140.0" text="Total countries" />
-                        <TableColumn prefWidth="180.0" text="Total medals" />
-                        <TableColumn prefWidth="151.5" text="Total events" />
+                      <TableColumn fx:id="name" prefWidth="229.5" text="Olympic" />
+                      <TableColumn fx:id="host" prefWidth="278.0" text="Hosted in" />
+                        <TableColumn fx:id="year" prefWidth="162.5" text="Year" />
+                        <TableColumn fx:id="totalParticipants" prefWidth="146.0" text="Total participants" />
+                        <TableColumn fx:id="totalCountries" prefWidth="149.0" text="Total countries" />
+                        <TableColumn fx:id="totalMedals" prefWidth="151.0" text="Total medals" />
+                        <TableColumn fx:id="totalEvents" prefWidth="113.0" text="Total events" />
                     </columns>
                   </TableView>
                </children>

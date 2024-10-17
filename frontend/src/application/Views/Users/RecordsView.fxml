@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.User.RecordController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="1280.0">
          <children>
@@ -38,16 +38,16 @@
                <children>
                   <VBox prefHeight="645.0" prefWidth="950.0">
                      <children>
-                        <TableView prefHeight="605.0" prefWidth="937.0">
+                        <TableView fx:id="table" prefHeight="605.0" prefWidth="937.0">
                           <columns>
-                            <TableColumn prefWidth="108.5" text="Name" />
-                            <TableColumn prefWidth="100.5" text="Surname" />
-                              <TableColumn prefWidth="116.5" text="Country" />
-                              <TableColumn prefWidth="94.0" text="Sport" />
-                              <TableColumn prefWidth="134.5" text="Category" />
-                              <TableColumn prefWidth="136.5" text="Record" />
-                              <TableColumn prefWidth="108.0" text="Date" />
-                              <TableColumn prefWidth="137.5" text="Olympic" />
+                            <TableColumn fx:id="nameColumn" prefWidth="108.5" text="Name" />
+                            <TableColumn fx:id="surnameColumn" prefWidth="100.5" text="Surname" />
+                              <TableColumn fx:id="countryColumn" prefWidth="116.5" text="Country" />
+                              <TableColumn fx:id="sportColumn" prefWidth="94.0" text="Sport" />
+                              <TableColumn fx:id="categoryColumn" prefWidth="134.5" text="Category" />
+                              <TableColumn fx:id="recordColumn" prefWidth="136.5" text="Record" />
+                              <TableColumn fx:id="dateColumn" prefWidth="108.0" text="Date" />
+                              <TableColumn fx:id="olympicColumn" prefWidth="137.5" text="Olympic" />
                           </columns>
                            <VBox.margin>
                               <Insets />
