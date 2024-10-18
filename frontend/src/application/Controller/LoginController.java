@@ -69,6 +69,7 @@ public class LoginController implements Initializable {
 			stage.centerOnScreen();
 			stage.show();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			errorLabel.setText("Please choose a role");
 			errorLabel.setVisible(true);
 		}
