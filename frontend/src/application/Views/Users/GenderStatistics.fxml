@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.User.GenderStatisticsController">
+   <children>
+      <HBox prefHeight="750.0" prefWidth="1280.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="750.0" prefWidth="1006.0">
+               <HBox.margin>
+                  <Insets left="25.0" />
+               </HBox.margin>
+               <children>
+                  <BorderPane fx:id="contentPanel" prefHeight="723.0" prefWidth="996.0" />
+               </children>
+            </VBox>
+            <VBox alignment="BASELINE_CENTER" prefHeight="750.0" prefWidth="270.0" spacing="30.0" style="-fx-background-color: #eeeeee;">
+               <children>
+                  <Label text="Filter">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <Label text="Sport">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="sportCB" prefWidth="150.0" promptText="Filter by sport" />
+                  <Label text="Olympic" />
+                  <ComboBox fx:id="olympicCB" prefWidth="150.0" promptText="Filter by Olympic" />
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="25.0" right="25.0" top="30.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <Button fx:id="filterBtn" mnemonicParsing="false" onAction="#filter" text="Filter" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

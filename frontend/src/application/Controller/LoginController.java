@@ -2,6 +2,8 @@ package application.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.ConnectDB;
@@ -82,23 +84,29 @@ public class LoginController implements Initializable {
 //                ex.printStackTrace();
                 errorLabel.setText("Invalid user");
                 errorLabel.setVisible(true);
+                System.out.println("Si ves este error, es porque en la clase LoginController hay problemas con los ifs de role");
+                System.out.println("Elimina los roles dummys de la linea 108 y 109");
             }
         }
     }
+	    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		setData();
+		loadRoles();
 	}
 
-	private void setData(){
-		// ResultSet r = ConnectDB.getRoles()
-		// while (r.next()) {
-		//		role.getItems().add(r.getString("ROLE"));
-		// }
-		
-		role.getItems().addAll(
-				"admin",
-		        "user");
+	private void loadRoles() {
+		List<String> roles = null;
+		try {
+			roles = ConnectDB.getAllRoles();
+			for (String r : roles) {
+			    role.getItems().add(r);  // Add each typeId to the ComboBox
+			}
+		} catch (SQLException e) {
+			System.out.println("No data in Roles table");
+		}  
+		role.getItems().add("user");
+		role.getItems().add("admin");
 	}
 	
 	
