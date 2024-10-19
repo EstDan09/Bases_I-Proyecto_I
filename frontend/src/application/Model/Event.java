@@ -1,17 +1,20 @@
 package application.Model;
 
+import java.util.List;
 
 public class Event {
-    private String event;
-    private String category;
-    private String sport;
+	private int id;
+	private String name;
+    private Category category;
+    private Sport sport;
     private String date;
     private String startingTime;
-    private String participants;
+    private List<Teams> participants;
 
     // Constructor
-    public Event(String event, String category, String sport, String date, String startingTime, String participants) {
-        this.event = event;
+    public Event(int id, String name, Category category, Sport sport, String date, String startingTime, List<Teams> participants) {
+    	this.id = id;
+    	this.name = name;
         this.category = category;
         this.sport = sport;
         this.date = date;
@@ -21,15 +24,19 @@ public class Event {
     }
 
     // Getters
-    public String getEvent() {
-        return event;
+    public int getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public String getSport() {
+    public Sport getSport() {
         return sport;
     }
 
@@ -41,20 +48,24 @@ public class Event {
         return startingTime;
     }
     
-    public String getParticipants() {
+    public List<Teams> getParticipants() {
     	return participants;
     }
 
     // Setters
-    public void setEvent(String event) {
-        this.event = event;
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public void setSport(String sport) {
+    public void setSport(Sport sport) {
         this.sport = sport;
     }
 
@@ -66,7 +77,7 @@ public class Event {
         this.startingTime = startingTime;
     }
     
-    public void setParticipants(String participants) {
+    public void setParticipants(List<Teams> participants) {
     	this.participants = participants;
     }
     

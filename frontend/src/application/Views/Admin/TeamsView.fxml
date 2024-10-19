@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="807.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.TeamViewController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="1280.0">
+      <VBox alignment="TOP_CENTER" prefHeight="807.0" prefWidth="1076.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="743.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="274.0">
                      <children>
@@ -29,19 +29,16 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="645.0" prefWidth="1070.0">
+            <HBox prefHeight="645.0" prefWidth="1076.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="645.0" prefWidth="958.0">
+                  <VBox alignment="CENTER" prefHeight="645.0" prefWidth="846.0">
                      <children>
-                        <TableView prefHeight="583.0" prefWidth="529.0">
+                        <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="790.0">
                           <columns>
-                              <TableColumn text="ID" />
-                              <TableColumn prefWidth="136.0" text="Name" />
-                              <TableColumn prefWidth="150.0" text="Surename" />
-                              <TableColumn prefWidth="156.0" text="Olympic" />
-                            <TableColumn prefWidth="144.0" text="Representing" />
-                            <TableColumn prefWidth="140.0" text="Flag" />
-                              <TableColumn prefWidth="151.0" text="Photo" />
+                              <TableColumn fx:id="id" text="ID" />
+                              <TableColumn fx:id="name" prefWidth="184.0" text="Name" />
+                              <TableColumn fx:id="trainer" prefWidth="152.0" text="Trainer" />
+                              <TableColumn fx:id="athletes" prefWidth="372.0000305175781" text="Athletes" />
                           </columns>
                         </TableView>
                      </children>
@@ -49,7 +46,7 @@
                         <Insets left="25.0" right="25.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="BASELINE_CENTER" prefHeight="618.0" prefWidth="243.0" spacing="10.0" style="-fx-background-color: #f0eeee;">
+                  <VBox alignment="BASELINE_CENTER" prefHeight="645.0" prefWidth="292.0" spacing="10.0" style="-fx-background-color: #f0eeee;">
                      <children>
                         <Label text="Options">
                            <font>
@@ -57,19 +54,19 @@
                            </font>
                         </Label>
                         <HBox alignment="CENTER" prefHeight="42.0" prefWidth="224.0" />
-                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Add">
+                        <Button fx:id="addBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addItem" prefHeight="25.0" prefWidth="110.0" text="Add">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="243.0" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" text="Edit ">
+                        <Button fx:id="editBtn" mnemonicParsing="false" onAction="#editItem" prefHeight="30.0" prefWidth="110.0" text="Edit ">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
                         <HBox alignment="CENTER" layoutX="10.0" layoutY="47.0" prefHeight="25.0" prefWidth="243.0" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Delete">
+                        <Button fx:id="deleteBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteItem" prefHeight="25.0" prefWidth="110.0" text="Delete">
                            <font>
                               <Font size="14.0" />
                            </font>

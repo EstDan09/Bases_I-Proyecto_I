@@ -1,10 +1,10 @@
 package application.Model;
 
-public class Country {
+public class District {
 	private int id;
     private String name;
     
-    public Country(int id, String name) {
+    public District(int id, String name) {
     	this.id = id;
     	this.name = name;
     }

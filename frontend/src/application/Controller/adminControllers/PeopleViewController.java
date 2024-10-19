@@ -19,7 +19,6 @@ import application.Model.People;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import DB.PeopleDB;
 
 public class PeopleViewController {
@@ -111,7 +110,7 @@ public class PeopleViewController {
             EditPeopleController controller = loader.getController();
 
             // Pass the parameter to the controller's method
-            controller.setId(Integer.parseInt(selectedPeople.getId()));
+            controller.setId(selectedPeople.getId());
 
             // Set the new content in the center of your content panel
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -137,7 +136,7 @@ public class PeopleViewController {
         People selectedPeople = peopleTableView.getSelectionModel().getSelectedItem();
         if (selectedPeople != null) {
             // Add logic for deleting the selected item
-        	DB.PeopleDB.deletePeople(Integer.parseInt(selectedPeople.getId()));
+        	DB.PeopleDB.deletePeople(selectedPeople.getId());
         	
             peopleTableView.getItems().remove(selectedPeople);
             Alert alert = new Alert(AlertType.INFORMATION);

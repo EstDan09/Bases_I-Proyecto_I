@@ -1,24 +1,18 @@
 package application.Model;
 
-public class People {
-    private int id;
-    private String name;
-    private String surename;
-    private String representing;
-    private String olympicYear;
-    private String type;
+public class EditPeople {
     private String first_name;
     private String last_name;
     private String identification;
-    private DocumentType documentType;
-    private Nationality nationality;
+    private String documentType;
+    private String nationality;
     private String birth_date;
-    private Gender gender;
+    private String gender;
     private String photo;
-    private Country country;
-    private Province province;
-    private Region region;
-    private District district;
+    private String country;
+    private String province;
+    private String region;
+    private String district;
     private String phone;
     private String phone_2;
     private String email;
@@ -26,18 +20,10 @@ public class People {
     private String password;
     private String typerole;
 
-    // Constructor 
-    public People(int id, String name, String surename, String representing, String olympicYear, String type, 
-                  String first_name, String last_name, String identification, DocumentType documentType, Nationality nationality, 
-                  String birth_date, Gender gender, String photo, Country country, Province province, Region region, 
-                  District district, String phone, String phone_2, String email, String username, String password, 
-                  String typerole) {
-        this.id = id;
-        this.name = name;
-        this.surename = surename;
-        this.representing = representing;
-        this.olympicYear = olympicYear;
-        this.type = type;
+    // Constructor
+    public EditPeople(String first_name, String last_name, String identification, String documentType, String nationality, 
+                      String birth_date, String gender, String photo, String country, String province, String region, 
+                      String district, String phone, String phone_2, String email, String username, String password, String typerole) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.identification = identification;
@@ -58,60 +44,7 @@ public class People {
         this.typerole = typerole;
     }
 
-    // Getters y Setters
-
-    public People() {
-		// TODO Auto-generated constructor stub
-	}      
-
-	public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurename() {
-        return surename;
-    }
-
-    public void setSurename(String surename) {
-        this.surename = surename;
-    }
-
-    public String getRepresenting() {
-        return representing;
-    }
-
-    public void setRepresenting(String representing) {
-        this.representing = representing;
-    }
-
-    public String getOlympicYear() {
-        return olympicYear;
-    }
-
-    public void setOlympicYear(String olympicYear) {
-        this.olympicYear = olympicYear;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    // Getters and Setters
     public String getFirst_name() {
         return first_name;
     }
@@ -136,19 +69,19 @@ public class People {
         this.identification = identification;
     }
 
-    public DocumentType getDocumentType() {
+    public String getDocumentType() {
         return documentType;
     }
 
-    public void setDocumentType(DocumentType documentType) {
+    public void setDocumentType(String documentType) {
         this.documentType = documentType;
     }
 
-    public Nationality getNationality() {
+    public String getNationality() {
         return nationality;
     }
 
-    public void setNationality(Nationality nationality) {
+    public void setNationality(String nationality) {
         this.nationality = nationality;
     }
 
@@ -160,11 +93,11 @@ public class People {
         this.birth_date = birth_date;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -176,35 +109,35 @@ public class People {
         this.photo = photo;
     }
 
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    public Province getProvince() {
+    public String getProvince() {
         return province;
     }
 
-    public void setProvince(Province province) {
+    public void setProvince(String province) {
         this.province = province;
     }
 
-    public Region getRegion() {
+    public String getRegion() {
         return region;
     }
 
-    public void setRegion(Region region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
-    public District getDistrict() {
+    public String getDistrict() {
         return district;
     }
 
-    public void setDistrict(District district) {
+    public void setDistrict(String district) {
         this.district = district;
     }
 
@@ -248,16 +181,11 @@ public class People {
         this.password = password;
     }
 
-    public String getTyperole() {
+    public String getType() {
         return typerole;
     }
 
-    public void setTyperole(String typerole) {
+    public void setType(String typerole) {
         this.typerole = typerole;
-    }
-    
-    @Override
-    public String toString() {
-        return name + " " + surename;  
     }
 }

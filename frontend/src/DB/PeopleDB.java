@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import application.Model.People;
 import javafx.collections.FXCollections;
@@ -23,8 +25,9 @@ public class PeopleDB {
 		ResultSet r = (ResultSet) stmt.getObject(1);*/
 		
 		ObservableList<People> peopleList = FXCollections.observableArrayList(
-				new People("1", "John", "Doe", "USA", "2024", "Athlete"),
-	            new People("2", "Jane", "Smith", "Canada", "2020", "Admin"));
+				new People(1, "John", "Doe", "USA", "2024", "Athlete", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
+	            new People(2, "Jane", "Smith", "Canada", "2020", "Admin", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
+	            new People(3, "Frank", "Davis", "Canada", "2020", "Trainer", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
 		
 		
 		/*while (r.next()) {
@@ -44,8 +47,18 @@ public class PeopleDB {
 		return peopleList;
 	}
 	
+	public static ObservableList<People> getPeopleListByTypeAndCountry(String type, int idCountry) throws SQLException {
+
+		// Filter the list to get only Athletes
+        List<People> filteredList = getPeopleList().stream()
+                .filter(people -> type.equals(people.getType())) // Assuming getType() method returns the type
+                .collect(Collectors.toList());
+		
+		return FXCollections.observableArrayList(filteredList);
+	}
+	
 	public static People getPeopleById(int id) throws SQLException {		
-		return new People("1", "John", "Doe", "USA", "2024", "Athlete");
+		return new People(1, "John", "Doe", "USA", "2024", "Athlete", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 	}
 	
 	public static void createPeople(People newPleople) throws SQLException {		

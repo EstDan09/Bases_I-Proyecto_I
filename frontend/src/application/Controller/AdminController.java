@@ -26,11 +26,26 @@ public class AdminController {
     }
 
     
-    public void changeToOlympicScene(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("../Views/Admin/OlympicView.fxml"));
+    public void changeToEventview(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../Views/Admin/EventsView.fxml"));
         contentPanel.setCenter(root);
     }
 
+    public void changeToTeamView(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../Views/Admin/TeamsView.fxml"));
+        contentPanel.setCenter(root);
+    }
+    public void changeToScoreView(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../Views/Admin/ScoreView.fxml"));
+        contentPanel.setCenter(root);
+    }
+    public void changeToBinnacleView(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../Views/Admin/BinnacleView.fxml"));
+        contentPanel.setCenter(root);
+    }
+
+    
+    
     
     public void exitAdmin(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("../Views/LoginView.fxml"));    

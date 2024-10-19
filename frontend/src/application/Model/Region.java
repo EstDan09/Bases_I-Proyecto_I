@@ -1,10 +1,10 @@
 package application.Model;
 
-public class Country {
+public class Region {
 	private int id;
     private String name;
     
-    public Country(int id, String name) {
+    public Region(int id, String name) {
     	this.id = id;
     	this.name = name;
     }
@@ -24,10 +24,5 @@ public class Country {
 
     public void setName(String name) {
         this.name = name;
-    }
-    
-    @Override
-    public String toString() {
-        return name;  
     }
 }

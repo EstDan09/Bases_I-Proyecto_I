@@ -2,6 +2,7 @@ package application.Controller.adminControllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import application.Model.People;
 import javafx.collections.ObservableList;
@@ -11,7 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -19,7 +20,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+
 import javafx.stage.Stage;
 
 public class EditPeopleController {
@@ -118,7 +119,7 @@ public class EditPeopleController {
         
         documentType.getItems().addAll("ID Card", "Passport", "Driver's License");
         nationality.getItems().addAll("Costa Rica", "USA", "Canada");
-        ObservableList<String> genderList = DB.GenderDB.getGenderList();	
+        ObservableList<String> genderList = DB.GenderDB.getGenderList();	 
         gender.setItems(genderList);        
         country.getItems().addAll("Costa Rica", "USA", "Canada");
         province.getItems().addAll("San José", "Alajuela", "Cartago");
@@ -130,21 +131,66 @@ public class EditPeopleController {
     // Save button event handler
     @FXML
     private void savePerson(ActionEvent event) throws IOException, SQLException {
+        errorMsg.setVisible(false);
+        errorMsg.setText("");
+        
         // Validate input fields
         if (first_name.getText().isEmpty() || last_name.getText().isEmpty() || identification.getText().isEmpty()) {
             errorMsg.setText("Please fill in all required fields");
             errorMsg.setVisible(true);
             return;
         }
+        
+        if (!first_name.getText().matches("[a-zA-Z]+")) {
+            errorMsg.setText("The name must not contain numbers or symbols.");
+            errorMsg.setVisible(true);
+            return;
+        }
+        
+        if (!last_name.getText().matches("[a-zA-Z]+")) {
+            errorMsg.setText("The surname must not contain numbers or symbols.");
+            errorMsg.setVisible(true);
+            return;
+        }
 
+
+        if (!identification.getText().matches("^\\d{1,15}$")) {
+            errorMsg.setText("The ID must be up to 15 digits and only contain numbers..");
+            errorMsg.setVisible(true);
+            return;
+        }
+
+
+        if (!email.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            errorMsg.setText("Please enter a valid email address.");
+            errorMsg.setVisible(true);
+            return;
+        }
+
+
+        if (!phone.getText().matches("^\\d{1,15}$")) {
+            errorMsg.setText("\"The phone number must contain up to 15 digits and not include letters or symbols.");
+            errorMsg.setVisible(true);
+            return;
+        }
+
+
+
+        if (birth_date.getValue().isAfter(LocalDate.now())) {
+            errorMsg.setText("The date of birth cannot be in the future.");
+            errorMsg.setVisible(true);
+            return;
+        }
+ 
         // Hide error message if all fields are filled
         errorMsg.setVisible(false);
         
-        People currentPeople = new People("0", first_name.getText(), last_name.getText(), nationality.getValue(), "2024", "Athlete");
+        People currentPeople = new People();
+
         
         //Save into DB
         if(this.id == 0) {
-        	currentPeople.setId(Integer.toString(this.id));
+        	currentPeople.setId(this.id);
         	DB.PeopleDB.editPeople(currentPeople);
         }else {
         	
