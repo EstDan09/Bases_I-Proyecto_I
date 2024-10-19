@@ -907,7 +907,7 @@ public class ConnectDB {
 	    List<String> roles = new ArrayList<>();
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call get_all_roles(?) }");
+	        stmt = con.prepareCall("{ ? = call get_all_roles() }");
 	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
@@ -964,45 +964,101 @@ public class ConnectDB {
 	}
 
 	/* Person Related Procedures and Functions */
-	public static void registerPerson(String typeGiven, String fnameGiven, String lnameGiven, String bdateGiven,
+	public static void registerPersonTrainer(String fnameGiven, String lnameGiven, String bdateGiven,
             int idnumberGiven, String genderGiven, String countryGiven,
-            String nationalityGiven, String districtGiven, String idtypeGiven,
-            String emailGiven, String pathGiven, long phoneNumberGiven,
-            String fnTrainerGiven, String lnTrainerGiven,
-            String usernameGiven, String passwordGiven, String roleGiven) throws SQLException {
+            String nationalityGiven, int districtGiven, String idtypeGiven,
+            String pathGiven, long phoneNumberGiven, String emailGiven) throws SQLException {
 		Connection con = null;
 		CallableStatement stmt = null;
-
 		try {
 			con = DriverManager.getConnection(host, uName, pass);
-			stmt = con.prepareCall("{ call register_person(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
-
-			stmt.setString(1, typeGiven);
-			stmt.setString(2, fnameGiven);
-			stmt.setString(3, lnameGiven);
-			stmt.setString(4, bdateGiven);
-			stmt.setInt(5, idnumberGiven);
-			stmt.setString(6, genderGiven);
-			stmt.setString(7, countryGiven);
-			stmt.setString(8, nationalityGiven);
-			stmt.setString(9, districtGiven);
-			stmt.setString(10, idtypeGiven);
-			stmt.setString(11, emailGiven);
-			stmt.setString(12, pathGiven);
-			stmt.setLong(13, phoneNumberGiven);
-			stmt.setString(14, fnTrainerGiven);
-			stmt.setString(15, lnTrainerGiven);
-			stmt.setString(16, usernameGiven);
-			stmt.setString(17, passwordGiven);
-			stmt.setString(18, roleGiven);
-
+			stmt = con.prepareCall("{ call register_person_trainer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+			stmt.setString(1, fnameGiven);
+			stmt.setString(2, lnameGiven);
+			stmt.setString(3, bdateGiven);
+			stmt.setInt(4, idnumberGiven);
+			stmt.setString(5, genderGiven);
+			stmt.setString(6, countryGiven);
+			stmt.setString(7, nationalityGiven);
+			stmt.setInt(8, districtGiven);
+			stmt.setString(9, idtypeGiven);
+			stmt.setString(10, pathGiven);
+			stmt.setLong(11, phoneNumberGiven);
+			stmt.setString(12, emailGiven);
 			stmt.execute();
+			System.out.println("Trainer registered successfully.");
 		} catch (SQLException e) {
-			System.out.println("Error registering person: " + e.getMessage());
+			System.out.println("Error registering trainer: " + e.getMessage());
 		} finally {
 			if (stmt != null) stmt.close();
 			if (con != null) con.close();
 		}
+	}
+	public static void registerPersonAthlete(String fnameGiven, String lnameGiven, String bdateGiven,
+            int idnumberGiven, String genderGiven, String countryGiven,
+            String nationalityGiven, int districtGiven, String idtypeGiven,
+            String pathGiven, long phoneNumberGiven, String emailGiven, int trainerIdGiven) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call register_person_athlete(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+	        stmt.setString(1, fnameGiven);
+	        stmt.setString(2, lnameGiven);
+	        stmt.setString(3, bdateGiven);
+	        stmt.setInt(4, idnumberGiven);
+	        stmt.setString(5, genderGiven);
+	        stmt.setString(6, countryGiven);
+	        stmt.setString(7, nationalityGiven);
+	        stmt.setInt(8, districtGiven);
+	        stmt.setString(9, idtypeGiven);
+	        stmt.setString(10, pathGiven);
+	        stmt.setLong(11, phoneNumberGiven);
+	        stmt.setString(12, emailGiven);
+	        stmt.setInt(13, trainerIdGiven);
+	        stmt.execute();
+	        System.out.println("Athlete registered successfully.");
+	    } catch (SQLException e) {
+	        System.out.println("Error registering athlete: " + e.getMessage());
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
+	public static void registerPersonUser(String fnameGiven, String lnameGiven, String bdateGiven,
+            int idnumberGiven, String genderGiven, String countryGiven,
+            String nationalityGiven, int districtGiven, String idtypeGiven,
+            String pathGiven, long phoneNumberGiven, String emailGiven,
+            String roleGiven, String usernGiven, String passwGiven) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call register_person_user(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+	        stmt.setString(1, fnameGiven);
+	        stmt.setString(2, lnameGiven);
+	        stmt.setString(3, bdateGiven);
+	        stmt.setInt(4, idnumberGiven);
+	        stmt.setString(5, genderGiven);
+	        stmt.setString(6, countryGiven);
+	        stmt.setString(7, nationalityGiven);
+	        stmt.setInt(8, districtGiven);
+	        stmt.setString(9, idtypeGiven);
+	        stmt.setString(10, pathGiven);
+	        stmt.setLong(11, phoneNumberGiven);
+	        stmt.setString(12, emailGiven);
+	        stmt.setString(13, roleGiven);
+	        stmt.setString(14, usernGiven);
+	        stmt.setString(15, passwGiven);
+	        stmt.execute();
+	        System.out.println("User registered successfully.");
+	    } catch (SQLException e) {
+	        System.out.println("Error registering user: " + e.getMessage());
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
 	}
 
 	public static void updatePerson(String choice, int idnumberGiven, String newFname, String newLname,
@@ -1489,12 +1545,14 @@ public class ConnectDB {
     public static boolean login(String role, String username, String password) throws SQLException {
     	Connection con = null;
 	    CallableStatement stmt = null;
+	    System.out.println(username);
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
 	        stmt = con.prepareCall("{ call login_in(?, ?, ?) }");
 	        stmt.setString(1, role);
 	        stmt.setString(2, username);
 	        stmt.setString(3, password);
+	        System.out.println(username + role + password);
 	        stmt.execute();
 	    } catch (SQLException e) {
 	    	if (e.getErrorCode() == -20002) {
@@ -1642,7 +1700,36 @@ public class ConnectDB {
         }
         return genderId;
     }
-
+    public static List<String[]> getTopCountriesByMedals(int olympicYear) throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> topCountries = new ArrayList<>();
+        try {
+            con = DriverManager.getConnection(host, uName, pass);
+            stmt = con.prepareCall("{ ? = call get_top_countries_by_medals(?) }");
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setInt(2, olympicYear);
+            stmt.execute();
+            rs = (ResultSet) stmt.getObject(1);
+            while (rs.next()) {
+                String[] countryData = new String[5];
+                countryData[0] = rs.getString("country");  
+                countryData[1] = rs.getString("gold_medals");
+                countryData[2] = rs.getString("silver_medals");  
+                countryData[3] = rs.getString("bronze_medals");  
+                countryData[4] = rs.getString("total_medals");  
+                topCountries.add(countryData);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        }
+        return topCountries;
+    }
     
     
     
