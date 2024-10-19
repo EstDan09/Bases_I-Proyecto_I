@@ -44,37 +44,47 @@ public class LoginController implements Initializable {
 		stage.show();
 	}
 	
-		
-	public void login(ActionEvent event) throws IOException {
-		String title = "";
-		// CHANGE SCENE
-		try {
-			
-			if (role.getValue() == "admin") {
-				if (ConnectDB.login(role.getValue(), username.toString(), password.getText())) {
-					root = FXMLLoader.load(getClass().getResource("../Views/AdminView.fxml"));
-					title = "Admin Dashboard";
-				} else {
-					errorLabel.setText("Invalid user");
-				}
-			} else if (role.getValue() == "user") {
-				root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
-			} 
-			
-			stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-			scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("../application.css").toExternalForm());
-			stage.setTitle("Olympics | " + title);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-			stage.show();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			errorLabel.setText("Please choose a role");
-			errorLabel.setVisible(true);
-		}
-	}
-
+	    public void login(ActionEvent event) throws IOException {
+        String title = "";
+        // CHANGE SCENE
+        if (username.getText().isEmpty()) {
+            errorLabel.setText("Please enter a username");
+            errorLabel.setVisible(true);
+        } else if (password.getText().isEmpty()) {
+            errorLabel.setText("Please enter a password");
+            errorLabel.setVisible(true);
+        } else if (role.getValue() == null) {
+            errorLabel.setText("Please choose a role");
+            errorLabel.setVisible(true);
+        } else {
+            try {
+                
+                // if user is admin
+                if (role.getValue() == "admin") {
+                    if (ConnectDB.login(role.getValue(), username.toString(), password.getText())) {
+                        root = FXMLLoader.load(getClass().getResource("../Views/AdminView.fxml"));
+                        title = "Admin Dashboard";
+                    }
+                } else if (role.getValue() == "user") {
+                    if (ConnectDB.login(role.getValue(), username.toString(), password.getText())) {
+                        root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
+                    }
+                } 
+                
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                scene.getStylesheets().add(getClass().getResource("../application.css").toExternalForm());
+                stage.setTitle("Olympics | " + title);
+                stage.setScene(scene);
+                stage.centerOnScreen();
+                stage.show();
+            } catch (Exception ex) {
+//                ex.printStackTrace();
+                errorLabel.setText("Invalid user");
+                errorLabel.setVisible(true);
+            }
+        }
+    }
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setData();
