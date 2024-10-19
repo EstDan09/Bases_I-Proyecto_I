@@ -58,7 +58,7 @@
       </VBox>
       <BorderPane fx:id="contentPanel" layoutX="200.0" prefHeight="800.0" prefWidth="1080.0">
          <center>
-            <Pane prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: 0001;" BorderPane.alignment="CENTER">
+            <Pane prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: #eeeee4;" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="234.0" fitWidth="485.0" layoutX="291.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
                      <image>

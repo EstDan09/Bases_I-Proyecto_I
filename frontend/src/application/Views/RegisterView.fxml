@@ -55,7 +55,7 @@
       <Label layoutX="311.0" layoutY="388.0" text="Email" />
       <TextField fx:id="email" layoutX="310.0" layoutY="405.0" prefHeight="25.0" prefWidth="380.0" promptText="john.doe@email.com" />
       <Label layoutX="510.0" layoutY="175.0" text="Picture of you" />
-      <ComboBox fx:id="country" layoutX="310.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox onAction="#countryChoosenEvent" fx:id="country" layoutX="310.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
       <ComboBox fx:id="province" layoutX="510.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
       <ComboBox fx:id="region" layoutX="310.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" />
       <ComboBox fx:id="district" layoutX="510.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" />

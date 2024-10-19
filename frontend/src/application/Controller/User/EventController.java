@@ -56,4 +56,15 @@ public class EventController implements Initializable{
 		
 		table.setItems(eventList);
 		
-	}}
+	}
+	
+	// LOADERS ==================================================
+	
+	// filter by sport, olympic, date
+	private void loadEvents(String olympic) {
+		
+	}
+	
+}
+
+

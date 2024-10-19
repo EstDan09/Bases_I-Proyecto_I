@@ -98,7 +98,7 @@ public class CountryController implements Initializable {
     public void filter(ActionEvent ev) throws SQLException {
     	System.out.println("FILTRANDO");
     	countryList.clear();
-//    	loadList(ConnectDB());
+//    	loadList(ConnectDB.getCountryRanking());
     	
     }
 }

@@ -13,12 +13,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class TrainerController implements Initializable {
-	
-	int photo_height = 100;
 
     @FXML
     private TableColumn<Trainer, Integer> age;
@@ -42,7 +38,7 @@ public class TrainerController implements Initializable {
     private ComboBox<String> olympicCB;
 
     @FXML
-    private TableColumn<Trainer, ImageView> photo;
+    private TableColumn<Trainer, String> photo;
 
     @FXML
     private TableColumn<Trainer, String> representing;
@@ -52,7 +48,6 @@ public class TrainerController implements Initializable {
 
     @FXML
     private TableView<Trainer> table;
-   
 
     // This should be a list of Trainer objects, not Event
     ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
@@ -65,23 +60,15 @@ public class TrainerController implements Initializable {
         age.setCellValueFactory(new PropertyValueFactory<>("age"));
         olympic.setCellValueFactory(new PropertyValueFactory<>("olympic"));
         representing.setCellValueFactory(new PropertyValueFactory<>("representing"));
-        photo.setCellValueFactory(new PropertyValueFactory<>("photo"));
         // Add some sample data
         trainerList.addAll(
-            new Trainer("John", "Doe", 45, "2024 Paris", "USA", createPhoto("/resources/usain.jpg")),
-            new Trainer("Anna", "Smith", 39, "2020 Tokyo", "Canada", createPhoto("/resources/usain.jpg")),
-            new Trainer("Liu", "Wang", 50, "2016 Rio", "China", createPhoto("/resources/usain.jpg")),
-            new Trainer("Maria", "Garcia", 42, "2024 Paris", "Spain", createPhoto("/resources/usain.jpg"))
+            new Trainer("John", "Doe", 45, "2024 Paris", "USA"),
+            new Trainer("Anna", "Smith", 39, "2020 Tokyo", "Canada"),
+            new Trainer("Liu", "Wang", 50, "2016 Rio", "China"),
+            new Trainer("Maria", "Garcia", 42, "2024 Paris", "Spain")
         );
 
         // Set the items to the TableView
         table.setItems(trainerList);
-    }
-    
-    private ImageView createPhoto(String imagePath) {
-        ImageView imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
-        imageView.setFitHeight(photo_height); // Set the desired height for the flag
-        imageView.setPreserveRatio(true); // Preserve the aspect ratio
-        return imageView;
     }
 }

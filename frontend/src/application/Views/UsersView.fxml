@@ -10,37 +10,42 @@
    <children>
       <FlowPane alignment="CENTER" hgap="30.0" prefHeight="50.0" prefWidth="1280.0" style="-fx-background-color: #000;">
          <children>
-            <Hyperlink text="Olympic Games" textFill="WHITE" onAction="#changeToOlympicScene">
+            <Hyperlink onAction="#changeToOlympicScene" text="Olympic Games" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Events" textFill="WHITE" onAction="#changeToEventsScene">
+            <Hyperlink onAction="#changeToEventsScene" text="Events" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Sports" textFill="WHITE" onAction="#changeToSportsScene">
+            <Hyperlink onAction="#changeToSportsScene" text="Sports" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Records" textFill="WHITE" onAction="#changeToRecordsScene">
+            <Hyperlink onAction="#changeToRecordsScene" text="Records" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Countries" textFill="WHITE" onAction="#changeToCountriesScene">
+            <Hyperlink onAction="#changeToCountriesScene" text="Countries" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Athletes" textFill="WHITE" onAction="#changeToAthletesScene">
+            <Hyperlink onAction="#changeToAthletesScene" text="Athletes" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Hyperlink>
-            <Hyperlink text="Trainers" textFill="WHITE" onAction="#changeToTrainersScene">
+            <Hyperlink onAction="#changeToTrainersScene" text="Trainers" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="genderStadistics" layoutX="939.0" layoutY="19.0" onAction="#changeToGenderScene" text="GenderStadistics" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

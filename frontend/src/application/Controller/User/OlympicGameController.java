@@ -1,8 +1,11 @@
 package application.Controller.User;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import application.ConnectDB;
 import application.Model.OlympicGame;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,9 +47,7 @@ public class OlympicGameController implements Initializable {
 
     // Sample Data for the Olympic Games
     ObservableList<OlympicGame> olympicGameList = FXCollections.observableArrayList(
-        new OlympicGame("Tokyo 2020", "Japan", 2021, 11090, 205, 339, 500),
-        new OlympicGame("Rio 2016", "Brazil", 2016, 11238, 207, 306, 456),
-        new OlympicGame("Beijing 2008", "China", 2008, 123124, 100, 123, 5005)
+        new OlympicGame("Dummy Olympic", "DummyLand", 2024, 1, 2, 3, 4)
     );
 
     @Override
@@ -61,6 +62,27 @@ public class OlympicGameController implements Initializable {
         totalEvents.setCellValueFactory(new PropertyValueFactory<OlympicGame, Integer>("totalEvents"));
 
         // Load the sample data into the TableView
+        try {
+			loadOlympicGames();
+		} catch (SQLException e) {
+			System.out.println("Error: couldnt connect with the DB");
+		}
         table.setItems(olympicGameList);
+    }
+    
+    
+    // LOADERS ==================================================================================
+    private void loadOlympicGames() throws SQLException {
+		List<String[]> list = ConnectDB.getOlympicDetails();
+		for (String[] game: list) {
+			String name = game[0];
+			String country = game[2];
+			int year = Integer.parseInt(game[1]);
+			int totalParticipants = Integer.parseInt(game[4]);
+			int totalCountries = Integer.parseInt(game[5]);
+			int totalMedals = Integer.parseInt(game[6]);
+			int totalEvents = Integer.parseInt(game[3]);
+			olympicGameList.add(new OlympicGame(name, country, year, totalParticipants, totalCountries, totalMedals, totalEvents));
+		}
     }
 }
