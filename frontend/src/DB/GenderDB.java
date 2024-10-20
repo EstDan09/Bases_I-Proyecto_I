@@ -14,8 +14,8 @@ import oracle.jdbc.OracleTypes;
 public class GenderDB {
 	public static ObservableList<Gender> getGenderList() throws SQLException {
 		ObservableList<Gender> genderList = FXCollections.observableArrayList(
-				new Gender(1, "Male"), 
-				new Gender(2, "Female"));
+				new Gender(1,"Male"), 
+				new Gender(2,"Female"));
 		return genderList;
 	}
 }

@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,6 @@ public class ConnectDB {
 	
 	/* Nationality Related Procedures and Functions */
 	public static void registerNationality(String name) throws SQLException {
-		
 	    Connection con = null;
 	    CallableStatement stmt = null;
         System.out.println("HOLA");
@@ -62,10 +63,10 @@ public class ConnectDB {
 	    }
 	}
 
-	public static List<String> getAllNationalities() throws SQLException {
+	public static List<String[]> getAllNationalities() throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
-        List<String> nationalities = new ArrayList<>();
+	    List<String[]> nationalities = new ArrayList<>();
         ResultSet rs = null;
 
 	    try {
@@ -74,9 +75,14 @@ public class ConnectDB {
 	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-            	nationalities.add(rs.getString("name"));
-            }
+	        while (rs.next()) {
+	            String[] nationalityData = new String[2];
+	            nationalityData[0] = rs.getString("name"); 
+	            nationalityData[1] = String.valueOf(rs.getInt("id_nationality")); 
+	            nationalities.add(nationalityData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
 	    } finally {
 	        if (stmt != null) stmt.close();
 	        if (con != null) con.close();
@@ -108,6 +114,20 @@ public class ConnectDB {
 	    return nationalityId;
 	}
 
+	public static void deleteNationality(String name) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_nationality(?) }");
+	        stmt.setString(1, name);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
 	/* Gender Related Procedures and Functions */
     public static void registerGender(String genderName) throws SQLException {
         Connection con = null;
@@ -138,20 +158,25 @@ public class ConnectDB {
         }
     }
     
-    public static List<String> getAllGenders() throws SQLException {
+    public static  List<String[]> getAllGenders() throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
-        List<String> genders = new ArrayList<>();
+        List<String[]> genders = new ArrayList<>();
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(host, uName, pass);
             stmt = con.prepareCall("{? = call get_all_genders }");
             stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.executeQuery();
-            rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-                genders.add(rs.getString("name"));
-            }
+            stmt.execute();
+	        rs = (ResultSet) stmt.getObject(1);
+	        while (rs.next()) {
+	            String[] genderData = new String[2];
+	            genderData[0] = rs.getString("name"); 
+	            genderData[1] = String.valueOf(rs.getInt("id_gender")); 
+	            genders.add(genderData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
         } finally {
             if (stmt != null) stmt.close();
             if (con != null) con.close();
@@ -159,6 +184,20 @@ public class ConnectDB {
         return genders;
     }
 
+    public static void deleteGender(String name) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_gender(?) }");
+	        stmt.setString(1, name);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
     /* ID Type Related Procedures and Functions */
     public static void registerIdentificationType(String name) throws SQLException {
         Connection con = null;
@@ -189,10 +228,10 @@ public class ConnectDB {
         }
     }
 
-    public static List<String> getAllIdTypes() throws SQLException {
+    public static List<String[]> getAllIdTypes() throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
-        List<String> idTypes = new ArrayList<>();
+        List<String[]> idTypes = new ArrayList<>();
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(host, uName, pass);
@@ -200,9 +239,14 @@ public class ConnectDB {
             stmt.registerOutParameter(1, OracleTypes.CURSOR);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-            	idTypes.add(rs.getString("type_id"));
-            }
+	        while (rs.next()) {
+	            String[] idData = new String[2];
+	            idData[0] = rs.getString("type_id"); 
+	            idData[1] = String.valueOf(rs.getInt("id_identification_type")); 
+	            idTypes.add(idData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
         } finally {
             if (stmt != null) stmt.close();
             if (con != null) con.close();
@@ -230,6 +274,20 @@ public class ConnectDB {
         return id;
     }
 
+    public static void deleteIdType(String name) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_id_type(?) }");
+	        stmt.setString(1, name);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
 	/* Phone Related Procedures and Functions */
     public static void registerPhone(long phoneNumber) throws SQLException {
         Connection con = null;
@@ -338,21 +396,28 @@ public class ConnectDB {
     	}
     }
 
-    public static List<String> getAllCategories() throws SQLException {
+    public static List<String[]> getAllCategories() throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
-        List<String> categories = new ArrayList<>();
+        List<String[]> categories = new ArrayList<>();
 
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(host, uName, pass);
             stmt = con.prepareCall("{ call get_all_categories() }");
             stmt.registerOutParameter(1, OracleTypes.CURSOR); 
-            stmt.execute(); 
-            rs = (ResultSet) stmt.getObject(1); 
-            while (rs.next()) {
-            	categories.add(rs.getString("number_phone")); 
-            }
+            stmt.execute();
+	        rs = (ResultSet) stmt.getObject(1);
+	        while (rs.next()) {
+	            String[] categoryData = new String[4];
+	            categoryData[0] = rs.getString("title"); 
+	            categoryData[1] = rs.getString("gender"); 
+	            categoryData[2] = rs.getString("name"); 
+	            categoryData[3] = String.valueOf(rs.getInt("id_category")); 
+	            categories.add(categoryData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
         } finally {
             if (stmt != null) stmt.close();
             if (con != null) con.close();
@@ -379,7 +444,21 @@ public class ConnectDB {
         }
         return categoryId;
     }
-
+    
+    public static void deleteCategory(String name) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_category(?) }");
+	        stmt.setString(1, name);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
     /* Country Related Procedures and Functions */
 	public static void registerCountry(String name, String pathD ) throws SQLException {
 
@@ -408,10 +487,10 @@ public class ConnectDB {
 	    }
 	}
 
-	public static List<String> getAllCountries() throws SQLException {
+	public static List<String[]> getAllCountries() throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
-	    List<String> countries = new ArrayList<>();
+	    List<String[]> countries = new ArrayList<>();
 	    ResultSet rs = null;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
@@ -419,9 +498,15 @@ public class ConnectDB {
 	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-            	countries.add(rs.getString("name"));
-            }
+	        while (rs.next()) {
+	            String[] countryData = new String[3];
+	            countryData[0] = rs.getString("name"); 
+	            countryData[1] = String.valueOf(rs.getInt("ID")); 
+	            countryData[2] = rs.getString("Path"); 
+	            countries.add(countryData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
 	    } finally {
 	        if (stmt != null) stmt.close();
 	        if (con != null) con.close();
@@ -446,6 +531,20 @@ public class ConnectDB {
 	        if (con != null) con.close();
 	    }
 	    return countryId;
+	}
+
+    public static void deleteCountry(String name) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_country(?) }");
+	        stmt.setString(1, name);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
 	}
 
     /* Province Related Procedures and Functions */
@@ -481,15 +580,16 @@ public class ConnectDB {
 	    }
 	}
 
-	public static int getProvinceId(String provinceName) throws SQLException {
+	public static int getProvinceId(String provinceName, String countryName) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    int provinceId = 0;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_province_id(?) }");
+	        stmt = con.prepareCall("{ ? = call get_province_id(?, ?) }");
 	        stmt.registerOutParameter(1, Types.INTEGER);
 	        stmt.setString(2, provinceName);
+	        stmt.setString(3, countryName);
 	        stmt.execute();
 	        provinceId = stmt.getInt(1);
 	    } finally {
@@ -499,21 +599,42 @@ public class ConnectDB {
 	    return provinceId;
 	}
 
-	public static List<String> getAllProvincesByCountry(String countryName) throws SQLException {
+	public static void deleteProvince(String name, String countryname) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
-	    List<String> provinces = new ArrayList<>();
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_province(?, ?) }");
+	        stmt.setString(1, name);
+	        stmt.setString(2, countryname);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
+	public static List<String[]> getAllProvincesByCountry(String countryName) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    List<String[]> provinces = new ArrayList<>();
 	    ResultSet rs = null;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_all_countries(?) }");
+	        stmt = con.prepareCall("{ ? = call get_all_provinces(?) }");
 	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
 	        stmt.setString(2, countryName);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-            	provinces.add(rs.getString("name"));
-            }
+	        while (rs.next()) {
+	            String[] provData = new String[3];
+	            provData[0] = rs.getString("province_name"); 
+	            provData[1] = String.valueOf(rs.getInt("province_id")); 
+	            provData[2] = rs.getString("flag_photo_path");
+	            provinces.add(provData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
 	    } finally {
 	        if (stmt != null) stmt.close();
 	        if (con != null) con.close();
@@ -536,6 +657,7 @@ public class ConnectDB {
 	        if (con != null) con.close();
 	    }
 	}
+	
 	public static void updateRegion(String choice, String givenName, String newName, String newProvince) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
@@ -552,16 +674,16 @@ public class ConnectDB {
 	        if (con != null) con.close();
 	    }
 	}
-
-	public static int getRegionId(String regionName) throws SQLException {
+	public static int getRegionId(String regionName, String provinceName) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    int regionId = 0;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_region_id(?) }");
+	        stmt = con.prepareCall("{ ? = call get_region_id(?, ?) }");
 	        stmt.registerOutParameter(1, Types.INTEGER);
 	        stmt.setString(2, regionName);
+	        stmt.setString(3, provinceName);
 	        stmt.execute();
 	        regionId = stmt.getInt(1);
 	    } finally {
@@ -591,6 +713,21 @@ public class ConnectDB {
 	    }
 	    return regions;
 	}
+	public static void deleteRegion(String name, String provinceName) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_region(?, ?) }");
+	        stmt.setString(1, name);
+	        stmt.setString(2, provinceName);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
 	public static void registerDistrict(String districtName, String regionName) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
@@ -621,15 +758,16 @@ public class ConnectDB {
 	        if (con != null) con.close();
 	    }
 	}
-	public static int getDistrictId(String districtName) throws SQLException {
+	public static int getDistrictId(String districtName, String regionName) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    int districtId = 0;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_district_id(?) }");
+	        stmt = con.prepareCall("{ ? = call get_district_id(?, ?) }");
 	        stmt.registerOutParameter(1, Types.INTEGER);
 	        stmt.setString(2, districtName);
+	        stmt.setString(3, regionName);
 	        stmt.execute();
 	        districtId = stmt.getInt(1);
 	    } finally {
@@ -638,10 +776,10 @@ public class ConnectDB {
 	    }
 	    return districtId;
 	}
-	public static List<String> getAllDistrictsByRegion(int regionId) throws SQLException {
+	public static List<String[]> getAllDistrictsByRegion(int regionId) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
-	    List<String> regions = new ArrayList<>();
+	    List<String[]> regions = new ArrayList<>();
 	    ResultSet rs = null;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
@@ -650,16 +788,37 @@ public class ConnectDB {
 	        stmt.setInt(2, regionId);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-            	regions.add(rs.getString("name"));
-            }
+	        while (rs.next()) {
+	            String[] districtData = new String[2];
+	            districtData[0] = rs.getString("name"); 
+	            districtData[1] = String.valueOf(rs.getInt("id_district")); 
+	            regions.add(districtData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
 	    } finally {
 	        if (stmt != null) stmt.close();
 	        if (con != null) con.close();
 	    }
 	    return regions;
 	}
-    /* Trainer Related Procedures and Functions */
+	public static void deleteDistrict(String name, String regionName) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_district(?, ?) }");
+	        stmt.setString(1, name);
+	        stmt.setString(2, regionName);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+	
+	
+	/* Trainer Related Procedures and Functions */
 	public static void registerTrainer(int personId) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
@@ -814,16 +973,14 @@ public class ConnectDB {
 	    return athletesList;
 	}
 
-	public static void updateAthleteTrainer(String athleteFirstName, String athleteLastName, String trainerFirstName, String trainerLastName) throws SQLException {
+	public static void updateAthleteTrainer(int athleteId, int trainerId) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call update_athlete_trainer(?, ?, ?, ?) }");
-	        stmt.setString(1, athleteFirstName);
-	        stmt.setString(2, athleteLastName);
-	        stmt.setString(3, trainerFirstName);
-	        stmt.setString(4, trainerLastName);
+	        stmt = con.prepareCall("{ call update_athlete_trainer(?, ?) }");
+	        stmt.setInt(1, athleteId);
+	        stmt.setInt(2, trainerId);
 	        stmt.execute();
 	    } finally {
 	        if (stmt != null) stmt.close();
@@ -847,7 +1004,7 @@ public class ConnectDB {
 	    }
 	}
 
-	public static int getEmailId(String email, int personId) throws SQLException {
+	public static int getEmailId(String email) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    ResultSet rs = null;
@@ -857,7 +1014,6 @@ public class ConnectDB {
 	        stmt = con.prepareCall("{ ? = call get_email_id(?, ?) }");
 	        stmt.registerOutParameter(1, Types.NUMERIC);
 	        stmt.setString(2, email);
-	        stmt.setInt(3, personId);
 	        stmt.execute();
 	        emailId = stmt.getInt(1);
 	    } finally {
@@ -867,9 +1023,7 @@ public class ConnectDB {
 	    }
 	    return emailId;
 	}
-   
-	//updateEmail PENDING
-	
+   	
 	/* Role Related Procedures and Functions */
 	public static void registerRole(String roleName) throws SQLException {
 	    Connection con = null;
@@ -966,7 +1120,7 @@ public class ConnectDB {
 	/* Person Related Procedures and Functions */
 	public static void registerPersonTrainer(String fnameGiven, String lnameGiven, String bdateGiven,
             int idnumberGiven, String genderGiven, String countryGiven,
-            String nationalityGiven, int districtGiven, String idtypeGiven,
+            String nationalityGiven, int districtIdGiven, String idtypeGiven,
             String pathGiven, long phoneNumberGiven, String emailGiven) throws SQLException {
 		Connection con = null;
 		CallableStatement stmt = null;
@@ -980,7 +1134,7 @@ public class ConnectDB {
 			stmt.setString(5, genderGiven);
 			stmt.setString(6, countryGiven);
 			stmt.setString(7, nationalityGiven);
-			stmt.setInt(8, districtGiven);
+			stmt.setInt(8, districtIdGiven);
 			stmt.setString(9, idtypeGiven);
 			stmt.setString(10, pathGiven);
 			stmt.setLong(11, phoneNumberGiven);
@@ -1033,9 +1187,10 @@ public class ConnectDB {
             String roleGiven, String usernGiven, String passwGiven) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
+	    System.out.println("entré");
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call register_person_user(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+	        stmt = con.prepareCall("{ call register_person_user(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 	        stmt.setString(1, fnameGiven);
 	        stmt.setString(2, lnameGiven);
 	        stmt.setString(3, bdateGiven);
@@ -1085,6 +1240,21 @@ public class ConnectDB {
 			if (stmt != null) stmt.close();
 			if (con != null) con.close();
 		}
+	}
+
+	public static void updateEmail(int emailId, String newEmail) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call update_email(?, ?) }");
+	        stmt.setInt(1,emailId);
+	        stmt.setString(2, newEmail);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
 	}
 
 	/* Person_Nationality Related Procedures and Functions */
@@ -1296,6 +1466,20 @@ public class ConnectDB {
         return sportId;
     }
 
+    public static void deleteSport(String name) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{ call delete_sport(?) }");
+	        stmt.setString(1, name);
+	        stmt.execute();
+	    } finally {
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+	}
+
     /* Olympics Related Procedures and Functions */
     public static void registerOlympic(int givenYear, String givenCountry) throws SQLException {
         Connection con = null;
@@ -1328,45 +1512,76 @@ public class ConnectDB {
         }
     }
 
-    public static List<String[]> getAllOlympicEvents(int givenOlympicId) throws SQLException {
+
+
+    public static List<String[]> getAllOlympicEvents(int olympicId, String eventDateStr, int sportId) throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
-        ResultSet rs = null; 
-        List<String[]> eventsList = new ArrayList<>(); 
+        ResultSet rs = null;
+        List<String[]> olympicEventsList = new ArrayList<>(); 
         try {
+            java.sql.Date eventDate = null;
+            if (eventDateStr != null && !eventDateStr.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date parsedDate = sdf.parse(eventDateStr);
+                eventDate = new java.sql.Date(parsedDate.getTime());
+            }
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_all_olympic_events(?) }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR); 
-            stmt.setInt(2, givenOlympicId);
+            stmt = con.prepareCall("{ ? = call get_all_olympic_events(?, ?, ?) }");
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setInt(2, olympicId);
+            stmt.setDate(3, eventDate);
+            stmt.setInt(4, sportId);
             stmt.execute();
+
             rs = (ResultSet) stmt.getObject(1);
             while (rs.next()) {
                 String[] eventData = new String[6]; 
-                eventData[0] = String.valueOf(rs.getInt("id_event")); 
-                eventData[1] = rs.getString("name"); 
-                eventData[2] = rs.getString("date_event"); 
-                eventData[3] = rs.getString("time_event"); 
-                eventData[4] = rs.getString("category_title"); 
-                eventData[5] = rs.getString("category_gender");
-                eventsList.add(eventData);
+                eventData[0] = rs.getString("event_name"); 
+                eventData[1] = rs.getString("sport_name");
+                eventData[2] = rs.getString("category_gender"); 
+                eventData[3] = rs.getDate("date_event").toString(); 
+                eventData[4] = rs.getString("time_event"); 
+                eventData[5] = rs.getString("team_names"); 
+                System.out.println(eventData[0]);
+                System.out.println(eventData[1]);
+                System.out.println(eventData[2]);
+                System.out.println(eventData[3]);
+                System.out.println(eventData[4]);
+                System.out.println(eventData[5]);
+                olympicEventsList.add(eventData); 
             }
         } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
+            if (e.getErrorCode() == -20002) {
+                System.out.println("ERROR: Nationality already registered");
+            } else {
+                // Print any other SQL exception that might occur
+                System.out.println("SQL Error: " + e.getMessage());
+            }
+        } catch (ParseException e) {
+            System.out.println("Date parsing error: " + e.getMessage());
         } finally {
-            if (rs != null) rs.close(); 
-            if (stmt != null) stmt.close();
-            if (con != null) con.close();
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
         }
-        return eventsList;
+        System.out.println(olympicEventsList);
+
+        return olympicEventsList;
     }
 
-    public static int getOlympicEventId(int givenYear) throws SQLException {
+
+    public static int getOlympicId(int givenYear) throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
         int olympicId = 0;
         try {
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_olympic_event_id(?) }");
+            stmt = con.prepareCall("{ ? = call get_olympic_id(?) }");
             stmt.registerOutParameter(1, Types.NUMERIC);
             stmt.setInt(2, givenYear);
             stmt.execute();
@@ -1385,13 +1600,15 @@ public class ConnectDB {
         List<String[]> olympicsList = new ArrayList<>(); 
         try {
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_olympic_details() }");
-            stmt.registerOutParameter(1, Types.REF_CURSOR);
+            stmt = con.prepareCall("{ ? = call get_olympic_details }");
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
             stmt.execute();
 
             rs = (ResultSet) stmt.getObject(1);
-
+            System.out.println(rs);
             while (rs.next()) {
+                System.out.println("HOLA");
+
                 String[] olympicData = new String[7]; // Adjust size according to the number of columns
                 olympicData[0] = rs.getString("olympic_name"); // Olympic name
                 olympicData[1] = String.valueOf(rs.getInt("year")); // Year
@@ -1400,7 +1617,8 @@ public class ConnectDB {
                 olympicData[4] = String.valueOf(rs.getInt("number_of_athletes")); // Number of athletes
                 olympicData[5] = String.valueOf(rs.getInt("number_of_countries")); // Participating countries
                 olympicData[6] = String.valueOf(rs.getInt("number_of_medals")); // Number of medals
-                
+                System.out.println(olympicData);
+
                 olympicsList.add(olympicData); // Add the array to the list
             }
         } catch (SQLException e) {
@@ -1419,6 +1637,7 @@ public class ConnectDB {
                 System.out.println("Error closing resources: " + e.getMessage());
             }
         }
+        System.out.println(olympicsList);
 
         return olympicsList;
     }
@@ -1731,7 +1950,109 @@ public class ConnectDB {
         return topCountries;
     }
     
+    public static List<String[]> getTopScores(int olympicId, int sportId) throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> topScoresList = new ArrayList<>(); 
+        try {
+           
+            con = DriverManager.getConnection(host, uName, pass);
+            stmt = con.prepareCall("{ ? = call get_top_scores(?, ?) }");
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setInt(2, olympicId);
+            stmt.setInt(3, sportId);
+            stmt.execute();
+
+            rs = (ResultSet) stmt.getObject(1);
+            while (rs.next()) {
+                String[] scoreData = new String[5]; 
+                scoreData[0] = rs.getString("sport_name"); 
+                scoreData[1] = rs.getString("team_name");
+                scoreData[2] = rs.getString("athletes"); 
+                scoreData[3] = rs.getString("country"); 
+                scoreData[4] = String.valueOf(rs.getBigDecimal("score")); 
+                System.out.println(scoreData[0]);
+                System.out.println(scoreData[1]);
+                System.out.println(scoreData[2]);
+                System.out.println(scoreData[3]);
+                System.out.println(scoreData[4]);
+                topScoresList.add(scoreData); 
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == -20002) {
+                System.out.println("ERROR");
+            } else {
+                // Print any other SQL exception that might occur
+                System.out.println("SQL Error: " + e.getMessage());
+            }
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+        System.out.println(topScoresList);
+
+        return topScoresList;
+    }
     
-    
+    public static List<String[]> getRecords(int sportId, int categoryId) throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> recordsList = new ArrayList<>(); 
+        try {
+           
+            con = DriverManager.getConnection(host, uName, pass);
+            stmt = con.prepareCall("{ ? = call get_top_records(?, ?) }");
+            stmt.registerOutParameter(1, OracleTypes.CURSOR);
+            stmt.setInt(2, sportId);
+            stmt.setInt(3, categoryId);
+            stmt.execute();
+
+            rs = (ResultSet) stmt.getObject(1);
+            while (rs.next()) {
+                String[] recordData = new String[7]; 
+                recordData[0] = rs.getString("sport_name"); 
+                recordData[1] = rs.getString("team_name");
+                recordData[2] = rs.getString("athletes"); 
+                recordData[3] = rs.getString("country"); 
+                recordData[4] = String.valueOf(rs.getBigDecimal("record")); 
+                recordData[5] = rs.getDate("event_date").toString(); 
+                recordData[6] = rs.getString("olympic_name");
+                
+                System.out.println(recordData[0]);
+                System.out.println(recordData[1]);
+                System.out.println(recordData[2]);
+                System.out.println(recordData[3]);
+                System.out.println(recordData[4]);
+                System.out.println(recordData[5]);
+                System.out.println(recordData[6]);
+
+                recordsList.add(recordData); 
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == -20002) {
+                System.out.println("ERROR");
+            } else {
+                System.out.println("SQL Error: " + e.getMessage());
+            }
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+        System.out.println(recordsList);
+
+        return recordsList;
+    }
     
 }

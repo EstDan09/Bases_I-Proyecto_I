@@ -144,7 +144,7 @@ public class EditPeopleController {
     	documentType.setItems(documentTypeList);  
     	ObservableList<Nationality> nationalityList = DB.NationalityDB.getNationalityList();	 
     	nationality.setItems(nationalityList);        
-        ObservableList<Gender> genderList = DB.GenderDB.getGenderList();	 
+        ObservableList<Gender> genderList = DB.GenderDB.getGenderList();	  
         gender.setItems(genderList);  
         ObservableList<Country> countryList = CountryDB.getCountryList();
         country.setItems(countryList);               

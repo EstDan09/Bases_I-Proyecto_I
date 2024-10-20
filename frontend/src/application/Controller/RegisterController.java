@@ -3,12 +3,9 @@ package application.Controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -122,18 +119,55 @@ public class RegisterController implements Initializable {
         } else {
 	    	try {
 	    		LocalDate selectedDate = birth_date.getValue();
+	    		System.out.println(selectedDate);
 	    		if (selectedDate != null) {
 	                // Format the LocalDate to the desired format
 	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	                String date = selectedDate.format(formatter);
+	                //String date = selectedDate.format(formatter);
+	            	
 
-	                ConnectDB.registerPerson("user", first_name.getText(), last_name.getText(), date,
-	    				Integer.parseInt(identification.getText()), gender.getValue(), country.getValue(), nationality.getValue(),
-	    				district.getValue(), documentType.getValue(), email.getText(), photo_path, Long.parseLong(phone.getText()),
-	    				"", "", username.getText(), password.getText(), "user");
+	             // Asignación de variables
+	                String firstName = first_name.getText();
+	                String lastName = last_name.getText();
+	                String date = birth_date.getValue() != null ? birth_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : null;
+	                int identificationNumber = Integer.parseInt(identification.getText());
+	                String genderValue = gender.getValue();
+	                String countryValue = country.getValue();
+	                String nationalityValue = nationality.getValue();
+	                int districtId = ConnectDB.getDistrictId(district.getValue(), region.getValue());
+	                String documentTypeValue = documentType.getValue();
+	                String photoPath = photo_path;
+	                long phoneNumber = Long.parseLong(phone.getText());
+	                String emailValue = email.getText();
+	                String role = "user";
+	                String usernameValue = username.getText();
+	                String passwordValue = password.getText();
+
+	                // Imprimir cada variable
+	                System.out.println("First Name: " + firstName);
+	                System.out.println("Last Name: " + lastName);
+	                System.out.println("Date of Birth: " + date);
+	                System.out.println("Identification Number: " + identificationNumber);
+	                System.out.println("Gender: " + genderValue);
+	                System.out.println("Country: " + countryValue);
+	                System.out.println("Nationality: " + nationalityValue);
+	                System.out.println("District ID: " + districtId);
+	                System.out.println("Document Type: " + documentTypeValue);
+	                System.out.println("Photo Path: " + photoPath);
+	                System.out.println("Phone Number: " + phoneNumber);
+	                System.out.println("Email: " + emailValue);
+	                System.out.println("Role: " + role);
+	                System.out.println("Username: " + usernameValue);
+	                System.out.println("Password: " + passwordValue);
+
+	                // Llamada a la función con las variables asignadas
+	                ConnectDB.registerPersonUser(firstName, lastName, date, identificationNumber, genderValue, countryValue, 
+	                    nationalityValue, districtId, documentTypeValue, photoPath, phoneNumber, emailValue, 
+	                    role, usernameValue, passwordValue);
+
 	    		}
 	        } catch (SQLException ex) {
-	        	System.out.println("");
+	        	ex.printStackTrace();
 	        	errorMsg.setText("Its not possible to create this user");
 	        	errorMsg.setVisible(true);
 	        } catch (NumberFormatException n_ex) {
@@ -167,9 +201,9 @@ public class RegisterController implements Initializable {
 		if (country.getValue() != null) {
 			try {
 				province.getItems().clear();
-				List<String> provinces = ConnectDB.getAllProvincesByCountry(country.getValue());
-				for (String p: provinces) {
-					province.getItems().add(p);
+				List<String[]> provinces = (List<String[]>) ConnectDB.getAllProvincesByCountry(country.getValue());
+				for (String[] p: provinces) {
+					province.getItems().add(p[0]);
 				}
 			} catch (SQLException e) {
 				System.out.println("No data in Province table");
@@ -180,26 +214,44 @@ public class RegisterController implements Initializable {
 	public void provinceChoosenEvent(ActionEvent event) throws SQLException {
 		// function to fill up provinces from a country combobox when a country is selected
 		if (country.getValue() != null) {
-//			try {
-//				region.getItems().clear();
-//				List<String> regions = ConnectDB.getAllRegionsByProvince();
-//				for (String r: regions) {
-//					region.getItems().add(r);
-//				}
-//			} catch (SQLException e) {
-//				System.out.println("No data in Province table");
-//			}
+			System.out.println(country.getValue()+province.getValue());
+			try {
+				region.getItems().clear();
+				List<String> regions = ConnectDB.getAllRegionsByProvince(ConnectDB.getProvinceId(province.getValue(), country.getValue()));
+				for (String r: regions) {
+					region.getItems().add(r);
+				}
+			} catch (SQLException e) {
+				System.out.println("No data in Province table");
+			}
+		}
+	}
+	
+	public void regionChoosenEvent(ActionEvent event) throws SQLException {
+		// function to fill up provinces from a country combobox when a country is selected
+		if (region.getValue() != null) {
+			System.out.println(region.getValue()+province.getValue());
+			try {
+				district.getItems().clear();
+				List<String[]> districts = (List<String[]>) ConnectDB.getAllDistrictsByRegion(ConnectDB.getRegionId(region.getValue(), province.getValue()));
+				for (String[] r: districts) {
+					district.getItems().add(r[0]);
+				}
+				System.out.println();
+			} catch (SQLException e) {
+				System.out.println("No data in Province table");
+			}
 		}
 	}
 
 // LOADERS
 	private void loadDocumentTypes() {
 		// function to load documentType combbox
-		List<String> idTypes = null;
+		List<String[]> idTypes = null;
 		try {
-			idTypes = ConnectDB.getAllIdTypes();
-			for (String type : idTypes) {
-			    documentType.getItems().add(type);  // Add each typeId to the ComboBox
+			idTypes = (List<String[]>) ConnectDB.getAllIdTypes();
+			for (String[] type : idTypes) {
+			    documentType.getItems().add(type[0]);  // Add each typeId to the ComboBox
 			}
 		} catch (SQLException e) {
 			System.out.println("No data in DocumentType table");
@@ -208,11 +260,11 @@ public class RegisterController implements Initializable {
 	
 	private void loadGenders() {
 		// function to load documentType combbox
-		List<String> genders = null;
+		List<String[]> genders = null;
 		try {
-			genders = ConnectDB.getAllGenders();
-			for (String g : genders) {
-			    gender.getItems().add(g);  // Add each typeId to the ComboBox
+			genders = (List<String[]>) ConnectDB.getAllGenders();
+			for (String[] g : genders) {
+			    gender.getItems().add(g[0]);  // Add each typeId to the ComboBox
 			}
 		} catch (SQLException e) {
 			System.out.println("No data in Gender table");
@@ -221,11 +273,11 @@ public class RegisterController implements Initializable {
 	
 	private void loadNationalities() {
 		// function to load documentType combbox
-		List<String> nationalities = null;
+		List<String[]> nationalities = null;
 		try {
-			nationalities = ConnectDB.getAllGenders();
-			for (String n : nationalities) {
-			    nationality.getItems().add(n);  // Add each typeId to the ComboBox
+			nationalities = (List<String[]>) ConnectDB.getAllNationalities();
+			for (String[] n : nationalities) {
+			    nationality.getItems().add(n[0]);  // Add each typeId to the ComboBox
 			}
 		} catch (SQLException e) {
 			System.out.println("No data in Nationality table");
@@ -234,11 +286,11 @@ public class RegisterController implements Initializable {
 	
 	private void loadCountries() {
 		// function to load documentType combbox
-		List<String> countries = null;
+		List<String[]> countries = null;
 		try {
-			countries = ConnectDB.getAllGenders();
-			for (String c : countries) {
-			    country.getItems().add(c);  // Add each typeId to the ComboBox
+			countries = (List<String[]>) ConnectDB.getAllCountries();
+			for (String[] c : countries) {
+			    country.getItems().add(c[0]);  // Add each typeId to the ComboBox
 			}
 		} catch (SQLException e) {
 			System.out.println("No data in Country table");

@@ -46,7 +46,7 @@ public class LoginController implements Initializable {
 		stage.show();
 	}
 	
-	    public void login(ActionEvent event) throws IOException {
+   public void login(ActionEvent event) throws IOException {
         String title = "";
         // CHANGE SCENE
         if (username.getText().isEmpty()) {
@@ -62,15 +62,16 @@ public class LoginController implements Initializable {
             try {
                 
                 // if user is admin
-                if (role.getValue() == "admin") {
-                    if (ConnectDB.login(role.getValue(), username.toString(), password.getText())) {
+            	System.out.println(username.getText());
+            	if ("admin".equals(role.getValue())) {
+                    if (ConnectDB.login(role.getValue(), username.getText(), password.getText())) {
                         root = FXMLLoader.load(getClass().getResource("../Views/AdminView.fxml"));
                         title = "Admin Dashboard";
                     }
-                } else if (role.getValue() == "user") {
-                    if (ConnectDB.login(role.getValue(), username.toString(), password.getText())) {
+                } else if ("user".equals(role.getValue())) {
+//                    if (ConnectDB.login(role.getValue(), username.getText(), password.getText())) {
                         root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
-                    }
+//                    }
                 } 
                 
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -84,8 +85,7 @@ public class LoginController implements Initializable {
 //                ex.printStackTrace();
                 errorLabel.setText("Invalid user");
                 errorLabel.setVisible(true);
-                System.out.println("Si ves este error, es porque en la clase LoginController hay problemas con los ifs de role");
-                System.out.println("Elimina los roles dummys de la linea 108 y 109");
+                //System.out.println("Si ves este error, es porque en la clase LoginController hay problemas con los ifs de role");
             }
         }
     }
@@ -105,8 +105,6 @@ public class LoginController implements Initializable {
 		} catch (SQLException e) {
 			System.out.println("No data in Roles table");
 		}  
-		role.getItems().add("user");
-		role.getItems().add("admin");
 	}
 	
 	

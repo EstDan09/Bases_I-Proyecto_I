@@ -43,7 +43,7 @@
                               <TableColumn fx:id="olympic" prefWidth="153.0" text="Olympic" />
                             <TableColumn fx:id="representing" prefWidth="127.0" text="Representing" />
                             <TableColumn fx:id="flag" prefWidth="113.5" text="Flag" />
-                              <TableColumn fx:id="photo" prefWidth="198.0" style="-fx-alignment: CENTER;" text="Photo" />
+                              <TableColumn fx:id="photo" prefWidth="198.0" text="Photo" />
                           </columns>
                         </TableView>
                      </children>
