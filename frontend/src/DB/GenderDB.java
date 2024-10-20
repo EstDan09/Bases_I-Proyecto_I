@@ -5,14 +5,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.Model.Gender;
 import application.Model.People;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import oracle.jdbc.OracleTypes;
 
 public class GenderDB {
-	public static ObservableList<String> getGenderList() throws SQLException {
-		ObservableList<String> genderList = FXCollections.observableArrayList("Male", "Female");
+	public static ObservableList<Gender> getGenderList() throws SQLException {
+		ObservableList<Gender> genderList = FXCollections.observableArrayList(
+				new Gender(1, "Male"), 
+				new Gender(2, "Female"));
 		return genderList;
 	}
 }

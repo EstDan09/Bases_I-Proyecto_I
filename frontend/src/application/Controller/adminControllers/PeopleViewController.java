@@ -39,7 +39,7 @@ public class PeopleViewController {
     private TableColumn<People, String> representingColumn;
 
     @FXML
-    private TableColumn<People, String> olympicYearColumn;
+    private TableColumn<People, String> nationalityColumn;
     
     @FXML
     private TableColumn<People, String> typeColumn;
@@ -63,11 +63,11 @@ public class PeopleViewController {
     @FXML
     public void initialize() throws SQLException {
     	peopleIdColumn.setCellValueFactory(new PropertyValueFactory<People, String>("id"));
-    	nameColumn.setCellValueFactory(new PropertyValueFactory<People, String>("name"));
-    	surenameColumn.setCellValueFactory(new PropertyValueFactory<People, String>("surename"));
-    	representingColumn.setCellValueFactory(new PropertyValueFactory<People, String>("representing"));
-    	olympicYearColumn.setCellValueFactory(new PropertyValueFactory<People, String>("olympicYear"));
-    	typeColumn.setCellValueFactory(new PropertyValueFactory<People, String>("type"));
+    	nameColumn.setCellValueFactory(new PropertyValueFactory<People, String>("first_name"));
+    	surenameColumn.setCellValueFactory(new PropertyValueFactory<People, String>("last_name"));
+    	representingColumn.setCellValueFactory(new PropertyValueFactory<People, String>("country"));
+    	nationalityColumn.setCellValueFactory(new PropertyValueFactory<People, String>("nationality"));
+    	typeColumn.setCellValueFactory(new PropertyValueFactory<People, String>("typerole"));
         
     	// Populate the table with data from the DB
         ObservableList<People> peopleList = DB.PeopleDB.getPeopleList();	
@@ -142,7 +142,7 @@ public class PeopleViewController {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Delete Item");
             alert.setHeaderText(null);
-            alert.setContentText("Deleted " + selectedPeople.getName());
+            alert.setContentText("Deleted " + selectedPeople.getFirst_name());
             alert.showAndWait();
         } else {
             Alert alert = new Alert(AlertType.WARNING);

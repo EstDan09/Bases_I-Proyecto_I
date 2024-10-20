@@ -89,13 +89,13 @@ public class EditTeamController {
     @FXML
     public void saveTeam(ActionEvent event) throws SQLException, IOException {
     	 // Validate input fields
-    	if (teamName.getText().isEmpty()) {
+    	if (teamName.getText().isEmpty() || selectTrainer.getValue() == null || selectCountry.getValue() == null || athleteList.getItems().isEmpty()) {
             errorMsg.setText("Please fill in all required fields");
             errorMsg.setVisible(true);
             return;
         }
     	String teamNameText = teamName.getText();
-    	if (!teamNameText.matches("[a-zA-Z]+")) {
+    	if (!teamNameText.matches("[a-zA-Z ]+")) {
     	    errorMsg.setText("Team name can only contain letters");
     	    errorMsg.setVisible(true);
     	    return;

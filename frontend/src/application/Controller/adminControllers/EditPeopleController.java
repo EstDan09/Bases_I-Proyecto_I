@@ -4,7 +4,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import DB.CountryDB;
+import DB.DocumentTypeDB;
+import application.Model.Country;
+import application.Model.District;
+import application.Model.DocumentType;
+import application.Model.Gender;
+import application.Model.Nationality;
 import application.Model.People;
+import application.Model.Province;
+import application.Model.Region;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,9 +41,23 @@ public class EditPeopleController {
         if (this.id != 0) { 
     		title.setText("Edit People");
     		People editPeople = DB.PeopleDB.getPeopleById(this.id);
-    		first_name.setText(editPeople.getName());
-    		last_name.setText(editPeople.getSurename());
-    		nationality.setValue(editPeople.getRepresenting());
+    		first_name.setText(editPeople.getFirst_name());
+    		last_name.setText(editPeople.getLast_name());
+    		identification.setText(editPeople.getIdentification());    		
+    		documentType.setValue(editPeople.getDocumentType());
+    		nationality.setValue(editPeople.getNationality());
+    		birth_date.setValue(LocalDate.parse(editPeople.getBirth_date()));
+    		gender.setValue(editPeople.getGender());
+    		country.setValue(editPeople.getCountry());
+    		province.setValue(editPeople.getProvince());
+    		region.setValue(editPeople.getRegion());
+    		district.setValue(editPeople.getDistrict());
+    		phone.setText(editPeople.getPhone());
+    		phone_2.setText(editPeople.getPhone_2());
+    		email.setText(editPeople.getEmail());
+    		username.setText(editPeople.getUsername());
+    		password.setText(editPeople.getPassword());
+    		type.setValue(editPeople.getTyperole());
     	}
     }
 
@@ -48,28 +71,28 @@ public class EditPeopleController {
     private TextField identification;
 
     @FXML
-    private ComboBox<String> documentType;
+    private ComboBox<DocumentType> documentType;
 
     @FXML
-    private ComboBox<String> nationality;
+    private ComboBox<Nationality> nationality;
 
     @FXML
     private DatePicker birth_date;
 
     @FXML
-    private ComboBox<String> gender;
+    private ComboBox<Gender> gender;
 
     @FXML
-    private ComboBox<String> country;
+    private ComboBox<Country> country;
 
     @FXML
-    private ComboBox<String> province;
+    private ComboBox<Province> province;
 
     @FXML
-    private ComboBox<String> region;
+    private ComboBox<Region> region;
 
     @FXML
-    private ComboBox<String> district;
+    private ComboBox<District> district;
 
     @FXML
     private TextField phone;
@@ -117,14 +140,14 @@ public class EditPeopleController {
     @FXML
     public void initialize() throws SQLException {    	
         
-        documentType.getItems().addAll("ID Card", "Passport", "Driver's License");
-        nationality.getItems().addAll("Costa Rica", "USA", "Canada");
-        ObservableList<String> genderList = DB.GenderDB.getGenderList();	 
-        gender.setItems(genderList);        
-        country.getItems().addAll("Costa Rica", "USA", "Canada");
-        province.getItems().addAll("San José", "Alajuela", "Cartago");
-        region.getItems().addAll("Central", "Pacific", "Atlantic");
-        district.getItems().addAll("Carmen", "Merced", "Uruca");
+    	ObservableList<DocumentType> documentTypeList = DocumentTypeDB.getDocumentTypeList();	 
+    	documentType.setItems(documentTypeList);  
+    	ObservableList<Nationality> nationalityList = DB.NationalityDB.getNationalityList();	 
+    	nationality.setItems(nationalityList);        
+        ObservableList<Gender> genderList = DB.GenderDB.getGenderList();	 
+        gender.setItems(genderList);  
+        ObservableList<Country> countryList = CountryDB.getCountryList();
+        country.setItems(countryList);               
         type.getItems().addAll("Admin", "Athlete", "Trainer");
     }
 
@@ -135,7 +158,7 @@ public class EditPeopleController {
         errorMsg.setText("");
         
         // Validate input fields
-        if (first_name.getText().isEmpty() || last_name.getText().isEmpty() || identification.getText().isEmpty()) {
+        if (first_name.getText().isEmpty() || last_name.getText().isEmpty() || identification.getText().isEmpty() || birth_date.getValue() == null) {
             errorMsg.setText("Please fill in all required fields");
             errorMsg.setVisible(true);
             return;
@@ -185,9 +208,27 @@ public class EditPeopleController {
         // Hide error message if all fields are filled
         errorMsg.setVisible(false);
         
-        People currentPeople = new People();
+        People currentPeople = new People(
+        		0,
+        		first_name.getText(),
+        		last_name.getText(), 
+        		identification.getText(), 
+        		documentType.getValue(), 
+        		nationality.getValue(), 
+        		birth_date.getValue().toString(), 
+        		gender.getValue(), 
+        		"", 
+        		country.getValue(), 
+        		province.getValue(), 
+        		region.getValue(), 
+        		district.getValue(), 
+        		phone.getText(), 
+        		phone_2.getText(), 
+        		email.getText(), 
+        		username.getText(), 
+        		password.getText(), 
+        		type.getValue());
 
-        
         //Save into DB
         if(this.id == 0) {
         	currentPeople.setId(this.id);
@@ -214,5 +255,29 @@ public class EditPeopleController {
     private void switchToLoginScene(ActionEvent event) {
         // Add code to switch to the login scene
         System.out.println("Switching to login scene");
-    }    
+    } 
+    
+    @FXML
+    private void changeSelectedCountry(ActionEvent event) throws SQLException {
+    	Country selectedCountry = country.getValue();
+        
+        ObservableList<Province> provinceList = DB.ProvinceDB.getProvinceListByCountry(selectedCountry.getId());	 
+    	province.setItems(provinceList);    
+    } 
+    
+    @FXML
+    private void changeSelectedProvince(ActionEvent event) throws SQLException {
+    	Province selectedProvince = province.getValue();
+        
+        ObservableList<Region> regionList = DB.RegionDB.getRegionListByProvince(selectedProvince.getId());	 
+    	region.setItems(regionList);  
+    } 
+    
+    @FXML
+    private void changeSelectedRegion(ActionEvent event) throws SQLException {
+    	Region selectedRegion = region.getValue();
+        
+        ObservableList<District> districtList = DB.DistrictDB.getDistrictListByRegion(selectedRegion.getId());	 
+    	district.setItems(districtList);  
+    } 
 }

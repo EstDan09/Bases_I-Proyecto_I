@@ -30,7 +30,7 @@
       <Label fx:id="passwordLabel" layoutX="311.0" layoutY="473.0" text="Password" />
       <TextField fx:id="first_name" layoutX="310.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="Timmy" />
       <Label layoutX="310.0" layoutY="25.0" text="First Name" />
-      <TextField fx:id="last_name" layoutX="510.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="Turner" text="Doe" />
+      <TextField fx:id="last_name" layoutX="510.0" layoutY="40.0" prefHeight="25.0" prefWidth="180.0" promptText="Turner" />
       <Label layoutX="510.0" layoutY="26.0" text="Last Name" />
       <ComboBox fx:id="documentType" layoutX="510.0" layoutY="90.0" prefHeight="25.0" prefWidth="180.0" promptText="Choose a type" />
       <Label layoutX="510.0" layoutY="75.0" text="Document Type" />
@@ -47,9 +47,9 @@
       <Label fx:id="emailLabel" layoutX="311.0" layoutY="377.0" text="Email" />
       <TextField fx:id="email" layoutX="310.0" layoutY="394.0" prefHeight="25.0" prefWidth="380.0" promptText="john.doe@email.com" />
       <Label layoutX="510.0" layoutY="175.0" text="Picture of you" />
-      <ComboBox fx:id="country" layoutX="310.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
-      <ComboBox fx:id="province" layoutX="510.0" layoutY="240.0" prefHeight="25.0" prefWidth="180.0" />
-      <ComboBox fx:id="region" layoutX="310.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="country" layoutX="310.0" layoutY="240.0" onAction="#changeSelectedCountry" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="province" layoutX="510.0" layoutY="240.0" onAction="#changeSelectedProvince" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="region" layoutX="310.0" layoutY="290.0" onAction="#changeSelectedRegion" prefHeight="25.0" prefWidth="180.0" />
       <ComboBox fx:id="district" layoutX="510.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" />
       <Label layoutX="310.0" layoutY="225.0" text="Country of Residence" />
       <Label layoutX="510.0" layoutY="225.0" text="Province of residence" />

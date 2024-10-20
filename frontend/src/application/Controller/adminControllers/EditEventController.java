@@ -117,7 +117,7 @@ public class EditEventController {
     @FXML
     private void saveEvent(ActionEvent event) throws IOException, SQLException {
         // Validate input fields
-        if (nameEvent.getText().isEmpty() || categoryEvent.getValue() == null || sportEvent.getValue() == null || selectTeam.getValue() == null || dateEvent.getValue() == null || timeEvent.getText().isEmpty()) {
+        if (nameEvent.getText().isEmpty() || categoryEvent.getValue() == null || sportEvent.getValue() == null || teamList.getItems().isEmpty() || dateEvent.getValue() == null || timeEvent.getText().isEmpty()) {
             errorMsg.setText("Please fill in all required fields");
             errorMsg.setVisible(true);
             return;

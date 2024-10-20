@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.Model.Country;
+import application.Model.Nationality;
 import application.Model.People;
 import application.Model.Teams;
 import javafx.collections.FXCollections;
@@ -14,11 +15,11 @@ public class TeamsDB {
 
 	public static ObservableList<Teams> getTeamList() throws SQLException {
 		People trainer1 = new People();
-		trainer1.setName("Trainer 1");
+		trainer1.setFirst_name("Trainer 1");
 		trainer1.setId(1);
 		
 		People trainer2 = new People();
-		trainer2.setName("Trainer 2");
+		trainer2.setFirst_name("Trainer 2");
 		trainer2.setId(2);
 		
 		List<People> lista = new ArrayList<People>();
@@ -90,10 +91,10 @@ public class TeamsDB {
     }
 	
 	public static Teams getTeamById(int id) throws SQLException {
-		People people1 = new People(1, "John", "Doe", "USA", "2024", "Athlete", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		People people2 = new People(2, "Jane", "Smith", "Canada", "2020", "Admin", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		People people3 = new People(3, "Frank", "Davis", "Canada", "2020", "Trainer", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		
+		People people1 = new People(1, "John", "Doe", null, null, new Nationality(2, "USA"), null, null, null, null, null, null, null, null, null, null, null, null, "Athlete");
+		People people2 = new People(2, "Jane", "Smith", null, null, new Nationality(3, "Canada"), null, null, null, null, null, null, null, null, null, null, null, null, "Admin");
+		People people3 = new People(3, "Frank", "Davis", null, null, new Nationality(3, "Canada"), null, null, null, null, null, null, null, null, null, null, null, null, "Trainer");
+				
 		List<People> lista = new ArrayList<People>();
 		lista.add(people1);
 		lista.add(people2);

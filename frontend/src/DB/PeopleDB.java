@@ -4,10 +4,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import application.Model.Country;
+import application.Model.District;
+import application.Model.DocumentType;
+import application.Model.Gender;
+import application.Model.Nationality;
 import application.Model.People;
+import application.Model.Province;
+import application.Model.Region;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import oracle.jdbc.OracleTypes;
@@ -25,9 +33,9 @@ public class PeopleDB {
 		ResultSet r = (ResultSet) stmt.getObject(1);*/
 		
 		ObservableList<People> peopleList = FXCollections.observableArrayList(
-				new People(1, "John", "Doe", "USA", "2024", "Athlete", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
-	            new People(2, "Jane", "Smith", "Canada", "2020", "Admin", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
-	            new People(3, "Frank", "Davis", "Canada", "2020", "Trainer", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
+				new People(1, "John", "Doe", null, null, new Nationality(2, "USA"), null, null, null, new Country(2, "USA"), null, null, null, null, null, null, null, null, "Athlete"),
+				new People(2, "Jane", "Smith", null, null, new Nationality(3, "Canada"), null, null, null, new Country(3, "Canada"), null, null, null, null, null, null, null, null, "Admin"),
+				new People(3, "Frank", "Davis", null, null, new Nationality(3, "Canada"), null, null, null, new Country(3, "Canada"), null, null, null, null, null, null, null, null, "Trainer"));
 		
 		
 		/*while (r.next()) {
@@ -51,14 +59,33 @@ public class PeopleDB {
 
 		// Filter the list to get only Athletes
         List<People> filteredList = getPeopleList().stream()
-                .filter(people -> type.equals(people.getType())) // Assuming getType() method returns the type
+                .filter(people -> type.equals(people.getTyperole())) // Assuming getType() method returns the type
                 .collect(Collectors.toList());
 		
 		return FXCollections.observableArrayList(filteredList);
 	}
 	
 	public static People getPeopleById(int id) throws SQLException {		
-		return new People(1, "John", "Doe", "USA", "2024", "Athlete", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		return new People(
+				1, 
+				"John", 
+				"Doe", 
+				"203350456", 
+				new DocumentType(2, "Passport"), 
+				new Nationality(2, "USA"), 
+				LocalDate.now().toString(), 
+				new Gender(1, "Male"), 
+				"", 
+				new Country(1, "Costa Rica"), 
+				new Province(1, "San Jose"), 
+				new Region(1, "Curridabat"), 
+				new District(1, "Curridabat"), 
+				"88880000", 
+				"44440000", 
+				"email@host.com", 
+				"myuser", 
+				"1234", 
+				"Athlete");
 	}
 	
 	public static void createPeople(People newPleople) throws SQLException {		

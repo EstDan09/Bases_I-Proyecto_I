@@ -41,11 +41,11 @@
                               <TableView fx:id="peopleTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="760.0">
                                  <columns>
                                     <TableColumn fx:id="peopleIdColumn" minWidth="0.0" prefWidth="64.0" text="ID" />
-                                    <TableColumn fx:id="nameColumn" prefWidth="129.0" text="Name" />
-                                    <TableColumn fx:id="surenameColumn" prefWidth="137.0" text="Surename" />
+                                    <TableColumn fx:id="nameColumn" prefWidth="129.0" text="First Name" />
+                                    <TableColumn fx:id="surenameColumn" prefWidth="137.0" text="Last Name" />
                                     <TableColumn fx:id="representingColumn" prefWidth="121.0" text="Representing" />
-                                    <TableColumn fx:id="olympicYearColumn" prefWidth="123.0" text="Olympic Year" />
-                                    <TableColumn fx:id="typeColumn" prefWidth="185.0" text="Type (Admin/Athlete/Trainer)" />
+                                    <TableColumn fx:id="nationalityColumn" prefWidth="123.0" text="Nationality" />
+                                    <TableColumn fx:id="typeColumn" prefWidth="185.0" text="Role" />
                                  </columns>
                               </TableView>
                            </children>

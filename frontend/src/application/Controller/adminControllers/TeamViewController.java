@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import DB.EventsDB;
 import DB.TeamsDB;
+import application.Model.Event;
 import application.Model.People;
 import application.Model.Teams;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,11 +59,11 @@ public class TeamViewController {
         // Initialize the columns with the corresponding fields from the Team class
     	id.setCellValueFactory(new PropertyValueFactory<Teams, Integer>("id"));
     	name.setCellValueFactory(new PropertyValueFactory<Teams, String>("name"));                                
-        trainer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrainer().getName()));
+        trainer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrainer().getFirst_name()));
         athletes.setCellValueFactory(cellData -> {
             List<People> athletes = cellData.getValue().getAthletes();
             String athletesString = athletes.stream()
-                    .map(People::getName)  // Extract team names
+                    .map(People::getFirst_name)  // Extract team names
                     .collect(Collectors.joining(", "));  // Join them as a single string
             return new SimpleStringProperty(athletesString);
         });    
@@ -123,15 +125,29 @@ public class TeamViewController {
             alert.showAndWait();
         }
     }
-
-    // Action method for Delete button
+ 
+    
+    // Action method for deleting an item
     @FXML
-    public void deleteItem() {
-        // Delete selected item logic
-        System.out.println("Delete button clicked");
+    void deleteItem(ActionEvent event) throws NumberFormatException, SQLException {
+        // Get the selected Event
         Teams selectedTeam = teamsTableView.getSelectionModel().getSelectedItem();
         if (selectedTeam != null) {
-            //teamList.remove(selectedTeam);
+            // Add logic for deleting the selected item
+            TeamsDB.deleteTeam(selectedTeam.getId());
+            
+            teamsTableView.getItems().remove(selectedTeam);
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Delete Item");
+            alert.setHeaderText(null);
+            alert.setContentText("Deleted " + selectedTeam.getName());
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a team to delete.");
+            alert.showAndWait();
         }
-    }    
+    }
 }

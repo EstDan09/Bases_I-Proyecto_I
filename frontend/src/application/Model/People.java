@@ -1,12 +1,7 @@
 package application.Model;
 
 public class People {
-    private int id;
-    private String name;
-    private String surename;
-    private String representing;
-    private String olympicYear;
-    private String type;
+    private int id;               
     private String first_name;
     private String last_name;
     private String identification;
@@ -27,17 +22,11 @@ public class People {
     private String typerole;
 
     // Constructor 
-    public People(int id, String name, String surename, String representing, String olympicYear, String type, 
-                  String first_name, String last_name, String identification, DocumentType documentType, Nationality nationality, 
+    public People(int id, String first_name, String last_name, String identification, DocumentType documentType, Nationality nationality, 
                   String birth_date, Gender gender, String photo, Country country, Province province, Region region, 
                   District district, String phone, String phone_2, String email, String username, String password, 
                   String typerole) {
-        this.id = id;
-        this.name = name;
-        this.surename = surename;
-        this.representing = representing;
-        this.olympicYear = olympicYear;
-        this.type = type;
+        this.id = id;        
         this.first_name = first_name;
         this.last_name = last_name;
         this.identification = identification;
@@ -70,47 +59,7 @@ public class People {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurename() {
-        return surename;
-    }
-
-    public void setSurename(String surename) {
-        this.surename = surename;
-    }
-
-    public String getRepresenting() {
-        return representing;
-    }
-
-    public void setRepresenting(String representing) {
-        this.representing = representing;
-    }
-
-    public String getOlympicYear() {
-        return olympicYear;
-    }
-
-    public void setOlympicYear(String olympicYear) {
-        this.olympicYear = olympicYear;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    }      
 
     public String getFirst_name() {
         return first_name;
@@ -258,6 +207,6 @@ public class People {
     
     @Override
     public String toString() {
-        return name + " " + surename;  
+        return first_name + " " + last_name;  
     }
 }
