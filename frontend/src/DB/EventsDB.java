@@ -21,8 +21,8 @@ public class EventsDB {
 
     public static ObservableList<Event> getEventsList() throws SQLException {
     	List<Teams> teams = new ArrayList<>();
-    	teams.add(new Teams(0, "Costa Rica", new Country(1, "Costa Rica"), null, null));
-    	teams.add(new Teams(0, "USA", new Country(2, "USA"), null, null));
+    	teams.add(new Teams(1, "Costa Rica", new Country(1, "Costa Rica"), null, null));
+    	teams.add(new Teams(2, "USA", new Country(2, "USA"), null, null));
     	
     	
         ObservableList<Event> eventsList = FXCollections.observableArrayList(

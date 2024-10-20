@@ -43,6 +43,36 @@ public class TeamsDB {
 		return teamsList;
 	}
 	
+	public static ObservableList<Teams> getTeamListByEvent(int idEvent) throws SQLException {
+		People trainer1 = new People();
+		trainer1.setFirst_name("Trainer 1");
+		trainer1.setId(1);
+		
+		People trainer2 = new People();
+		trainer2.setFirst_name("Trainer 2");
+		trainer2.setId(2);
+		
+		List<People> lista = new ArrayList<People>();
+		lista.add(trainer1);
+		lista.add(trainer2);
+		
+		ObservableList<Teams> teamsList = FXCollections.observableArrayList(
+				new Teams(
+						1, 
+						"Costa Rica Team", 
+						new Country(1, "Costa Rica"),
+						trainer1, 
+						lista),
+				new Teams(
+						2, 
+						"USA Team", 
+						new Country(2, "USA"),
+						trainer2, 
+						lista)
+				);
+		return teamsList;
+	}
+	
 	public static void addTeam(Teams team) throws SQLException {
         /*String query = "INSERT INTO events (event, category, sport, team, date) VALUES (?, ?, ?, ?, ?)";
 
