@@ -22,9 +22,17 @@ public class TeamsDB {
 		trainer2.setFirst_name("Trainer 2");
 		trainer2.setId(2);
 		
+		People people1 = new People();
+		people1.setFirst_name("Athlete 1");
+		people1.setId(1);
+		
+		People people2 = new People();
+		people2.setFirst_name("Athlete 2");
+		people2.setId(2);
+		
 		List<People> lista = new ArrayList<People>();
-		lista.add(trainer1);
-		lista.add(trainer2);
+		lista.add(people1);
+		lista.add(people2);
 		
 		ObservableList<Teams> teamsList = FXCollections.observableArrayList(
 				new Teams(

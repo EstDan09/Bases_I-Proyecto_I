@@ -39,7 +39,7 @@ public class EditPeopleController {
     public void setId(int id) throws SQLException {
         this.id = id;
         if (this.id != 0) { 
-    		title.setText("Edit People");
+    		title.setText("Edit Person");
     		People editPeople = DB.PeopleDB.getPeopleById(this.id);
     		first_name.setText(editPeople.getFirst_name());
     		last_name.setText(editPeople.getLast_name());
