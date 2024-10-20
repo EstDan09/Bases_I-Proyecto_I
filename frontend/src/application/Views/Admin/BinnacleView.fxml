@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="797.0" prefWidth="1109.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="797.0" prefWidth="1109.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.BinnacleViewController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="807.0" prefWidth="1076.0">
          <children>
@@ -35,7 +35,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="637.0" prefWidth="795.0">
                            <children>
-                              <TableView fx:id="scoreTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="773.0">
+                              <TableView fx:id="binTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="773.0">
                                  <columns>
                                     <TableColumn fx:id="Id" minWidth="0.0" prefWidth="64.0" text="ID" />
                                     <TableColumn fx:id="dateBin" prefWidth="120.0" text="Date" />
@@ -67,19 +67,13 @@
                                  </VBox.margin>
                               </Separator>
                               <Label text="Date" />
-                              <ComboBox fx:id="datefilter" prefWidth="150.0" promptText="Filter by date" />
-                              <Label text="Username">
-                                 <VBox.margin>
-                                    <Insets top="30.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <ComboBox fx:id="userFilter" prefHeight="25.0" prefWidth="158.0" promptText="Filter by Username" />
+                              <DatePicker fx:id="datefilter" />
                               <Separator prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets left="25.0" right="25.0" top="30.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button mnemonicParsing="false" text="Filter" />
+                              <Button fx:id="filterBtn" mnemonicParsing="false" text="Filter" />
                            </children>
                         </VBox>
                      </children>
