@@ -16,7 +16,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Views/LoginView.fxml"));
-			
+			ConnectDB.getAllSports();
 			/*Ejemplo segunda pantalla*/
 			System.out.println(ConnectDB.getOlympicId(1974));
 			ConnectDB.getAllOlympicEvents(ConnectDB.getOlympicId(1974), "0001-01-01", 0);

@@ -69,9 +69,9 @@ public class LoginController implements Initializable {
                         title = "Admin Dashboard";
                     }
                 } else if ("user".equals(role.getValue())) {
-//                    if (ConnectDB.login(role.getValue(), username.getText(), password.getText())) {
+                    if (ConnectDB.login(role.getValue(), username.getText(), password.getText())) {
                         root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
-//                    }
+                    }
                 } 
                 
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();

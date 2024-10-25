@@ -91,7 +91,7 @@
                                     <Insets left="25.0" right="25.0" top="30.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button fx:id="filter" mnemonicParsing="false" text="Filter" />
+                              <Button onAction="#filter" fx:id="filter" mnemonicParsing="false" text="Filter" />
                            </children>
                         </VBox>
                      </children></VBox>

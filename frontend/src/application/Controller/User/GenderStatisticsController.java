@@ -53,16 +53,7 @@ public class GenderStatisticsController implements Initializable {
 	}
 	
 	private void loadSports() {
-		// function to fill up sport combobox
-		List<String> sports = null;
-		try {
-			sports = ConnectDB.getAllSports();
-			for (String sport : sports) {
-			    sportCB.getItems().add(sport);  // Add each typeId to the ComboBox
-			}
-		} catch (SQLException e) {
-			System.out.println("No data in sports table");
-		}  
+		
 	}
 	
 //	private void loadOlympics() {

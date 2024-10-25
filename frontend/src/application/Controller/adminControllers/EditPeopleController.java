@@ -3,7 +3,7 @@ package application.Controller.adminControllers;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-
+import application.ConnectDB;
 import DB.CountryDB;
 import DB.DocumentTypeDB;
 import application.Model.Country;
@@ -228,14 +228,23 @@ public class EditPeopleController {
         		username.getText(), 
         		password.getText(), 
         		type.getValue());
+        		System.out.println(type.getValue());
+
 
         //Save into DB
         if(this.id == 0) {
         	currentPeople.setId(this.id);
         	DB.PeopleDB.editPeople(currentPeople);
         }else {
-        	
-            DB.PeopleDB.createPeople(currentPeople);
+        	if(type.getValue().equals("Athlete")) {
+        		 ConnectDB.registerPersonAthlete(currentPeople);
+        	} else if () {
+        		
+        	}
+        	else {
+        		
+        	}
+           
 
         }
         

@@ -38,10 +38,7 @@ public class EventController implements Initializable{
     @FXML
     private TableColumn<Event, String> participants;
     
-    ObservableList<Event> eventList = FXCollections.observableArrayList(
-    		new Event("Final Badminton", "Femenine", "Badminton", "19/09/24", "19:00", "South Korea Team, Japan Team"),
-    		new Event("Final Gymnastic Show", "Femenine", "Gymnastic", "20/09/24", "20:00", "Russian Team, USA Team")
-	);
+    ObservableList<Event> eventList = FXCollections.observableArrayList(	);
     
 
 	@Override

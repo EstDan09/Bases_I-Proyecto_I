@@ -957,11 +957,12 @@ public class ConnectDB {
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
 	        while (rs.next()) {
-	            String[] athleteData = new String[4];
+	            String[] athleteData = new String[5];
 	            athleteData[0] = String.valueOf(rs.getInt("id_athlete")); 
 	            athleteData[1] = rs.getString("first_name"); 
 	            athleteData[2] = rs.getString("last_name"); 
-	            athleteData[3] = rs.getString("country"); 
+	            athleteData[3] = rs.getString("country");
+	            athleteData[4] = rs.getString("country");
 	            athletesList.add(athleteData);
 	        }
 	    } catch (SQLException e) {
@@ -1427,20 +1428,31 @@ public class ConnectDB {
         }
     }
 
-    public static List<String> getAllSports() throws SQLException {
+    public static List<String[]> getAllSports() throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
-        List<String> sports = new ArrayList<>();
+        List<String[]> sports = new ArrayList<>();
         ResultSet rs = null;
         try {
             con = DriverManager.getConnection(host, uName, pass);
             stmt = con.prepareCall("{ ? = call get_all_sports() }");
             stmt.registerOutParameter(1, OracleTypes.CURSOR);
+	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
 	        stmt.execute();
 	        rs = (ResultSet) stmt.getObject(1);
-            while (rs.next()) {
-            	sports.add(rs.getString("name"));
-            }
+	        while (rs.next()) {
+	            String[] nationalityData = new String[3];
+	            nationalityData[0] = rs.getString("name"); 
+	            nationalityData[1] =  rs.getString("description");
+				nationalityData[2] =  rs.getString("rules");
+				System.out.println(nationalityData[0]);
+				System.out.println(nationalityData[1]);
+				System.out.println(nationalityData[2]);
+
+	            sports.add(nationalityData);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
         } finally {
             if (stmt != null) stmt.close();
             if (con != null) con.close();
