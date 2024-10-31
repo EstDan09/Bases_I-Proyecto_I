@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="lib" path="src/resources/ojdbc6-11.2.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/eseca/Downloads/Bases_I-Proyecto_I-main (1)/Bases_I-Proyecto_I-main/resources/mysql-connector-j-9.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
