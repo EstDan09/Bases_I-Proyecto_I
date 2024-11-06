@@ -10,14 +10,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Arrays;
 import oracle.jdbc.OracleTypes;
 
 public class ConnectDB {
 	
-    public static String host = "jdbc:oracle:thin:@127.0.0.1:1521:Proyecto1BD";
-	public static String uName = "AP";
-	public static String pass = "donotgiveaway";
+    // Update your connection string for MySQL
+    public static String host = "jdbc:mysql://127.0.0.1:3306/proyecto_bases1?useSSL=false"; // Use correct port and database name
+    public static String uName = "AP";
+    public static String pass = "donotgiveaway";
 	
 	
 	/* Nationality Related Procedures and Functions */
@@ -63,33 +64,47 @@ public class ConnectDB {
 	    }
 	}
 
+	
+
 	public static List<String[]> getAllNationalities() throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    List<String[]> nationalities = new ArrayList<>();
-        ResultSet rs = null;
+	    ResultSet rs = null;
 
 	    try {
+	        // Establish the connection
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{?= call get_all_nationalities }");
-	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
+
+	        // Prepare the callable statement for the stored procedure
+	        stmt = con.prepareCall("{CALL get_all_nationalities()}");
+
+	        // Execute the stored procedure
+	        rs = stmt.executeQuery();
+
+	        // Process the result set
 	        while (rs.next()) {
 	            String[] nationalityData = new String[2];
-	            nationalityData[0] = rs.getString("name"); 
-	            nationalityData[1] = String.valueOf(rs.getInt("id_nationality")); 
+	            nationalityData[0] = rs.getString("name"); // Get the name
+	            nationalityData[1] = String.valueOf(rs.getInt("id_nationality")); // Get the ID as String
 	            nationalities.add(nationalityData);
 	        }
 	    } catch (SQLException e) {
 	        System.out.println("SQL Error: " + e.getMessage());
 	    } finally {
-	        if (stmt != null) stmt.close();
-	        if (con != null) con.close();
+	        if (rs != null) rs.close(); // Close ResultSet
+	        if (stmt != null) stmt.close(); // Close CallableStatement
+	        if (con != null) con.close(); // Close Connection
 	    }
-        System.out.println(nationalities);
-	    return nationalities;
+
+	    // Print all nationalities in a formatted way
+	    for (String[] nationality : nationalities) {
+	        System.out.println(Arrays.toString(nationality));
+	    }
+
+	    return nationalities; // Return the list of nationalities
 	}
+
 
 	public static int getNationalityId(String nationalityName) throws SQLException {
 	    Connection con = null;
