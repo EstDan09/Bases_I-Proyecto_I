@@ -19,7 +19,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="274.0">
                      <children>
-                        <Label text="Teams" textFill="WHITE">
+                        <Label text="Assign Trainer" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
@@ -36,7 +36,7 @@
                         <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="790.0">
                           <columns>
                               <TableColumn fx:id="id" text="ID" />
-                              <TableColumn fx:id="name" prefWidth="184.0" text="Team Name" />
+                              <TableColumn fx:id="country" prefWidth="184.0" text="Country" />
                               <TableColumn fx:id="trainer" prefWidth="152.0" text="Trainer" />
                               <TableColumn fx:id="athletes" prefWidth="372.0000305175781" text="Athletes" />
                           </columns>

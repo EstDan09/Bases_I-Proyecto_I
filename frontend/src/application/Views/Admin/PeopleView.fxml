@@ -14,17 +14,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="845.0" prefWidth="1075.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.PeopleViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="778.0" prefWidth="1116.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.PeopleViewController">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1280.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1098.0">
          <children>
-            <VBox alignment="TOP_CENTER" layoutX="-11.0" layoutY="-11.0" prefHeight="761.0" prefWidth="1076.0">
+            <VBox alignment="TOP_CENTER" layoutX="-10.0" layoutY="-11.0" prefHeight="761.0" prefWidth="1116.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="97.0" prefWidth="1063.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
+                  <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1102.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
                      <children>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="274.0">
                            <children>
-                              <Label text="People" textFill="WHITE">
+                              <Label text="Users" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="25.0" />
                                  </font>
@@ -34,18 +34,19 @@
                      </children>
                   </HBox>
                   <Separator prefHeight="9.0" prefWidth="1280.0" />
-                  <HBox prefHeight="644.0" prefWidth="1084.0">
+                  <HBox prefHeight="663.0" prefWidth="1092.0">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="644.0" prefWidth="760.0">
+                        <VBox alignment="CENTER" prefHeight="663.0" prefWidth="845.0">
                            <children>
-                              <TableView fx:id="peopleTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="760.0">
+                              <TableView fx:id="peopleTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="625.0" prefWidth="825.0">
                                  <columns>
                                     <TableColumn fx:id="peopleIdColumn" minWidth="0.0" prefWidth="64.0" text="ID" />
                                     <TableColumn fx:id="nameColumn" prefWidth="129.0" text="First Name" />
                                     <TableColumn fx:id="surenameColumn" prefWidth="137.0" text="Last Name" />
                                     <TableColumn fx:id="representingColumn" prefWidth="121.0" text="Representing" />
                                     <TableColumn fx:id="nationalityColumn" prefWidth="123.0" text="Nationality" />
-                                    <TableColumn fx:id="typeColumn" prefWidth="185.0" text="Role" />
+                                    <TableColumn fx:id="typeColumn" prefWidth="107.0" text="Role" />
+                                    <TableColumn fx:id="trainer" prefWidth="162.0" text="Assigned Trainer" />
                                  </columns>
                               </TableView>
                            </children>
@@ -53,7 +54,7 @@
                               <Insets left="25.0" right="25.0" />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="BASELINE_CENTER" prefHeight="584.0" prefWidth="243.0" spacing="10.0" style="-fx-background-color: #f0eeee;">
+                        <VBox alignment="BASELINE_CENTER" prefHeight="652.0" prefWidth="205.0" spacing="10.0" style="-fx-background-color: #f0eeee;">
                            <children>
                               <Label text="Options">
                                  <font>

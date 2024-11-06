@@ -11,15 +11,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="807.0" prefWidth="1076.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.TeamViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.TeamViewController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="807.0" prefWidth="1076.0">
+      <VBox alignment="TOP_CENTER" prefHeight="774.0" prefWidth="877.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="743.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="880.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);">
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="274.0">
                      <children>
-                        <Label text="Teams" textFill="WHITE">
+                        <Label fx:id="tittle" text="Country" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
@@ -29,16 +29,14 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="645.0" prefWidth="1076.0">
+            <HBox prefHeight="651.0" prefWidth="948.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="645.0" prefWidth="846.0">
+                  <VBox alignment="CENTER" prefHeight="659.0" prefWidth="639.0">
                      <children>
-                        <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="790.0">
+                        <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="662.0">
                           <columns>
-                              <TableColumn fx:id="id" text="ID" />
-                              <TableColumn fx:id="name" prefWidth="184.0" text="Team Name" />
-                              <TableColumn fx:id="trainer" prefWidth="152.0" text="Trainer" />
-                              <TableColumn fx:id="athletes" prefWidth="372.0000305175781" text="Athletes" />
+                              <TableColumn fx:id="id" prefWidth="126.0" text="ID" />
+                              <TableColumn fx:id="country" prefWidth="525.0" text="Country" />
                           </columns>
                         </TableView>
                      </children>
@@ -46,7 +44,7 @@
                         <Insets left="25.0" right="25.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="BASELINE_CENTER" prefHeight="645.0" prefWidth="292.0" spacing="10.0" style="-fx-background-color: #f0eeee;">
+                  <VBox alignment="BASELINE_CENTER" prefHeight="645.0" prefWidth="156.0" spacing="10.0" style="-fx-background-color: #f0eeee;">
                      <children>
                         <Label text="Options">
                            <font>
