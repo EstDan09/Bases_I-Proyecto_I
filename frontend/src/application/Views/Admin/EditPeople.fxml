@@ -61,7 +61,7 @@
       <Label layoutX="510.0" layoutY="325.0" text="Secondary phone number" />
       <ComboBox fx:id="type" layoutX="310.0" layoutY="543.0" prefHeight="25.0" prefWidth="180.0" />
       <Label layoutX="310.0" layoutY="525.0" text="Type" />
-      <ComboBox fx:id="type1" layoutX="511.0" layoutY="543.0" prefHeight="25.0" prefWidth="180.0" />
+      <ComboBox fx:id="trainer" layoutX="511.0" layoutY="543.0" prefHeight="25.0" prefWidth="180.0" />
       <Label layoutX="510.0" layoutY="524.0" text="Trainer" />
    </children>
 </AnchorPane>

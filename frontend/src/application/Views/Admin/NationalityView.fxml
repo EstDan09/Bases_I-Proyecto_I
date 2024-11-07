@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="766.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.TeamViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="766.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.adminControllers.NationalityViewController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="777.0" prefWidth="988.0">
          <children>
@@ -33,7 +33,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="649.0" prefWidth="630.0">
                      <children>
-                        <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="670.0">
+                        <TableView fx:id="nationalityTableView" prefHeight="616.0" prefWidth="670.0">
                           <columns>
                               <TableColumn fx:id="id" prefWidth="126.0" text="ID" />
                               <TableColumn fx:id="nationality" prefWidth="503.0" text="Nationality" />

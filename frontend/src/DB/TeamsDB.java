@@ -129,9 +129,9 @@ public class TeamsDB {
     }
 	
 	public static Teams getTeamById(int id) throws SQLException {
-		People people1 = new People(1, "John", "Doe", null, null, new Nationality(2, "USA"), null, null, null, null, null, null, null, null, null, null, null, null, "Athlete");
-		People people2 = new People(2, "Jane", "Smith", null, null, new Nationality(3, "Canada"), null, null, null, null, null, null, null, null, null, null, null, null, "Admin");
-		People people3 = new People(3, "Frank", "Davis", null, null, new Nationality(3, "Canada"), null, null, null, null, null, null, null, null, null, null, null, null, "Trainer");
+		People people1 = new People(1, "John", "Doe", null, null, new Nationality(2, "USA"), null, null, null, null, null, null, null, null, null, null, null, null, "Athlete", new People());
+		People people2 = new People(2, "Jane", "Smith", null, null, new Nationality(3, "Canada"), null, null, null, null, null, null, null, null, null, null, null, null, "Admin", new People());
+		People people3 = new People(3, "Frank", "Davis", null, null, new Nationality(3, "Canada"), null, null, null, null, null, null, null, null, null, null, null, null, "Trainer", new People());
 				
 		List<People> lista = new ArrayList<People>();
 		lista.add(people1);

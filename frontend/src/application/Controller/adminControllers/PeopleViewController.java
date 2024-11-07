@@ -45,6 +45,9 @@ public class PeopleViewController {
     
     @FXML
     private TableColumn<People, String> typeColumn;
+    
+    @FXML
+    private TableColumn<People, String> trainerColumn ;
 
     @FXML
     private Button addBtn;
@@ -70,6 +73,7 @@ public class PeopleViewController {
     	representingColumn.setCellValueFactory(new PropertyValueFactory<People, String>("country"));
     	nationalityColumn.setCellValueFactory(new PropertyValueFactory<People, String>("nationality"));
     	typeColumn.setCellValueFactory(new PropertyValueFactory<People, String>("typerole"));
+    	trainerColumn.setCellValueFactory(new PropertyValueFactory<People, String>("trainer"));
         
     	// Populate the table with data from the DB
         ObservableList<People> peopleList = DB.PeopleDB.getPeopleList();	

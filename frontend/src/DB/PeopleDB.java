@@ -5,9 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import application.ConnectDB;
 import application.Model.Country;
 import application.Model.District;
 import application.Model.DocumentType;
@@ -22,41 +24,62 @@ import oracle.jdbc.OracleTypes;
 
 public class PeopleDB {
 	public static ObservableList<People> getPeopleList() throws SQLException {
-		/*String host = "jdbc:oracle:thin:127.0.0.1:1521:Proyecto1BD";
-		String uName = "AP";
-		String pass = "donotgiveaway";
-		Connection con = DriverManager.getConnection(host, uName, pass);
-		CallableStatement stmt = con.prepareCall("{?= call get getCountries }");
-		stmt.registerOutParameter(1, OracleTypes.CURSOR);
+		Connection con = null;
+	    CallableStatement stmt = null;	    
+	    ResultSet rs = null;
 
-		stmt.executeQuery();
-		ResultSet r = (ResultSet) stmt.getObject(1);*/
-		
-		ObservableList<People> peopleList = FXCollections.observableArrayList(
-				new People(1, "John", "Doe", null, null, new Nationality(2, "USA"), null, null, null, new Country(2, "USA"), null, null, null, null, null, null, null, null, "Athlete"),
-				new People(2, "Jane", "Smith", null, null, new Nationality(3, "Canada"), null, null, null, new Country(3, "Canada"), null, null, null, null, null, null, null, null, "Admin"),
-				new People(3, "Frank", "Davis", null, null, new Nationality(3, "Canada"), null, null, null, new Country(3, "Canada"), null, null, null, null, null, null, null, null, "Trainer"));
-		
-		
-		/*while (r.next()) {
-            // Retrieve data from ResultSet
-			String id = r.getString("ID");
-            String name = r.getString("Name");
-            String surname = r.getString("Surname");
-            String representing = r.getString("Representing");
-            String olympicYear = r.getString("OlympicYear");
-            String type = r.getString("Type");
+	    try {
+	        // Establish the connection
+	        con = DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
 
-            // Create a Person object and add it to the list
-            People people = new People(id, name, surname, representing, olympicYear, type);
-            peopleList.add(people);
-        }*/
+	        // Prepare the callable statement for the stored procedure
+	        stmt = con.prepareCall("{CALL get_all_people()}");
+
+	        // Execute the stored procedure
+	        rs = stmt.executeQuery();
+
+	        List<People> peopleList = new ArrayList<People>();
+	        // Process the result set
+	        while (rs.next()) {
+	        	peopleList.add(
+	        			new People(rs.getInt("id_person"), 
+	        					rs.getString("first_name"), 
+	        					rs.getString("last_name"), 
+	        					rs.getString("identification_number"), 
+	        					null, 
+	        					new Nationality(rs.getInt("nationality_id"), rs.getString("nationality_name")), 
+	        					rs.getString("birth_date"), 
+	        					new Gender(rs.getInt("id_gender"), null), 
+	        					null, 
+	        					new Country(rs.getInt("id_country_represents"), rs.getString("country_name")), 
+	        					null, 
+	        					null, 
+	        					new District(rs.getInt("id_district"), null), 
+	        					null, 
+	        					null, 
+	        					null, 
+	        					null, 
+	        					null, 
+	        					rs.getString("id_id_type"), 
+	        					new People(rs.getInt("trainer_id"), 
+	        							rs.getString("trainer_first_name"), 
+	        							rs.getString("trainer_last_name")))
+	        			);	            
+	        }
+	        return FXCollections.observableArrayList(peopleList);
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
+	    } finally {
+	        if (rs != null) rs.close(); // Close ResultSet
+	        if (stmt != null) stmt.close(); // Close CallableStatement
+	        if (con != null) con.close(); // Close Connection
+	    }
 		
-		return peopleList;
+	    return null;
 	}
 	
 	public static ObservableList<People> getPeopleListByTypeAndCountry(String type, int idCountry) throws SQLException {
-
+		
 		// Filter the list to get only Athletes
         List<People> filteredList = getPeopleList().stream()
                 .filter(people -> type.equals(people.getTyperole())) // Assuming getType() method returns the type
@@ -85,7 +108,10 @@ public class PeopleDB {
 				"email@host.com", 
 				"myuser", 
 				"1234", 
-				"Athlete");
+				"Athlete", 
+		        new People(2, "Alejandro", "Arias", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
+		
+		
 	}
 	
 	public static void createPeople(People newPleople) throws SQLException {		

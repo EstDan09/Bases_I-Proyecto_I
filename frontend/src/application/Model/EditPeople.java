@@ -19,11 +19,12 @@ public class EditPeople {
     private String username;
     private String password;
     private String typerole;
+    private String trainer;
 
     // Constructor
     public EditPeople(String first_name, String last_name, String identification, String documentType, String nationality, 
                       String birth_date, String gender, String photo, String country, String province, String region, 
-                      String district, String phone, String phone_2, String email, String username, String password, String typerole) {
+                      String district, String phone, String phone_2, String email, String username, String password, String typerole, String trainer) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.identification = identification;
@@ -42,6 +43,7 @@ public class EditPeople {
         this.username = username;
         this.password = password;
         this.typerole = typerole;
+        this.trainer = trainer;
     }
 
     // Getters and Setters
@@ -187,5 +189,13 @@ public class EditPeople {
 
     public void setType(String typerole) {
         this.typerole = typerole;
+    }
+    
+    public String getTrainer() {
+        return trainer;
+    }
+    
+    public void setTrainer(String trainer) {
+        this.trainer = trainer;
     }
 }

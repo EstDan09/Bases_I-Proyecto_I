@@ -10,13 +10,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import application.Model.Nationality;
+
 import java.util.Arrays;
 import oracle.jdbc.OracleTypes;
 
 public class ConnectDB {
 	
     // Update your connection string for MySQL
-    public static String host = "jdbc:mysql://127.0.0.1:3306/proyecto_bases1?useSSL=false"; // Use correct port and database name
+    public static String host = "jdbc:mysql://127.0.0.1:3306/proyecto_bases1?useSSL=false&allowPublicKeyRetrieval=true"; // Use correct port and database name
     public static String uName = "AP";
     public static String pass = "donotgiveaway";
 	
@@ -24,18 +27,23 @@ public class ConnectDB {
 	/* Nationality Related Procedures and Functions */
 	public static void registerNationality(String name) throws SQLException {
 	    Connection con = null;
-	    CallableStatement stmt = null;
-        System.out.println("HOLA");
+	    CallableStatement stmt = null;        
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call register_nationality(?) }");
+	        con.setAutoCommit(false);
+	        stmt = con.prepareCall("{CALL register_nationality(?)}");	        
 	        stmt.setString(1, name);
-	        stmt.execute();
+	        stmt.executeUpdate();
+	        con.commit();
+	        
 
-	    } finally {
-	        if (stmt != null) stmt.close();
-	        if (con != null) con.close();
+	    } catch(Exception e) {
+	        System.out.println(e.getMessage());
+	    } finally {	    	
+	        if (stmt != null) stmt.close(); // Close CallableStatement
+	        if (con != null) con.close(); // Close Connection
 	    }
+	    
 	}
 
 	public static void updateNationality(String oldName, String newName) throws SQLException {
@@ -43,10 +51,12 @@ public class ConnectDB {
 	    CallableStatement stmt = null;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call update_nationality(?, ?) }");
+	        con.setAutoCommit(false);
+	        stmt = con.prepareCall("{CALL update_nationality(?, ?)}");
 	        stmt.setString(1, oldName);
 	        stmt.setString(2, newName);
-	        stmt.execute();
+	        stmt.executeUpdate();
+	        con.commit();
 	    } catch (SQLException e) {
 	    	if (e.getErrorCode() == -20002) {
 	            System.out.println("ERROR: Nationality already registered");
@@ -128,15 +138,41 @@ public class ConnectDB {
 
 	    return nationalityId;
 	}
+	
+	public static Nationality getNationalityById(int nationalityId) throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    ResultSet rs = null;	    
+
+	    try {
+	        con = DriverManager.getConnection(host, uName, pass);
+	        stmt = con.prepareCall("{CALL get_nationality_by_id(?) }");	        
+	        stmt.setInt(1, nationalityId);
+	        rs = stmt.executeQuery();
+	        
+	        while (rs.next()) {	        	
+    			return new Nationality(rs.getInt("id_nationality"), 
+    					rs.getString("name"));
+	        }
+	    } finally {
+	        if (rs != null) rs.close();
+	        if (stmt != null) stmt.close();
+	        if (con != null) con.close();
+	    }
+
+	    return null;
+	}
 
 	public static void deleteNationality(String name) throws SQLException {
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call delete_nationality(?) }");
+	        con.setAutoCommit(false);
+	        stmt = con.prepareCall("{CALL remove_nationality(?)}");
 	        stmt.setString(1, name);
 	        stmt.execute();
+	        con.commit();
 	    } finally {
 	        if (stmt != null) stmt.close();
 	        if (con != null) con.close();
@@ -1077,10 +1113,11 @@ public class ConnectDB {
 	    List<String> roles = new ArrayList<>();
 	    try {
 	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_all_roles() }");
-	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
+	        stmt = con.prepareCall("{CALL get_all_roles()}");
+	        //stmt.registerOutParameter(1, OracleTypes.CURSOR);
+	        
+	        // Execute the stored procedure
+	        rs = stmt.executeQuery();
             while (rs.next()) {
             	roles.add(rs.getString("name"));
             }

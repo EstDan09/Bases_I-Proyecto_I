@@ -20,12 +20,14 @@ public class People {
     private String username;
     private String password;
     private String typerole;
+    private People trainer;
+
 
     // Constructor 
     public People(int id, String first_name, String last_name, String identification, DocumentType documentType, Nationality nationality, 
                   String birth_date, Gender gender, String photo, Country country, Province province, Region region, 
                   District district, String phone, String phone_2, String email, String username, String password, 
-                  String typerole) {
+                  String typerole, People trainer) {
         this.id = id;        
         this.first_name = first_name;
         this.last_name = last_name;
@@ -45,13 +47,20 @@ public class People {
         this.username = username;
         this.password = password;
         this.typerole = typerole;
+        this.trainer = trainer;
     }
 
     // Getters y Setters
 
     public People() {
 		// TODO Auto-generated constructor stub
-	}      
+	} 
+    
+    public People(int id, String first_name, String last_name) {
+    	this.id = id;        
+        this.first_name = (first_name == null) ? "" : first_name;
+        this.last_name = (last_name == null) ? "": last_name;
+	} 
 
 	public int getId() {
         return id;
@@ -204,6 +213,16 @@ public class People {
     public void setTyperole(String typerole) {
         this.typerole = typerole;
     }
+    
+    public People getTrainer() {
+        return trainer;
+    }
+    
+    public void setTrainer(People trainer) {
+        this.trainer = trainer;
+    }    
+    
+    
     
     @Override
     public String toString() {

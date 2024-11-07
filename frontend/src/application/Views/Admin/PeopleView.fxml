@@ -46,7 +46,7 @@
                                     <TableColumn fx:id="representingColumn" prefWidth="121.0" text="Representing" />
                                     <TableColumn fx:id="nationalityColumn" prefWidth="123.0" text="Nationality" />
                                     <TableColumn fx:id="typeColumn" prefWidth="107.0" text="Role" />
-                                    <TableColumn fx:id="trainer" prefWidth="162.0" text="Assigned Trainer" />
+                                    <TableColumn fx:id="trainerColumn" prefWidth="162.0" text="Assigned Trainer" />
                                  </columns>
                               </TableView>
                            </children>

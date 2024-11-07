@@ -43,7 +43,10 @@ public class AdminController {
         root = FXMLLoader.load(getClass().getResource("../Views/Admin/BinnacleView.fxml"));
         contentPanel.setCenter(root);
     }
-
+    public void changeToNationalityView(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("../Views/Admin/NationalityView.fxml"));
+        contentPanel.setCenter(root);
+    }
     
     
     

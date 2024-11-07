@@ -58,6 +58,7 @@ public class EditPeopleController {
     		username.setText(editPeople.getUsername());
     		password.setText(editPeople.getPassword());
     		type.setValue(editPeople.getTyperole());
+    		trainer.setValue(editPeople.getTrainer());
     	}
     }
 
@@ -129,6 +130,9 @@ public class EditPeopleController {
 
     @FXML
     private ComboBox<String> type;
+    
+    @FXML
+    private ComboBox<People> trainer;
 
     @FXML
     private Hyperlink loginBtn;
@@ -227,7 +231,9 @@ public class EditPeopleController {
         		email.getText(), 
         		username.getText(), 
         		password.getText(), 
-        		type.getValue());
+        		type.getValue(),
+                trainer.getValue());
+                
         		System.out.println(type.getValue());
 
 
@@ -237,10 +243,8 @@ public class EditPeopleController {
         	DB.PeopleDB.editPeople(currentPeople);
         }else {
         	if(type.getValue().equals("Athlete")) {
-        		 ConnectDB.registerPersonAthlete(currentPeople);
-        	} else if () {
-        		
-        	}
+        		 //ConnectDB.registerPersonAthlete(currentPeople);
+        	} 
         	else {
         		
         	}
