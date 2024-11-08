@@ -1,20 +1,20 @@
 package application.Model;
 
 public class Country {
-	private int id;
+	private String id;
     private String name;
     
-    public Country(int id, String name) {
+    public Country(String id, String name) {
     	this.id = id;
     	this.name = name;
     }
     
     // Getters y Setters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

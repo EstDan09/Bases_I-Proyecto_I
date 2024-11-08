@@ -11,18 +11,6 @@ CREATE TABLE nationality (
     CONSTRAINT pk_nationality PRIMARY KEY (id_nationality)
 ) COMMENT='Tabla que almacena la información de las nacionalidades disponibles para el sistema';
 
-CREATE TABLE photo ( #pending because it needs person
-id_photo INT NOT NULL auto_increment,
-path_photo VARCHAR(25) NOT NULL,
-id_person INT,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-created_by VARCHAR(100),
-updated_by VARCHAR(100),
-CONSTRAINT photo_path_unique UNIQUE (path_photo),
-CONSTRAINT pk_photo PRIMARY KEY (id_photo)
-) COMMENT= 'Tabla que almacena la información de las photos disponibles para el sistema';
-
 CREATE TABLE flag_photo (
     id_flag_photo INT NOT NULL auto_increment,
     path_flag_photo VARCHAR(25) NOT NULL,
@@ -165,6 +153,17 @@ CREATE TABLE person (
     updated_by VARCHAR(100)
 ) COMMENT='Table that stores information about persons';
 
+CREATE TABLE photo ( 
+id_photo INT NOT NULL auto_increment,
+path_photo VARCHAR(25) NOT NULL,
+id_person INT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+created_by VARCHAR(100),
+updated_by VARCHAR(100),
+CONSTRAINT pk_photo PRIMARY KEY (id_photo)
+) COMMENT= 'Tabla que almacena la información de las photos disponibles para el sistema';
+
 CREATE TABLE trainer (
     id_trainer INT NOT NULL,
     CONSTRAINT pk_trainer PRIMARY KEY (id_trainer),
@@ -222,7 +221,7 @@ CREATE TABLE athlete (
 
 CREATE TABLE email (
     id_email INT NOT NULL auto_increment,
-    email_direction VARCHAR(30) NOT NULL,
+    email_direction VARCHAR(50) NOT NULL,
     id_person INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -272,13 +271,154 @@ CREATE TABLE person_nationality (
     updated_by VARCHAR(100)
 ) COMMENT='Table that stores information about person nationalities in the system';
 
-DROP TABLE if exists photo;
-DROP TABLE IF EXISTS person_phone;
-DROP TABLE IF EXISTS person_identification_type;
-DROP TABLE IF EXISTS person_nationality;
-DROP TABLE IF EXISTS email;
-DROP TABLE IF EXISTS athlete;
-DROP TABLE IF EXISTS user_person;
-DROP TABLE IF EXISTS role;
-DROP TABLE IF EXISTS trainer;
-DROP TABLE IF EXISTS person;
+CREATE TABLE sport (
+    id_sport INT NOT NULL auto_increment,
+    name VARCHAR(50) NOT NULL,
+    description_sport VARCHAR(200) NOT NULL,
+    rules VARCHAR(200) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(100),
+    updated_by VARCHAR(100),
+    CONSTRAINT pk_sport PRIMARY KEY (id_sport),
+    UNIQUE KEY sport_name_unique (name),
+    CONSTRAINT sport_name_nn CHECK (name IS NOT NULL),
+    CONSTRAINT sport_desc_nn CHECK (description_sport IS NOT NULL),
+    CONSTRAINT sport_rules_nn CHECK (rules IS NOT NULL)
+) COMMENT = 'Table storing sports information in the system';
+
+CREATE TABLE olympic (
+    id_olympic INT NOT NULL auto_increment,
+    name VARCHAR(100) NOT NULL,
+    year INT NOT NULL,
+    id_country INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(100),
+    updated_by VARCHAR(100),
+    CONSTRAINT pk_olympic PRIMARY KEY (id_olympic),
+    UNIQUE KEY event_year_unique (year),
+    CONSTRAINT name_nn CHECK (name IS NOT NULL),
+    CONSTRAINT year_nn CHECK (year IS NOT NULL),
+    CONSTRAINT chk_event_year_pos CHECK (year > 0),
+    CONSTRAINT chk_event_year_range CHECK (year BETWEEN 1900 AND 2024),
+    CONSTRAINT fk_olympic_country FOREIGN KEY (id_country) 
+        REFERENCES country(id_country) ON DELETE CASCADE
+) COMMENT = 'Table storing Olympic information in the system';
+
+CREATE TABLE medal (
+    id_medal INT NOT NULL auto_increment,
+    name VARCHAR(25) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(100),
+    updated_by VARCHAR(100),
+	CONSTRAINT pk_medal PRIMARY KEY (id_medal),
+	CONSTRAINT medal_name_nn CHECK (name IS NOT NULL)
+) COMMENT = 'Table storing medal information in the system';
+
+CREATE TABLE event (
+    id_event INT NOT NULL AUTO_INCREMENT,
+    date_event DATE NOT NULL,
+    time_event TIME NOT NULL, -- MySQL does not have INTERVAL DAY TO SECOND; use TIME for event time
+    name VARCHAR(25) NOT NULL,
+    id_olympic INT NOT NULL,
+    id_sport INT NOT NULL,
+    id_category INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_event),
+    CONSTRAINT fk_event_id_olympic FOREIGN KEY (id_olympic)
+        REFERENCES olympic(id_olympic) ON DELETE CASCADE,
+    CONSTRAINT fk_event_id_sport FOREIGN KEY (id_sport)
+        REFERENCES sport(id_sport) ON DELETE CASCADE,
+    CONSTRAINT fk_event_id_category FOREIGN KEY (id_category)
+        REFERENCES category(id_category) ON DELETE CASCADE
+) COMMENT = 'Table storing event information in the system';
+
+CREATE TABLE log_entries (
+    id_log INT NOT NULL AUTO_INCREMENT,
+    date_log DATE NOT NULL,
+    time_log TIME NOT NULL, -- Use TIME instead of INTERVAL DAY TO SECOND
+    name_log VARCHAR(25) NOT NULL,
+    change_type VARCHAR(25) NOT NULL,
+    username VARCHAR(25) NOT NULL,
+    object_log VARCHAR(25) NOT NULL,
+    description_log VARCHAR(100) NOT NULL,
+    id_user INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_log),
+    CONSTRAINT fk_log_username FOREIGN KEY (username)
+        REFERENCES user_person(username),
+    CONSTRAINT fk_log_id_user FOREIGN KEY (id_user)
+        REFERENCES user_person(id_user) ON DELETE CASCADE
+) COMMENT = 'Table storing the log entries information in the system';
+
+CREATE TABLE event_medal (
+    id_event INT NOT NULL,
+    id_medal INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_event, id_medal),
+    CONSTRAINT fk_event_medal_id_event FOREIGN KEY (id_event) 
+        REFERENCES event(id_event) ON DELETE CASCADE, 
+    CONSTRAINT fk_event_medal_id_medal FOREIGN KEY (id_medal) 
+        REFERENCES medal(id_medal)
+);
+
+CREATE TABLE team (
+    id_team INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(25) NOT NULL,
+    id_trainer INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(100),
+    updated_by VARCHAR(100),
+    CONSTRAINT pk_team PRIMARY KEY (id_team),
+    CONSTRAINT team_name_nn CHECK (name IS NOT NULL),
+    CONSTRAINT team_id_trainer_nn CHECK (id_trainer IS NOT NULL),
+    CONSTRAINT fk_team_id_trainer FOREIGN KEY (id_trainer) 
+        REFERENCES trainer(id_trainer) ON DELETE CASCADE
+) COMMENT = 'Table storing team information in the system';
+
+CREATE TABLE team_event (
+    id_team INT NOT NULL,
+    id_event INT NOT NULL,
+    save_score DECIMAL(10, 2) NOT NULL,
+    record DECIMAL(10, 2) NOT NULL,
+    position INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_team, id_event),
+    CONSTRAINT fk_team_event_id_team FOREIGN KEY (id_team) 
+        REFERENCES team(id_team) ON DELETE CASCADE, 
+    CONSTRAINT fk_team_event_id_event FOREIGN KEY (id_event) 
+        REFERENCES event(id_event) ON DELETE CASCADE
+) COMMENT = 'Table storing the information of the events and their teams in the system - RELATION';
+
+CREATE TABLE team_medal (
+    id_team INT NOT NULL,
+    id_medal INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_team, id_medal),
+    CONSTRAINT fk_team_medal_id_team FOREIGN KEY (id_team) 
+        REFERENCES team(id_team) ON DELETE CASCADE, 
+    CONSTRAINT fk_team_medal_id_medal FOREIGN KEY (id_medal) 
+        REFERENCES medal(id_medal)
+) COMMENT = 'Table storing the information of the teams and their medals in the system - RELATION';
+
+CREATE TABLE athlete_team (
+    id_athlete INT NOT NULL,
+    id_team INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(100),
+    updated_by VARCHAR(100),
+    PRIMARY KEY (id_athlete, id_team),
+    CONSTRAINT fk_athlete_team_id_athlete FOREIGN KEY (id_athlete) 
+        REFERENCES athlete(id_athlete) ON DELETE CASCADE, 
+    CONSTRAINT fk_athlete_team_id_team FOREIGN KEY (id_team) 
+        REFERENCES team(id_team) ON DELETE CASCADE
+) COMMENT = 'Table storing the association between athletes and teams in the system';
