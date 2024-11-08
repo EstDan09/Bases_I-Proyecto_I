@@ -60,7 +60,7 @@ public class PeopleDB {
 	        					null, 
 	        					null, 
 	        					null, 
-	        					rs.getString("id_id_type"), 
+	        					rs.getString("role"), 
 	        					new People(rs.getInt("trainer_id"), 
 	        							rs.getString("trainer_first_name"), 
 	        							rs.getString("trainer_last_name")))
@@ -80,12 +80,41 @@ public class PeopleDB {
 	
 	public static ObservableList<People> getPeopleListByTypeAndCountry(String type, int idCountry) throws SQLException {
 		
-		// Filter the list to get only Athletes
-        List<People> filteredList = getPeopleList().stream()
-                .filter(people -> type.equals(people.getTyperole())) // Assuming getType() method returns the type
-                .collect(Collectors.toList());
-		
-		return FXCollections.observableArrayList(filteredList);
+		if(type == "Trainer") {
+			Connection con = null;
+		    CallableStatement stmt = null;	    
+		    ResultSet rs = null;
+
+		    try {
+		        // Establish the connection
+		        con = DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
+
+		        // Prepare the callable statement for the stored procedure
+		        stmt = con.prepareCall("{CALL get_all_trainers_by_country(?)}");
+		        stmt.setInt(1, idCountry);
+		        // Execute the stored procedure
+		        rs = stmt.executeQuery();
+
+		        List<People> peopleList = new ArrayList<People>();
+		        // Process the result set
+		        while (rs.next()) {
+		        	peopleList.add(
+		        			new People(rs.getInt("ID"), 
+    							rs.getString("FirstName"), 
+    							rs.getString("LastName"))
+		        			);	            
+		        }
+		        return FXCollections.observableArrayList(peopleList);
+		    } catch (SQLException e) {
+		        System.out.println("SQL Error: " + e.getMessage());
+		    } finally {
+		        if (rs != null) rs.close(); // Close ResultSet
+		        if (stmt != null) stmt.close(); // Close CallableStatement
+		        if (con != null) con.close(); // Close Connection
+		    }			
+		}
+				
+        return null;
 	}
 	
 	public static People getPeopleById(int id) throws SQLException {		
@@ -115,7 +144,114 @@ public class PeopleDB {
 	}
 	
 	public static void createPeople(People newPleople) throws SQLException {		
+		if(newPleople.getTyperole() == "Trainer") {
+			Connection con = null;
+		    CallableStatement stmt = null;	    
+		    ResultSet rs = null;
+
+		    try {
+		        // Establish the connection
+		        con = DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
+		        con.setAutoCommit(false);
+		        // Prepare the callable statement for the stored procedure
+		        stmt = con.prepareCall("{CALL register_person_trainer(?,?,?,?,?,?,?,?,?,?,?,?)}");
+		        stmt.setString(1, newPleople.getFirst_name());
+		        stmt.setString(2, newPleople.getLast_name());
+		        stmt.setString(3, newPleople.getBirth_date());
+		        stmt.setString(4, newPleople.getIdentification());
+		        stmt.setString(5, newPleople.getGender().getName());
+		        stmt.setString(6, newPleople.getCountry().getName());
+		        stmt.setString(7, newPleople.getNationality().getName());
+		        stmt.setInt(8, newPleople.getDistrict().getId());
+		        stmt.setString(9, newPleople.getDocumentType().getName());
+		        stmt.setString(10, "");
+		        stmt.setString(11, newPleople.getPhone());
+		        stmt.setString(12, newPleople.getEmail());
+		        // Execute the stored procedure
+		        stmt.executeUpdate();
+	        	con.commit();		        
+		    } catch (SQLException e) {
+		        System.out.println("SQL Error: " + e.getMessage());
+		    } finally {
+		        if (rs != null) rs.close(); // Close ResultSet
+		        if (stmt != null) stmt.close(); // Close CallableStatement
+		        if (con != null) con.close(); // Close Connection
+		    }			
+		}
 		
+		if(newPleople.getTyperole() == "Athlete") {
+			Connection con = null;
+		    CallableStatement stmt = null;	    
+		    ResultSet rs = null;
+
+		    try {
+		        // Establish the connection
+		        con = DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
+		        con.setAutoCommit(false);
+		        // Prepare the callable statement for the stored procedure
+		        stmt = con.prepareCall("{CALL register_person_athlete(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+		        stmt.setString(1, newPleople.getFirst_name());
+		        stmt.setString(2, newPleople.getLast_name());
+		        stmt.setString(3, newPleople.getBirth_date());
+		        stmt.setString(4, newPleople.getIdentification());
+		        stmt.setString(5, newPleople.getGender().getName());
+		        stmt.setString(6, newPleople.getCountry().getName());
+		        stmt.setString(7, newPleople.getNationality().getName());
+		        stmt.setInt(8, newPleople.getDistrict().getId());
+		        stmt.setString(9, newPleople.getDocumentType().getName());
+		        stmt.setString(10, "");
+		        stmt.setString(11, newPleople.getPhone());
+		        stmt.setString(12, newPleople.getEmail());
+		        stmt.setInt(13, newPleople.getTrainer().getId());
+		        // Execute the stored procedure
+		        stmt.executeUpdate();
+	        	con.commit();		        
+		    } catch (SQLException e) {
+		        System.out.println("SQL Error: " + e.getMessage());
+		    } finally {
+		        if (rs != null) rs.close(); // Close ResultSet
+		        if (stmt != null) stmt.close(); // Close CallableStatement
+		        if (con != null) con.close(); // Close Connection
+		    }			
+		}
+		
+		if(newPleople.getTyperole() == "Admin" || newPleople.getTyperole() == "User") {
+			Connection con = null;
+		    CallableStatement stmt = null;	    
+		    ResultSet rs = null;
+
+		    try {
+		        // Establish the connection
+		        con = DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
+		        con.setAutoCommit(false);
+		        // Prepare the callable statement for the stored procedure
+		        stmt = con.prepareCall("{CALL register_person_user(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+		        stmt.setString(1, newPleople.getFirst_name());
+		        stmt.setString(2, newPleople.getLast_name());
+		        stmt.setString(3, newPleople.getBirth_date());
+		        stmt.setString(4, newPleople.getIdentification());
+		        stmt.setString(5, newPleople.getGender().getName());
+		        stmt.setString(6, newPleople.getCountry().getName());
+		        stmt.setString(7, newPleople.getNationality().getName());
+		        stmt.setInt(8, newPleople.getDistrict().getId());
+		        stmt.setString(9, newPleople.getDocumentType().getName());
+		        stmt.setString(10, "");
+		        stmt.setString(11, newPleople.getPhone());
+		        stmt.setString(12, newPleople.getEmail());
+		        stmt.setString(13, newPleople.getTyperole().toLowerCase());
+		        stmt.setString(14, newPleople.getUsername());
+		        stmt.setString(15, newPleople.getPassword());
+		        // Execute the stored procedure
+		        stmt.executeUpdate();
+	        	con.commit();		        
+		    } catch (SQLException e) {
+		        System.out.println("SQL Error: " + e.getMessage());
+		    } finally {
+		        if (rs != null) rs.close(); // Close ResultSet
+		        if (stmt != null) stmt.close(); // Close CallableStatement
+		        if (con != null) con.close(); // Close Connection
+		    }			
+		}
 	}
 	
 	public static void editPeople(People newPleople) throws SQLException {		

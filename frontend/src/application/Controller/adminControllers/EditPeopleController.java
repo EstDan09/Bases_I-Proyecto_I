@@ -3,6 +3,8 @@ package application.Controller.adminControllers;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import application.ConnectDB;
 import DB.CountryDB;
 import DB.DocumentTypeDB;
@@ -151,8 +153,8 @@ public class EditPeopleController {
         ObservableList<Gender> genderList = DB.GenderDB.getGenderList();	  
         gender.setItems(genderList);  
         ObservableList<Country> countryList = CountryDB.getCountryList();
-        country.setItems(countryList);               
-        type.getItems().addAll("Admin", "Athlete", "Trainer");
+        country.setItems(countryList);                           
+        type.getItems().addAll("Admin", "User", "Athlete", "Trainer");
     }
 
     // Save button event handler
@@ -219,7 +221,7 @@ public class EditPeopleController {
         		identification.getText(), 
         		documentType.getValue(), 
         		nationality.getValue(), 
-        		birth_date.getValue().toString(), 
+        		birth_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
         		gender.getValue(), 
         		"", 
         		country.getValue(), 
@@ -238,18 +240,11 @@ public class EditPeopleController {
 
 
         //Save into DB
-        if(this.id == 0) {
+        if(this.id != 0) {
         	currentPeople.setId(this.id);
         	DB.PeopleDB.editPeople(currentPeople);
         }else {
-        	if(type.getValue().equals("Athlete")) {
-        		 //ConnectDB.registerPersonAthlete(currentPeople);
-        	} 
-        	else {
-        		
-        	}
-           
-
+        	DB.PeopleDB.createPeople(currentPeople);
         }
         
         Parent root = FXMLLoader.load(getClass().getResource("../../Views/AdminView.fxml"));
@@ -275,22 +270,30 @@ public class EditPeopleController {
     	Country selectedCountry = country.getValue();
         
         ObservableList<Province> provinceList = DB.ProvinceDB.getProvinceListByCountry(selectedCountry.getId());	 
-    	province.setItems(provinceList);    
+    	province.setItems(provinceList);   
+    	
+    	ObservableList<People> trainerList = DB.PeopleDB.getPeopleListByTypeAndCountry("Trainer", selectedCountry.getId());
+        trainer.setItems(trainerList); 
     } 
     
     @FXML
     private void changeSelectedProvince(ActionEvent event) throws SQLException {
     	Province selectedProvince = province.getValue();
-        
-        ObservableList<Region> regionList = DB.RegionDB.getRegionListByProvince(selectedProvince.getId());	 
-    	region.setItems(regionList);  
+    	region.setItems(null);
+    	if(selectedProvince != null) {
+    		ObservableList<Region> regionList = DB.RegionDB.getRegionListByProvince(selectedProvince.getId());	 
+        	region.setItems(regionList);
+    	}
+          
     } 
     
     @FXML
     private void changeSelectedRegion(ActionEvent event) throws SQLException {
     	Region selectedRegion = region.getValue();
-        
-        ObservableList<District> districtList = DB.DistrictDB.getDistrictListByRegion(selectedRegion.getId());	 
-    	district.setItems(districtList);  
+    	district.setItems(null);
+    	if(selectedRegion != null) {
+	        ObservableList<District> districtList = DB.DistrictDB.getDistrictListByRegion(selectedRegion.getId());	 
+	    	district.setItems(districtList); 
+    	}
     } 
 }
