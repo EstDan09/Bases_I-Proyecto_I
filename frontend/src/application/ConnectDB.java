@@ -1162,28 +1162,6 @@ public class ConnectDB {
 	}
 
 	public static List<String> getAllRoles() throws SQLException {
-<<<<<<< Updated upstream
-	    Connection con = null;
-	    CallableStatement stmt = null;
-	    ResultSet rs = null;
-	    List<String> roles = new ArrayList<>();
-	    try {
-	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{CALL get_all_roles()}");
-	        //stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        
-	        // Execute the stored procedure
-	        rs = stmt.executeQuery();
-            while (rs.next()) {
-            	roles.add(rs.getString("name"));
-            }
-	    } finally {
-	        if (rs != null) rs.close();
-	        if (stmt != null) stmt.close();
-	        if (con != null) con.close();
-	    }
-	    return roles;
-=======
 		Connection con = null;
 		CallableStatement stmt = null;
 		List<String> roles = new ArrayList<>();
@@ -1211,7 +1189,7 @@ public class ConnectDB {
 		}
 		
 		return roles;
->>>>>>> Stashed changes
+
 	}
 
 	public static int getRoleId(String roleName) throws SQLException {

@@ -121,12 +121,7 @@ public class RegisterController implements Initializable {
 	    		LocalDate selectedDate = birth_date.getValue();
 	    		System.out.println(selectedDate);
 	    		if (selectedDate != null) {
-	                // Format the LocalDate to the desired format
-	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	                //String date = selectedDate.format(formatter);
-	            	
-
-	             // Asignación de variables
+	                
 	                String firstName = first_name.getText();
 	                String lastName = last_name.getText();
 	                String date = birth_date.getValue() != null ? birth_date.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : null;
@@ -143,28 +138,27 @@ public class RegisterController implements Initializable {
 	                String usernameValue = username.getText();
 	                String passwordValue = password.getText();
 
-	                // Imprimir cada variable
-	                System.out.println("First Name: " + firstName);
-	                System.out.println("Last Name: " + lastName);
-	                System.out.println("Date of Birth: " + date);
-	                System.out.println("Identification Number: " + identificationNumber);
-	                System.out.println("Gender: " + genderValue);
-	                System.out.println("Country: " + countryValue);
-	                System.out.println("Nationality: " + nationalityValue);
-	                System.out.println("District ID: " + districtId);
-	                System.out.println("Document Type: " + documentTypeValue);
-	                System.out.println("Photo Path: " + photoPath);
-	                System.out.println("Phone Number: " + phoneNumber);
-	                System.out.println("Email: " + emailValue);
-	                System.out.println("Role: " + role);
-	                System.out.println("Username: " + usernameValue);
-	                System.out.println("Password: " + passwordValue);
-
-	                // Llamada a la función con las variables asignadas
+//	                // Imprimir cada variable
+//	                System.out.println("First Name: " + firstName);
+//	                System.out.println("Last Name: " + lastName);
+//	                System.out.println("Date of Birth: " + date);
+//	                System.out.println("Identification Number: " + identificationNumber);
+//	                System.out.println("Gender: " + genderValue);
+//	                System.out.println("Country: " + countryValue);
+//	                System.out.println("Nationality: " + nationalityValue);
+//	                System.out.println("District ID: " + districtId);
+//	                System.out.println("Document Type: " + documentTypeValue);
+//	                System.out.println("Photo Path: " + photoPath);
+//	                System.out.println("Phone Number: " + phoneNumber);
+//	                System.out.println("Email: " + emailValue);
+//	                System.out.println("Role: " + role);
+//	                System.out.println("Username: " + usernameValue);
+//	                System.out.println("Password: " + passwordValue);
+//
+//	                // Llamada a la función con las variables asignadas
 	                ConnectDB.registerPersonUser(firstName, lastName, date, identificationNumber, genderValue, countryValue, 
 	                    nationalityValue, districtId, documentTypeValue, photoPath, phoneNumber, emailValue, 
 	                    role, usernameValue, passwordValue);
-
 	    		}
 	        } catch (SQLException ex) {
 	        	ex.printStackTrace();
@@ -198,6 +192,7 @@ public class RegisterController implements Initializable {
 	
 	public void countryChoosenEvent(ActionEvent event) throws SQLException {
 		// function to fill up provinces from a country combobox when a country is selected
+		province.setItems(null);
 		if (country.getValue() != null) {
 			try {
 				province.getItems().clear();
@@ -213,6 +208,7 @@ public class RegisterController implements Initializable {
 	
 	public void provinceChoosenEvent(ActionEvent event) throws SQLException {
 		// function to fill up provinces from a country combobox when a country is selected
+		region.setItems(null);
 		if (country.getValue() != null) {
 			System.out.println(country.getValue()+province.getValue());
 			try {
@@ -229,6 +225,7 @@ public class RegisterController implements Initializable {
 	
 	public void regionChoosenEvent(ActionEvent event) throws SQLException {
 		// function to fill up provinces from a country combobox when a country is selected
+		district.setItems(null);
 		if (region.getValue() != null) {
 			System.out.println(region.getValue()+province.getValue());
 			try {

@@ -72,6 +72,11 @@ public class UsersController implements Initializable {
 		root = FXMLLoader.load(getClass().getResource("../Views/Users/GenderStatistics.fxml"));
 		contentPanel.setCenter(root);
 	}
+	
+	public void changeToAgeScene(ActionEvent event) throws IOException {
+		root = FXMLLoader.load(getClass().getResource("../Views/Users/AgeStatistics.fxml"));
+		contentPanel.setCenter(root);
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
