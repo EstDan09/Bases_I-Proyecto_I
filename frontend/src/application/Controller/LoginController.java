@@ -72,12 +72,12 @@ public class LoginController implements Initializable {
                     if (ConnectDB.login(role.getValue(), username.getText(), password.getText())) {
                         root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
                     }
-//                }
-                }  else {
-//                	root = FXMLLoader.load(getClass().getResource("../Views/AdminView.fxml"));
-                root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
-//                    title = "Admin Dashboard";
                 }
+//                }  else {
+//                	root = FXMLLoader.load(getClass().getResource("../Views/AdminView.fxml"));
+//                root = FXMLLoader.load(getClass().getResource("../Views/UsersView.fxml"));
+//                    title = "Admin Dashboard";
+//                }
                 
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
