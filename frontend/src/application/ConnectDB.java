@@ -209,30 +209,43 @@ public class ConnectDB {
         }
     }
     
-    public static  List<String[]> getAllGenders() throws SQLException {
+    public static List<String[]> getAllGenders() throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
         List<String[]> genders = new ArrayList<>();
         ResultSet rs = null;
+
         try {
+            // Establish the connection
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{? = call get_all_genders }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
-	        while (rs.next()) {
-	            String[] genderData = new String[2];
-	            genderData[0] = rs.getString("name"); 
-	            genderData[1] = String.valueOf(rs.getInt("id_gender")); 
-	            genders.add(genderData);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("SQL Error: " + e.getMessage());
+
+            // Prepare the callable statement for the stored procedure
+            stmt = con.prepareCall("{CALL get_all_genders()}");
+
+            // Execute the stored procedure
+            rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                String[] genderData = new String[2];
+                genderData[0] = rs.getString("name"); // Get gender name
+                genderData[1] = String.valueOf(rs.getInt("id_gender")); // Get gender ID as String
+                genders.add(genderData);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
         } finally {
-            if (stmt != null) stmt.close();
-            if (con != null) con.close();
+            if (rs != null) rs.close(); // Close ResultSet
+            if (stmt != null) stmt.close(); // Close CallableStatement
+            if (con != null) con.close(); // Close Connection
         }
-        return genders;
+
+        // Print all genders in a formatted way
+        for (String[] gender : genders) {
+            System.out.println(Arrays.toString(gender));
+        }
+
+        return genders; // Return the list of genders
     }
 
     public static void deleteGender(String name) throws SQLException {
@@ -284,26 +297,38 @@ public class ConnectDB {
         CallableStatement stmt = null;
         List<String[]> idTypes = new ArrayList<>();
         ResultSet rs = null;
+
         try {
+            // Establish the connection
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{?= call get_all_id_types }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
-	        while (rs.next()) {
-	            String[] idData = new String[2];
-	            idData[0] = rs.getString("type_id"); 
-	            idData[1] = String.valueOf(rs.getInt("id_identification_type")); 
-	            idTypes.add(idData);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("SQL Error: " + e.getMessage());
+
+            // Prepare the callable statement for the stored procedure
+            stmt = con.prepareCall("{CALL get_all_identification_types()}");
+
+            // Execute the stored procedure
+            rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                String[] idData = new String[2];
+                idData[0] = rs.getString("name_identification_type"); // Get the type ID
+                idData[1] = String.valueOf(rs.getInt("id_identification_type")); // Get the ID as String
+                idTypes.add(idData);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
         } finally {
-            if (stmt != null) stmt.close();
-            if (con != null) con.close();
+            if (rs != null) rs.close(); // Close ResultSet
+            if (stmt != null) stmt.close(); // Close CallableStatement
+            if (con != null) con.close(); // Close Connection
         }
-        System.out.println(idTypes);
-        return idTypes;
+
+        // Print all identification types in a formatted way
+        for (String[] idType : idTypes) {
+            System.out.println(Arrays.toString(idType));
+        }
+
+        return idTypes; // Return the list of identification types
     }
 
     public static int getIdTypeId(String idTypeName) throws SQLException {
@@ -539,32 +564,44 @@ public class ConnectDB {
 	}
 
 	public static List<String[]> getAllCountries() throws SQLException {
-	    Connection con = null;
-	    CallableStatement stmt = null;
-	    List<String[]> countries = new ArrayList<>();
-	    ResultSet rs = null;
-	    try {
-	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_all_countries() }");
-	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
-	        while (rs.next()) {
-	            String[] countryData = new String[3];
-	            countryData[0] = rs.getString("name"); 
-	            countryData[1] = String.valueOf(rs.getInt("ID")); 
-	            countryData[2] = rs.getString("Path"); 
-	            countries.add(countryData);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("SQL Error: " + e.getMessage());
-	    } finally {
-	        if (stmt != null) stmt.close();
-	        if (con != null) con.close();
-	    }
-        System.out.println(countries);
-	    return countries;
-	}
+        Connection con = null;
+        CallableStatement stmt = null;
+        List<String[]> countries = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection(host, uName, pass);
+
+            // Prepare the callable statement for the stored procedure
+            stmt = con.prepareCall("{CALL get_all_countries()}");
+
+            // Execute the stored procedure
+            rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                String[] countryData = new String[3];
+                countryData[0] = rs.getString("name"); // Get the country name
+                countryData[1] = String.valueOf(rs.getInt("ID")); // Get the ID as String
+                countryData[2] = rs.getString("Path"); // Get the path
+                countries.add(countryData);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            if (rs != null) rs.close(); // Close ResultSet
+            if (stmt != null) stmt.close(); // Close CallableStatement
+            if (con != null) con.close(); // Close Connection
+        }
+
+        // Print all countries in a formatted way
+        for (String[] country : countries) {
+            System.out.println(Arrays.toString(country));
+        }
+
+        return countries; // Return the list of countries
+    }
 
 	public static int getCountryId(String countryName) throws SQLException {
 	    Connection con = null;
@@ -665,33 +702,51 @@ public class ConnectDB {
 	    }
 	}
 	
-	public static List<String[]> getAllProvincesByCountry(String countryName) throws SQLException {
-	    Connection con = null;
-	    CallableStatement stmt = null;
-	    List<String[]> provinces = new ArrayList<>();
-	    ResultSet rs = null;
-	    try {
-	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ ? = call get_all_provinces(?) }");
-	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.setString(2, countryName);
-	        stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
-	        while (rs.next()) {
-	            String[] provData = new String[3];
-	            provData[0] = rs.getString("province_name"); 
-	            provData[1] = String.valueOf(rs.getInt("province_id")); 
-	            provData[2] = rs.getString("flag_photo_path");
-	            provinces.add(provData);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("SQL Error: " + e.getMessage());
-	    } finally {
-	        if (stmt != null) stmt.close();
-	        if (con != null) con.close();
-	    }
-	    return provinces;
-	}
+    public static List<String[]> getAllProvincesByCountry(String countryName) throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        List<String[]> provinces = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection(host, uName, pass);
+
+            // Prepare the callable statement for the stored procedure
+            stmt = con.prepareCall("{CALL get_all_provinces()}");
+
+            // Set the parameter for the stored procedure
+//            stmt.setString(1, countryName);
+
+            // Execute the stored procedure
+            rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                String[] provData = new String[3];
+                if (rs.getString("Country").equals(countryName)) {
+                	provData[0] = rs.getString("Name"); // Get province name
+                    provData[1] = String.valueOf(rs.getInt("ID")); // Get province ID as String
+                    provData[2] = rs.getString("Country"); // Get country name
+                    provinces.add(provData);
+                }
+                
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            if (rs != null) rs.close(); // Close ResultSet
+            if (stmt != null) stmt.close(); // Close CallableStatement
+            if (con != null) con.close(); // Close Connection
+        }
+
+        // Print all provinces in a formatted way
+        for (String[] province : provinces) {
+            System.out.println(Arrays.toString(province));
+        }
+
+        return provinces; // Return the list of provinces
+    }
 	
     /* Region Related Procedures and Functions */
 	public static void registerRegion(String regionName, String provinceName) throws SQLException {
@@ -1107,6 +1162,7 @@ public class ConnectDB {
 	}
 
 	public static List<String> getAllRoles() throws SQLException {
+<<<<<<< Updated upstream
 	    Connection con = null;
 	    CallableStatement stmt = null;
 	    ResultSet rs = null;
@@ -1127,6 +1183,35 @@ public class ConnectDB {
 	        if (con != null) con.close();
 	    }
 	    return roles;
+=======
+		Connection con = null;
+		CallableStatement stmt = null;
+		List<String> roles = new ArrayList<>();
+		ResultSet rs = null;
+		
+		try {
+			con = DriverManager.getConnection(host, uName, pass);
+			stmt = con.prepareCall("{CALL get_all_roles()}");
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String roleData = rs.getString("name");
+				roles.add(roleData);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL ERROR: " + e.getMessage());
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+			if (con != null) con.close();
+		}
+		
+		for (String role: roles) {
+			System.out.println(role);
+		}
+		
+		return roles;
+>>>>>>> Stashed changes
 	}
 
 	public static int getRoleId(String roleName) throws SQLException {
