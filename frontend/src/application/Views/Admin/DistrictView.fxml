@@ -33,7 +33,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="659.0" prefWidth="639.0">
                      <children>
-                        <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="662.0">
+                        <TableView fx:id="districtTableView" onSort="#changeToDistrictView" prefHeight="616.0" prefWidth="662.0">
                           <columns>
                               <TableColumn fx:id="id" prefWidth="126.0" text="ID" />
                               <TableColumn fx:id="district" prefWidth="525.0" text="District" />

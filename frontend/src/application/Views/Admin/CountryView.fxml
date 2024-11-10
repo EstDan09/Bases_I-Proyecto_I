@@ -19,7 +19,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="274.0">
                      <children>
-                        <Label fx:id="tittle" text="Country" textFill="WHITE">
+                        <Label fx:id="country" text="Country" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
@@ -33,7 +33,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="659.0" prefWidth="639.0">
                      <children>
-                        <TableView fx:id="teamsTableView" prefHeight="616.0" prefWidth="662.0">
+                        <TableView fx:id="countryTableView" onSort="#changeToCountryView" prefHeight="616.0" prefWidth="662.0">
                           <columns>
                               <TableColumn fx:id="id" prefWidth="126.0" text="ID" />
                               <TableColumn fx:id="country" prefWidth="525.0" text="Country" />
