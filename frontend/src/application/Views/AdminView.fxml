@@ -13,10 +13,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.AdminController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="200.0" spacing="25.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);;" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="194.0" spacing="25.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #2c3e50, #4ca1af);;" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane prefHeight="21.0" prefWidth="200.0" />
             <Hyperlink fx:id="peopleBtn" onAction="#changeToPeopleScene" text="People" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="nationalityBtn" onAction="#changeToNationalityView" text="Nationality" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="OlympicBtn" onAction="#changeToOlympicView" text="Olympics" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -26,32 +36,54 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="locationBtn3" onAction="#changeToTeamView" text="Teams" textFill="WHITE">
+            <Hyperlink fx:id="categoryBtn" onAction="#changeToCategoryView" text="Category" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="locationBtn" onAction="#changeToScoreView" text=" Scores" textFill="WHITE">
+            <Hyperlink fx:id="sportBtn" onAction="#changeToSportView" text="Sports" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="locationBtn2" onAction="#changeToBinnacleView" text="Binnacle" textFill="WHITE">
+            <Hyperlink fx:id="countryBtn" onAction="#changeToCountryView" text="Country" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="nationality" onAction="#changeToNationalityView" text="Nationality" textFill="WHITE">
+            <Hyperlink fx:id="provinceBtn" onAction="#changeToProvinceView" text="Province" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
-            <AnchorPane prefHeight="189.0" prefWidth="200.0" />
-            <Hyperlink fx:id="locationBtn1" onAction="#exitAdmin" text="Exit" textFill="WHITE">
+            <Hyperlink fx:id="regionBtn" onAction="#changeToRegionView" text="Region" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Hyperlink>
+            <Hyperlink fx:id="districtBtn" onAction="#changeToDistrictView" text="District" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="teamBtn" onAction="#changeToTeamView" text="Teams" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="scoreBtn" onAction="#changeToScoreView" text=" Scores" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <AnchorPane prefHeight="189.0" prefWidth="200.0">
+               <children>
+                  <Hyperlink fx:id="locationBtn1" layoutX="74.0" layoutY="4.0" onAction="#exitAdmin" prefHeight="29.0" prefWidth="48.0" text="Exit" textFill="#061c65">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Hyperlink>
+               </children></AnchorPane>
          </children>
          <padding>
             <Insets top="50.0" />
@@ -62,7 +94,7 @@
       </VBox>
       <BorderPane fx:id="contentPanel" layoutX="200.0" prefHeight="800.0" prefWidth="1080.0">
          <center>
-            <Pane prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: #eeeee4;" BorderPane.alignment="CENTER">
+            <Pane prefHeight="800.0" prefWidth="1072.0" style="-fx-background-color: #eeeee4;" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="234.0" fitWidth="485.0" layoutX="291.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
                      <image>

@@ -113,7 +113,7 @@ public class LoginController implements Initializable {
 		} catch (SQLException e) {
 			System.out.println("No data in Roles table");
 		}  
-		role.getItems().add("abc");
+//		role.getItems().add("abc");
 		
 	}
 	
