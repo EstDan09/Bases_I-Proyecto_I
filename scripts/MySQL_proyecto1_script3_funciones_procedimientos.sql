@@ -2903,7 +2903,7 @@ BEGIN
     LEFT JOIN 
         flag_photo fp ON c.id_flag_photo = fp.id_flag_photo
     WHERE 
-        olympic_name IS NULL OR o.name = olympic_name
+        olympic_name = 'all' OR o.name = olympic_name
     GROUP BY 
         c.id_country
     ORDER BY 
@@ -2913,6 +2913,7 @@ BEGIN
         total_medals DESC;
 END //
 DELIMITER ;
+
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS get_event_list;
@@ -2925,25 +2926,24 @@ BEGIN
     SELECT 
         e.id_event AS event_id,
         e.name AS event_name,
+        c.gender AS category_gender,  -- Added category gender here
         o.name AS olympic_name,
         s.name AS sport_name,
         e.date_event AS event_date,
         e.time_event AS event_time,
-        GROUP_CONCAT(CONCAT(p.first_name, ' ', p.last_name) ORDER BY p.last_name ASC SEPARATOR ', ') AS participants
+        GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ', ') AS teams
     FROM 
         event e
     JOIN 
         olympic o ON e.id_olympic = o.id_olympic
     JOIN 
         sport s ON e.id_sport = s.id_sport
+    JOIN 
+        category c ON e.id_category = c.id_category  -- Join to get category gender
     LEFT JOIN 
         team_event te ON e.id_event = te.id_event
     LEFT JOIN 
-        athlete_team at ON te.id_team = at.id_team
-    LEFT JOIN 
-        athlete a ON at.id_athlete = a.id_athlete
-    LEFT JOIN 
-        person p ON a.id_athlete = p.id_person
+        team t ON te.id_team = t.id_team
     WHERE
         (choice = 'all') OR
         (choice = 'olympic' AND o.name = olympic_name) OR
@@ -2956,16 +2956,22 @@ BEGIN
 END //
 DELIMITER ;
 
+
+
 DELIMITER //
 DROP PROCEDURE IF EXISTS get_top_scores_by_sport;
-CREATE PROCEDURE get_top_scores_by_sport()
+CREATE PROCEDURE get_top_scores_by_sport(
+    IN input_sport_name VARCHAR(50),
+    IN input_olympic_year INT
+)
 BEGIN
     SELECT 
         CONCAT(p.first_name, ' ', p.last_name) AS competitor_name,
         s.name AS sport_name,
         c.name AS country_name,
         te.record AS score,
-        o.name AS olympic_name
+        o.name AS olympic_name,
+        o.year AS olympic_year
     FROM 
         team_event te
     JOIN 
@@ -2986,8 +2992,171 @@ BEGIN
         olympic o ON e.id_olympic = o.id_olympic
     WHERE 
         te.record IS NOT NULL
+        AND (s.name = input_sport_name OR input_sport_name = 'all')  -- Filter by sport name or get all
+        AND (o.year = input_olympic_year OR input_olympic_year = 0) -- Filter by Olympic year or get all
     ORDER BY 
-        s.name, te.record DESC
+        te.record DESC
     LIMIT 5;
 END //
 DELIMITER ;
+
+
+#
+#
+DELIMITER //
+CREATE PROCEDURE login_in(
+    IN given_role VARCHAR(25),
+    IN given_username VARCHAR(25),
+    IN given_password VARCHAR(25)
+)
+BEGIN
+    DECLARE stored_hashed_password VARCHAR(64);
+    DECLARE hashed_input_password VARCHAR(64);
+    DECLARE role_id INT;
+
+    -- Declare a handler for no data found, signaling an invalid username or role
+    DECLARE CONTINUE HANDLER FOR NOT FOUND
+    BEGIN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid Username or Role';
+    END;
+
+    -- Retrieve role ID for the provided role name
+    SELECT id_role INTO role_id FROM role WHERE name = given_role;
+    
+    -- Debug output for role_id
+    SELECT CONCAT('Role ID: ', role_id) AS debug_message;
+
+    -- Retrieve stored hashed password for the given username and role
+    SELECT password INTO stored_hashed_password 
+    FROM user_person
+    WHERE username = given_username
+      AND id_role = role_id;
+    
+    -- Debug output for username and stored hashed password
+    SELECT CONCAT('Username: ', given_username) AS debug_message;
+    SELECT CONCAT('Stored Hashed Password: ', stored_hashed_password) AS debug_message;
+
+    -- Hash the input password
+    SET hashed_input_password = SHA1(given_password);
+
+    -- Debug output for hashed input password
+    SELECT CONCAT('Input Hashed Password: ', hashed_input_password) AS debug_message;
+
+    -- Compare the stored password and input password hash
+    IF stored_hashed_password = hashed_input_password THEN
+        SELECT 'Login successful' AS message;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid Password';
+    END IF;
+
+END //
+DELIMITER ;
+
+CALL login_in('user', 'lucasgomez', 'passwordLucas1');
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_olympics_summary;
+
+CREATE PROCEDURE get_olympics_summary()
+BEGIN
+    SELECT 
+        o.id_olympic,get_event_list
+        o.name AS olympic_name,
+        o.year,
+        c.name AS country_name,
+        
+        -- Total participants: count distinct athletes for the given Olympic ID
+        (SELECT COUNT(DISTINCT at.id_athlete)
+         FROM athlete_team at
+         INNER JOIN team_event te ON at.id_team = te.id_team
+         INNER JOIN event e ON te.id_event = e.id_event
+         WHERE e.id_olympic = o.id_olympic) AS total_participants,
+        
+        -- Total countries: count distinct countries represented in teams for the Olympic ID
+        (SELECT COUNT(DISTINCT p.id_country_represents)
+         FROM athlete_team at
+         INNER JOIN team t ON at.id_team = t.id_team
+         INNER JOIN athlete a ON at.id_athlete = a.id_athlete
+         INNER JOIN person p ON a.id_athlete = p.id_person
+         WHERE t.id_team IN 
+               (SELECT te.id_team FROM team_event te 
+                INNER JOIN event e ON te.id_event = e.id_event 
+                WHERE e.id_olympic = o.id_olympic)) AS total_countries,
+
+        -- Total medals awarded
+        (SELECT COUNT(*)
+         FROM event_medal em
+         INNER JOIN event e ON em.id_event = e.id_event
+         WHERE e.id_olympic = o.id_olympic) AS total_medals,
+        
+        -- Total events
+        (SELECT COUNT(*)
+         FROM event
+         WHERE id_olympic = o.id_olympic) AS total_events
+
+    FROM olympic o
+    INNER JOIN country c ON o.id_country = c.id_country;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_record;
+CREATE PROCEDURE get_record(IN input_sport VARCHAR(50), IN input_year INT)
+BEGIN
+    SELECT 
+        p.first_name AS athlete_name,
+        p.last_name AS last_name,
+        c.name AS country_name,
+        sp.name AS sport_name,
+        cat.title AS category_title,
+        te.record AS highest_record,
+        ev.date_event AS event_date,
+        ol.name AS olympic_name
+    FROM 
+        team_event te
+    JOIN 
+        event ev ON te.id_event = ev.id_event
+    JOIN 
+        sport sp ON ev.id_sport = sp.id_sport
+    JOIN 
+        category cat ON ev.id_category = cat.id_category
+    JOIN 
+        olympic ol ON ev.id_olympic = ol.id_olympic
+    JOIN 
+        team t ON te.id_team = t.id_team
+    JOIN 
+        athlete_team at ON t.id_team = at.id_team
+    JOIN 
+        athlete a ON at.id_athlete = a.id_athlete
+    JOIN 
+        person p ON a.id_athlete = p.id_person
+    JOIN 
+        country c ON p.id_country_represents = c.id_country
+    INNER JOIN (
+        SELECT 
+            ev.id_sport,
+            ol.year,
+            MAX(te.record) AS highest_record
+        FROM 
+            team_event te
+        JOIN 
+            event ev ON te.id_event = ev.id_event
+        JOIN 
+            olympic ol ON ev.id_olympic = ol.id_olympic
+        WHERE 
+            (input_sport = 'all' OR ev.id_sport = (SELECT id_sport FROM sport WHERE name = input_sport))
+            AND (input_year = 0 OR ol.year = input_year)
+        GROUP BY 
+            ev.id_sport, ol.year
+    ) AS max_records ON max_records.id_sport = ev.id_sport 
+        AND max_records.highest_record = te.record
+        AND max_records.year = ol.year
+    ORDER BY 
+        sp.name;
+END //
+DELIMITER ;
+
+
+CALL get_record('all', 0);
+

@@ -52,6 +52,12 @@ public class RecordController implements Initializable {
 
     @FXML
     private ComboBox<String> categoryCB;
+    
+    @FXML
+    private void filter(ActionEvent event) {
+        // Your filtering logic
+        System.out.println("Filter button clicked!");
+    }
 
     // Sample data for demonstration
     private final ObservableList<Record> recordList = FXCollections.observableArrayList(
@@ -72,13 +78,9 @@ public class RecordController implements Initializable {
         dateColumn.setCellValueFactory(new PropertyValueFactory<Record, String>("date"));
         olympicColumn.setCellValueFactory(new PropertyValueFactory<Record, String>("olympic"));
 
-        try {
-			loadEvents();
-			loadSport();
-			loadOlympicGames();
-		} catch (SQLException e) {
-			System.out.println("Error: couldnt connect with the DB");
-		}
+        loadTable();
+			//loadSport();
+			//loadOlympicGames();
         table.setItems(recordList);
 		
 	}
@@ -86,79 +88,49 @@ public class RecordController implements Initializable {
 
     // LOADERS =========================================================================
 
-    private void loadEvents() throws SQLException {
-		try {
-			List<String[]> list = ConnectDB.getRecords(ConnectDB.getSportId("atleti"), 0);
-			for (String[] data: list) {
-				String name = data[2];
-				String surname= "";
-				String country = data[3];
-				String sport = data[0];
-				String category = "";
-				String record = data[4];
-                String date = data[5];
-				String olympic = data[6];
-				recordList.add(new Record(name, surname, country, sport, category, record, date, olympic));
-			}
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		
+	private void loadTable() {
+	    // Set default values for parameters if ComboBox selections are null
+	    //String selectedSport = sportCB.getValue() != null ? sportCB.getValue() : "all";
+	    //int selectedOlympicYear = categoryCB.getValue() != null ? Integer.parseInt(categoryCB.getValue()) : 0;
+
+	    try {
+	        // Fetch records from the database based on the selected filters
+	        List<String[]> list = ConnectDB.getRecords("all", 0);
+
+	        // Clear existing entries to avoid duplicate rows
+	        recordList.clear();
+
+	        // Populate recordList with data from the result set
+	        for (String[] data : list) {
+	            String name = data[0];        // athlete_name
+	            String surname = data[1];     // last_name
+	            String country = data[2];     // country_name
+	            String sport = data[3];       // sport_name
+	            String category = data[4];    // category_title
+	            String record = data[5];      // highest_record
+	            String date = data[6];        // event_date
+	            String olympic = data[7];     // olympic_name
+
+	            // Add each record as a new Record object to the observable list
+	            recordList.add(new Record(name, surname, country, sport, category, record, date, olympic));
+	        }
+	        
+	        System.out.println("Loaded records successfully. Total records: " + recordList.size());
+
+	    } catch (SQLException e) {
+	        System.out.println("Error loading records: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
 
-    // LOADER FOR SPORT COMBOBOX
-	private void loadSport() {
-		List<String[]> sports = null;
-		try {
-			sports = (List<String[]>) ConnectDB.getAllSports();
-			for (String[] s: sports) {
-				sportCB.getItems().add(s[0]);
-			} 
-		} catch (SQLException ex) {
-			System.out.println("No data in sport Table");
-		}	
-	}
 
-	// LOADER FOR OLYMPIC COMBOBOX
-	private void loadOlympicGames() {
-		List<String[]> categoryList = null;
-		try {
-			categoryList = (List<String[]>) ConnectDB.getOlympicDetails();
-			for (String[] o: categoryList) {
-				categoryCB.getItems().add(o[3] + o[1]);
-			} 
-		} catch (SQLException ex) {
-			System.out.println("No data in Olympic Table");
-		}	
-	}
 
-    public void filter(ActionEvent action) {
-        if (sportCB.getValue() == null || categoryCB.getValue() == null) {
-            JOptionPane.showMessageDialog(null, "Please select a sport and a category");
-        } else {
-            int cId= Integer.parseInt(categoryCB.getValue().substring(0, 2));
-            
-            recordList.clear();
-            try {
-                List<String[]> list = ConnectDB.getRecords(ConnectDB.getSportId(sportCB.getValue()), cId);
-			for (String[] data: list) {
-				String name = data[2];
-				String surname= "";
-				String country = data[3];
-				String sport = data[0];
-				String category = "";
-				String record = data[4];
-                String date = data[5];
-				String olympic = data[6];
-				recordList.add(new Record(name, surname, country, sport, category, record, date, olympic));
-			}
 
-            } catch (SQLException e) {
-				System.out.println("Error: couldnt connect with the DB");
-			}
-        }
-    }
+  
+	
+
+    
+    
 
 
 }

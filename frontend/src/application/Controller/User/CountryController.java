@@ -3,6 +3,7 @@ package application.Controller.User;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.ConnectDB;
@@ -70,7 +71,13 @@ public class CountryController implements Initializable {
         silver.setCellValueFactory(new PropertyValueFactory<CountryRanking, Integer>("silver"));
         gold.setCellValueFactory(new PropertyValueFactory<CountryRanking, Integer>("gold"));
         total.setCellValueFactory(new PropertyValueFactory<CountryRanking, Integer>("total"));
-
+        
+        try {
+			loadCountryRanking("all");
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
         // Load the sample data into the TableView
         table.setItems(countryList);
     }
@@ -83,16 +90,21 @@ public class CountryController implements Initializable {
         return imageView;
     }
     
-    private void loadList(ResultSet set) throws SQLException {
-    	while (set.next()) {
-    		String countryName = set.getString("country_name");
-    		String imagePath = set.getString("image");
-    		int bronze = set.getInt("bronze");
-    		int silver = set.getInt("silver");
-    		int gold = set.getInt("gold");
-    		int total = set.getInt("total");
-    		countryList.add(new CountryRanking(countryName, createFlagImageView(imagePath), bronze, silver, gold, total));
-    	}
+    private void loadCountryRanking(String olympicName) throws SQLException {
+        List<String[]> rankingData = ConnectDB.getMedalRankingByOlympic(olympicName);
+        countryList.clear();  // Clear existing data
+
+        for (String[] data : rankingData) {
+            String countryName = data[1];
+            String flagPath = data[0];
+            int goldCount = Integer.parseInt(data[2]);
+            int silverCount = Integer.parseInt(data[3]);
+            int bronzeCount = Integer.parseInt(data[4]);
+            int totalCount = Integer.parseInt(data[5]);
+
+            countryList.add(new CountryRanking(countryName, createFlagImageView(flagPath), bronzeCount, silverCount, goldCount, totalCount));
+        }
+        System.out.println("Country ranking data loaded successfully.");
     }
     
     public void filter(ActionEvent ev) throws SQLException {

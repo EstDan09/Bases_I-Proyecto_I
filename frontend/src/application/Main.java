@@ -17,7 +17,9 @@ public class Main extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Views/LoginView.fxml"));
 
-			ConnectDB.getAllNationalities();
+			//ConnectDB.getAllNationalities();
+			ConnectDB.getMedalRankingByOlympic("all");
+
 
 //			ConnectDB.getAllSports();
 //			/*Ejemplo segunda pantalla*/

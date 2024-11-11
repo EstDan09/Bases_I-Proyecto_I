@@ -53,13 +53,14 @@ public class OlympicGameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Set up the columns with the appropriate data properties
-        name.setCellValueFactory(new PropertyValueFactory<OlympicGame, String>("name"));
-        host.setCellValueFactory(new PropertyValueFactory<OlympicGame, String>("host"));
-        year.setCellValueFactory(new PropertyValueFactory<OlympicGame, Integer>("year"));
-        totalParticipants.setCellValueFactory(new PropertyValueFactory<OlympicGame, Integer>("totalParticipants"));
-        totalCountries.setCellValueFactory(new PropertyValueFactory<OlympicGame, Integer>("totalCountries"));
-        totalMedals.setCellValueFactory(new PropertyValueFactory<OlympicGame, Integer>("totalMedals"));
-        totalEvents.setCellValueFactory(new PropertyValueFactory<OlympicGame, Integer>("totalEvents"));
+    	name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    	host.setCellValueFactory(new PropertyValueFactory<>("host"));
+    	year.setCellValueFactory(new PropertyValueFactory<>("year"));
+    	totalParticipants.setCellValueFactory(new PropertyValueFactory<>("totalParticipants"));
+    	totalCountries.setCellValueFactory(new PropertyValueFactory<>("totalCountries"));
+    	totalMedals.setCellValueFactory(new PropertyValueFactory<>("totalMedals"));
+    	totalEvents.setCellValueFactory(new PropertyValueFactory<>("totalEvents"));
+
 
         // Load the sample data into the TableView
         try {
@@ -73,16 +74,20 @@ public class OlympicGameController implements Initializable {
     
     // LOADERS ==================================================================================
     private void loadOlympicGames() throws SQLException {
-		List<String[]> list = ConnectDB.getOlympicDetails();
-		for (String[] game: list) {
-			String name = game[0];
-			String country = game[2];
-			int year = Integer.parseInt(game[1]);
-			int totalParticipants = Integer.parseInt(game[4]);
-			int totalCountries = Integer.parseInt(game[5]);
-			int totalMedals = Integer.parseInt(game[6]);
-			int totalEvents = Integer.parseInt(game[3]);
-			olympicGameList.add(new OlympicGame(name, country, year, totalParticipants, totalCountries, totalMedals, totalEvents));
-		}
+        List<String[]> list = ConnectDB.getOlympicsSummary();
+        for (String[] game : list) {
+            String name = game[1]; // Olympic name
+            String country = game[3]; // Country name
+            int year = Integer.parseInt(game[2]); // Year
+            int totalParticipants = Integer.parseInt(game[4]); // Total participants
+            int totalCountries = Integer.parseInt(game[5]); // Total countries
+            int totalMedals = Integer.parseInt(game[6]); // Total medals
+            int totalEvents = Integer.parseInt(game[7]); // Total events
+
+            // Add the OlympicGame object to the observable list
+            olympicGameList.add(new OlympicGame(name, country, year, totalParticipants, totalCountries, totalMedals, totalEvents));
+        }
     }
+
+
 }
