@@ -1,4 +1,3 @@
-//HOLA BENJI
 package application.Controller.User;
 
 import java.net.URL;
@@ -6,7 +5,6 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javax.swing.JOptionPane;
 import application.ConnectDB;
 import application.Model.Event2;
@@ -23,7 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class EventController implements Initializable{
+public class EventController implements Initializable {
 
     @FXML
     private TableColumn<Event2, String> category;
@@ -62,109 +60,96 @@ public class EventController implements Initializable{
     private TableColumn<Event2, String> participants;
     
     ObservableList<Event2> eventList = FXCollections.observableArrayList(
-    		new Event2(0,"Final Badminton", "Femenine", "Badminton", "19/09/24", "19:00", "South Korea Team, Japan Team"),
-    		new Event2(0,"Final Gymnastic Show", "Femenine", "Gymnastic", "20/09/24", "20:00", "Russian Team, USA Team")
-	);
-    
+            new Event2(0,"Final Badminton", "Feminine", "Badminton", "19/09/24", "19:00", "South Korea Team, Japan Team"),
+            new Event2(0,"Final Gymnastic Show", "Feminine", "Gymnastic", "20/09/24", "20:00", "Russian Team, USA Team")
+    );
 
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		event.setCellValueFactory(new PropertyValueFactory<Event2, String>("name"));
-		category.setCellValueFactory(new PropertyValueFactory<Event2, String>("category"));
-		sport.setCellValueFactory(new PropertyValueFactory<Event2, String>("sport"));
-		date.setCellValueFactory(new PropertyValueFactory<Event2, String>("date"));
-		startingTime.setCellValueFactory(new PropertyValueFactory<Event2, String>("startingTime"));
-		participants.setCellValueFactory(new PropertyValueFactory<Event2, String>("participants"));
-		
-		try {
-			loadEvents();
-			loadSport();
-			loadOlympicGames();
-		} catch (SQLException e) {
-			System.out.println("Error: couldnt connect with the DB");
-		}
-		table.setItems(eventList);
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        event.setCellValueFactory(new PropertyValueFactory<>("name"));
+        category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        sport.setCellValueFactory(new PropertyValueFactory<>("sport"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        startingTime.setCellValueFactory(new PropertyValueFactory<>("startingTime"));
+        participants.setCellValueFactory(new PropertyValueFactory<>("participants"));
+        
+        try {
+            loadEvents();
+            loadSport();
+            loadOlympicGames();
+        } catch (SQLException e) {
+            System.out.println("Error: couldn't connect with the DB");
+        }
+        table.setItems(eventList);
     }
-		//
-		
-	
-	
-	// LOADERS ==================================================
-	//             0     "0001-01-01"   0
-	// filter by olympic, date,         sport
-	private void loadEvents() throws SQLException {
-		try {
-			List<String[]> list = ConnectDB.getAllOlympicEvents(0, "0001-01-01", 0);
-			for (String[] data: list) {
-				String name = data[0];
-				String category= data[2];
-				String sport = data[1];
-				String date = data[3];
-				String time = data[4];
-				String participants = data[5];
-				eventList.add(new Event2(0,name, category, sport, date, time, participants));
-			}
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		
-	}
 
-	// LOADER FOR SPORT COMBOBOX
-	private void loadSport() {
-		List<String[]> sports = null;
-		try {
-			sports = (List<String[]>) ConnectDB.getAllSports();
-			for (String[] s: sports) {
-				sportCB.getItems().add(s[0]);
-			} 
-		} catch (SQLException ex) {
-			System.out.println("No data in sport Table");
-		}	
-	}
+    // Load events without filters (initial view)
+    private void loadEvents() throws SQLException {
+        try {
+            List<String[]> list = ConnectDB.getAllOlympicEvents("all", "", "");
+            for (String[] data: list) {
+                String name = data[0];
+                String category = data[1];
+                String sport = data[2];
+                String date = data[3];
+                String time = data[4];
+                String participants = data[5];
+                eventList.add(new Event2(0, name, category, sport, date, time, participants));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-	// LOADER FOR OLYMPIC COMBOBOX
-	private void loadOlympicGames() {
-		List<String[]> olympicList = null;
-		try {
-			olympicList = (List<String[]>) ConnectDB.getOlympicDetails();
-			for (String[] o: olympicList) {
-				olympicCB.getItems().add(o[1]);
-			} 
-		} catch (SQLException ex) {
-			System.out.println("No data in Olympic Table");
-		}	
-	}
+    // Load sport names into ComboBox
+    private void loadSport() {
+        try {
+            List<String[]> sports = ConnectDB.getAllSports();
+            for (String[] s : sports) {
+                sportCB.getItems().add(s[0]);
+            }
+        } catch (SQLException ex) {
+            System.out.println("No data in sport Table");
+        }   
+    }
 
-	
-	public void filter(ActionEvent event) throws Throwable, SQLException {
-		if (dateChooser.getValue() == null || olympicCB.getValue() == null || sportCB.getValue() == null) {
-			JOptionPane.showMessageDialog(null, "Please fill all the fields");
-		} else {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			String date = dateChooser.getValue() != null ? dateChooser.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
-			String olympic = olympicCB.getValue();
-			String sport = sportCB.getValue();
-			int olyId = ConnectDB.getOlympicId(Integer.parseInt(olympic));
-			int sportId = ConnectDB.getSportId(sport);
-			eventList.clear();
-			try {
-				List<String[]> list = ConnectDB.getAllOlympicEvents(olyId, date, sportId);
-				for (String[] data: list) {
-					String name = data[0];
-					String category= data[2];
-					String sport1 = data[1];
-					String datew = data[3];
-					String time = data[4];
-					String participants = data[5];
-					eventList.add(new Event2(0,name, category, sport1, datew, time, participants));
-				}
-			} catch (SQLException e) {
-				System.out.println("Error: couldnt connect with the DB");
-			}
-		}
-			
-	}
-	
+    // Load Olympic game names into ComboBox
+    private void loadOlympicGames() {
+        try {
+            List<String[]> olympicList = ConnectDB.getOlympicDetails();
+            for (String[] o : olympicList) {
+                olympicCB.getItems().add(o[1]);
+            }
+        } catch (SQLException ex) {
+            System.out.println("No data in Olympic Table");
+        }   
+    }
+
+    // Filter events based on ComboBox selections and date
+    public void filter(ActionEvent event) {
+        if (dateChooser.getValue() == null || olympicCB.getValue() == null || sportCB.getValue() == null) {
+            JOptionPane.showMessageDialog(null, "Please fill all the fields");
+        } else {
+            String date = dateChooser.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String olympic = olympicCB.getValue();
+            String sport = sportCB.getValue();
+            String choice = "both";  // This is set based on all filters applied
+
+            eventList.clear();
+            try {
+                List<String[]> list = ConnectDB.getAllOlympicEvents(choice, olympic, sport);
+                for (String[] data : list) {
+                    String name = data[0];
+                    String category = data[1];
+                    String sport1 = data[2];
+                    String datew = data[3];
+                    String time = data[4];
+                    String participants = data[5];
+                    eventList.add(new Event2(0, name, category, sport1, datew, time, participants));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error: couldn't connect with the DB");
+            }
+        }
+    }
 }

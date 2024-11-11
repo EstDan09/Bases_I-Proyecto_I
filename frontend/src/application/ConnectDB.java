@@ -1546,33 +1546,44 @@ public class ConnectDB {
     public static List<String[]> getAllSports() throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
-        List<String[]> sports = new ArrayList<>();
         ResultSet rs = null;
-        try {
-            con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_all_sports() }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.registerOutParameter(1, OracleTypes.CURSOR);
-	        stmt.execute();
-	        rs = (ResultSet) stmt.getObject(1);
-	        while (rs.next()) {
-	            String[] nationalityData = new String[3];
-	            nationalityData[0] = rs.getString("name"); 
-	            nationalityData[1] =  rs.getString("description");
-				nationalityData[2] =  rs.getString("rules");
-				System.out.println(nationalityData[0]);
-				System.out.println(nationalityData[1]);
-				System.out.println(nationalityData[2]);
+        List<String[]> sportsList = new ArrayList<>();
 
-	            sports.add(nationalityData);
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("SQL Error: " + e.getMessage());
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection(host, uName, pass);
+
+            // Prepare and execute the stored procedure call
+            stmt = con.prepareCall("{ call get_all_sports() }");
+            rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                String[] sportData = new String[4];
+                sportData[0] = rs.getString("id_sport");        // Sport ID
+                sportData[1] = rs.getString("name");            // Sport name
+                sportData[2] = rs.getString("description_sport"); // Sport description
+                sportData[3] = rs.getString("rules");           // Sport rules
+
+                // Debug output for each sport data (Optional)
+                System.out.println("ID: " + sportData[0]);
+                System.out.println("Name: " + sportData[1]);
+                System.out.println("Description: " + sportData[2]);
+                System.out.println("Rules: " + sportData[3]);
+
+                sportsList.add(sportData);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
         } finally {
+            // Clean up resources
+            if (rs != null) rs.close();
             if (stmt != null) stmt.close();
             if (con != null) con.close();
         }
-        return sports;
+
+        return sportsList;
     }
 
     public static int getSportId(String sportName) throws SQLException {
@@ -1641,62 +1652,54 @@ public class ConnectDB {
 
 
 
-    public static List<String[]> getAllOlympicEvents(int olympicId, String eventDateStr, int sportId) throws SQLException {
+    public static List<String[]> getAllOlympicEvents(String choice, String olympicName, String sportName) throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet rs = null;
-        List<String[]> olympicEventsList = new ArrayList<>(); 
+        List<String[]> olympicEventsList = new ArrayList<>();
+        
         try {
-            java.sql.Date eventDate = null;
-            if (eventDateStr != null && !eventDateStr.isEmpty()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsedDate = sdf.parse(eventDateStr);
-                eventDate = new java.sql.Date(parsedDate.getTime());
-            }
+            // Establish the connection
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_all_olympic_events(?, ?, ?) }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.setInt(2, olympicId);
-            stmt.setDate(3, eventDate);
-            stmt.setInt(4, sportId);
-            stmt.execute();
 
-            rs = (ResultSet) stmt.getObject(1);
+            // Prepare the stored procedure call with the updated arguments
+            stmt = con.prepareCall("{ call get_event_list(?, ?, ?) }");
+            stmt.setString(1, choice);               // "all", "olympic", "sport", or "both"
+            stmt.setString(2, olympicName);          // Olympic name or empty string
+            stmt.setString(3, sportName);            // Sport name or empty string
+
+            // Execute the stored procedure and retrieve results
+            rs = stmt.executeQuery();
+
+            // Process the results
             while (rs.next()) {
-                String[] eventData = new String[6]; 
-                eventData[0] = rs.getString("event_name"); 
-                eventData[1] = rs.getString("sport_name");
-                eventData[2] = rs.getString("category_gender"); 
-                eventData[3] = rs.getDate("date_event").toString(); 
-                eventData[4] = rs.getString("time_event"); 
-                eventData[5] = rs.getString("team_names"); 
-                System.out.println(eventData[0]);
-                System.out.println(eventData[1]);
-                System.out.println(eventData[2]);
-                System.out.println(eventData[3]);
-                System.out.println(eventData[4]);
-                System.out.println(eventData[5]);
-                olympicEventsList.add(eventData); 
+                String[] eventData = new String[6];
+                eventData[0] = rs.getString("event_name");
+                eventData[1] = rs.getString("category_gender"); // New field for category gender
+                eventData[2] = rs.getString("sport_name");
+                eventData[3] = rs.getString("event_date");
+                eventData[4] = rs.getString("event_time");
+                eventData[5] = rs.getString("teams");
+
+                // Debug output for each event data
+                System.out.println("Event Name: " + eventData[0]);
+                System.out.println("Category Gender: " + eventData[1]);
+                System.out.println("Sport Name: " + eventData[2]);
+                System.out.println("Event Date: " + eventData[3]);
+                System.out.println("Event Time: " + eventData[4]);
+                System.out.println("Teams: " + eventData[5]);
+
+                olympicEventsList.add(eventData);
             }
+
         } catch (SQLException e) {
-            if (e.getErrorCode() == -20002) {
-                System.out.println("ERROR: Nationality already registered");
-            } else {
-                // Print any other SQL exception that might occur
-                System.out.println("SQL Error: " + e.getMessage());
-            }
-        } catch (ParseException e) {
-            System.out.println("Date parsing error: " + e.getMessage());
+            System.out.println("SQL Error: " + e.getMessage());
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            // Clean up resources
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
         }
-        System.out.println(olympicEventsList);
 
         return olympicEventsList;
     }
@@ -1889,36 +1892,39 @@ public class ConnectDB {
     }
     
     public static boolean login(String role, String username, String password) throws SQLException {
-    	Connection con = null;
-	    CallableStatement stmt = null;
-	    System.out.println(username);
-	    try {
-	        con = DriverManager.getConnection(host, uName, pass);
-	        stmt = con.prepareCall("{ call login_in(?, ?, ?) }");
-	        stmt.setString(1, role);
-	        stmt.setString(2, username);
-	        stmt.setString(3, password);
-	        System.out.println(username + role + password);
-	        stmt.execute();
-	    } catch (SQLException e) {
-	    	if (e.getErrorCode() == -20002) {
-	            System.out.println("ERROR: Nationality already registered");
-	            return false;
-	        } else {
-	            // Print any other SQL exception that might occur
-	            System.out.println("SQL Error: " + e.getMessage());
-	            return false;
-	        }
-	    } finally {
-	        try {
-	            if (stmt != null) stmt.close();
-	            if (con != null) con.close();
-	        } catch (SQLException e) {
-	            System.out.println("Error closing resources: " + e.getMessage());
-	            return false;
-	        }
-	    }
-	    return true;
+        Connection con = null;
+        CallableStatement stmt = null;
+        boolean loginSuccessful = false;
+
+        try {
+            con = DriverManager.getConnection(host, uName, pass);
+            stmt = con.prepareCall("{ call login_in(?, ?, ?) }");
+            stmt.setString(1, role);
+            stmt.setString(2, username);
+            stmt.setString(3, password);
+
+            // Execute the stored procedure
+            stmt.execute();
+
+            // Assuming successful login if no exception was raised
+            loginSuccessful = true;
+            System.out.println("Login successful");
+
+        } catch (SQLException e) {
+            if ("45000".equals(e.getSQLState())) {
+                // Handle custom SQL exceptions based on error message
+                System.out.println("ERROR: " + e.getMessage());
+            } else {
+                // For other SQL errors, print a generic message
+                System.out.println("SQL Error: " + e.getMessage());
+            }
+            loginSuccessful = false;
+        } finally {
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        }
+
+        return loginSuccessful;
     }
     
     public static List<String[]> getCountryRanking(int year) throws SQLException {
@@ -2077,109 +2083,231 @@ public class ConnectDB {
         return topCountries;
     }
     
-    public static List<String[]> getTopScores(int olympicId, int sportId) throws SQLException {
+    public static List<String[]> getTopScoresBySport(String sportName, int olympicYear) throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet rs = null;
-        List<String[]> topScoresList = new ArrayList<>(); 
-        try {
-           
-            con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_top_scores(?, ?) }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.setInt(2, olympicId);
-            stmt.setInt(3, sportId);
-            stmt.execute();
+        List<String[]> topScoresList = new ArrayList<>();
 
-            rs = (ResultSet) stmt.getObject(1);
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection(host, uName, pass);
+
+            // Prepare the stored procedure call
+            stmt = con.prepareCall("{ call get_top_scores_by_sport(?, ?) }");
+            stmt.setString(1, sportName != null && !sportName.isEmpty() ? sportName : "all");
+            stmt.setInt(2, olympicYear);
+
+            // Execute the stored procedure and retrieve the result set
+            rs = stmt.executeQuery();
+
+            // Process the results
             while (rs.next()) {
-                String[] scoreData = new String[5]; 
-                scoreData[0] = rs.getString("sport_name"); 
-                scoreData[1] = rs.getString("team_name");
-                scoreData[2] = rs.getString("athletes"); 
-                scoreData[3] = rs.getString("country"); 
-                scoreData[4] = String.valueOf(rs.getBigDecimal("score")); 
-                System.out.println(scoreData[0]);
-                System.out.println(scoreData[1]);
-                System.out.println(scoreData[2]);
-                System.out.println(scoreData[3]);
-                System.out.println(scoreData[4]);
-                topScoresList.add(scoreData); 
+                String[] scoreData = new String[5];
+                scoreData[0] = rs.getString("competitor_name"); // Competitor name
+                scoreData[1] = rs.getString("sport_name");       // Sport name
+                scoreData[2] = rs.getString("country_name");     // Country name
+                scoreData[3] = rs.getString("score");            // Score
+                scoreData[4] = rs.getString("olympic_name");     // Olympic name
+
+                // Debug output for each score data (Optional, can be removed)
+                System.out.println("Competitor: " + scoreData[0]);
+                System.out.println("Sport: " + scoreData[1]);
+                System.out.println("Country: " + scoreData[2]);
+                System.out.println("Score: " + scoreData[3]);
+                System.out.println("Olympic: " + scoreData[4]);
+
+                topScoresList.add(scoreData);
             }
+
         } catch (SQLException e) {
-            if (e.getErrorCode() == -20002) {
-                System.out.println("ERROR");
-            } else {
-                // Print any other SQL exception that might occur
-                System.out.println("SQL Error: " + e.getMessage());
-            }
+            System.out.println("SQL Error: " + e.getMessage());
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            // Clean up resources
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
         }
-        System.out.println(topScoresList);
 
         return topScoresList;
     }
     
-    public static List<String[]> getRecords(int sportId, int categoryId) throws SQLException {
+    
+    
+    public static List<String[]> getRecords(String sportName, Integer olympicYear) throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet rs = null;
-        List<String[]> recordsList = new ArrayList<>(); 
+        List<String[]> recordList = new ArrayList<>();
+
         try {
-           
+            // Establish the connection
+            System.out.println("Attempting to establish connection...");
             con = DriverManager.getConnection(host, uName, pass);
-            stmt = con.prepareCall("{ ? = call get_top_records(?, ?) }");
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.setInt(2, sportId);
-            stmt.setInt(3, categoryId);
-            stmt.execute();
+            System.out.println("Connection established.");
 
-            rs = (ResultSet) stmt.getObject(1);
+            // Prepare the stored procedure call
+            stmt = con.prepareCall("{ call get_record(?, ?) }");
+
+            // Set parameters with defaults "all" for sportName and 0 for olympicYear if they are null or empty
+            String finalSportName = (sportName != null && !sportName.isEmpty()) ? sportName : "all";
+            int finalOlympicYear = (olympicYear != null) ? olympicYear : 0;
+            
+            stmt.setString(1, finalSportName);
+            stmt.setInt(2, finalOlympicYear);
+            
+            System.out.println("Parameters set: sportName = " + finalSportName + ", olympicYear = " + finalOlympicYear);
+
+            // Execute the stored procedure and retrieve the result set
+            rs = stmt.executeQuery();
+            System.out.println("Stored procedure executed.");
+
+            // Process the results
             while (rs.next()) {
-                String[] recordData = new String[7]; 
-                recordData[0] = rs.getString("sport_name"); 
-                recordData[1] = rs.getString("team_name");
-                recordData[2] = rs.getString("athletes"); 
-                recordData[3] = rs.getString("country"); 
-                recordData[4] = String.valueOf(rs.getBigDecimal("record")); 
-                recordData[5] = rs.getDate("event_date").toString(); 
-                recordData[6] = rs.getString("olympic_name");
-                
-                System.out.println(recordData[0]);
-                System.out.println(recordData[1]);
-                System.out.println(recordData[2]);
-                System.out.println(recordData[3]);
-                System.out.println(recordData[4]);
-                System.out.println(recordData[5]);
-                System.out.println(recordData[6]);
+                String[] recordData = new String[8];
+                recordData[0] = rs.getString("athlete_name");      // Athlete's first name
+                recordData[1] = rs.getString("last_name");         // Athlete's last name
+                recordData[2] = rs.getString("country_name");      // Country name
+                recordData[3] = rs.getString("sport_name");        // Sport name
+                recordData[4] = rs.getString("category_title");    // Category title
+                recordData[5] = rs.getString("highest_record");    // Highest record
+                recordData[6] = rs.getString("event_date");        // Event date
+                recordData[7] = rs.getString("olympic_name");      // Olympic name
 
-                recordsList.add(recordData); 
+                // Debug output for each record
+                System.out.println("Record retrieved: " + String.join(", ", recordData));
+
+                recordList.add(recordData);
+            }
+
+            System.out.println("Total records retrieved: " + recordList.size());
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            // Clean up resources
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+            System.out.println("Resources closed.");
+        }
+
+        return recordList;
+    }
+    
+    public static List<String[]> getMedalRankingByOlympic(String olympicName) throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> rankingList = new ArrayList<>();
+
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection(host, uName, pass);
+            System.out.println("Connection established.");
+
+            // Prepare the stored procedure call
+            stmt = con.prepareCall("{ call get_medal_ranking_by_olympic(?) }");
+            stmt.setString(1, olympicName != null && !olympicName.isEmpty() ? olympicName : "all");
+
+            System.out.println("Calling stored procedure with olympicName = " + olympicName);
+
+            // Execute the stored procedure and retrieve the result set
+            rs = stmt.executeQuery();
+            System.out.println("Stored procedure executed.");
+
+            // Process the results
+            while (rs.next()) {
+                String[] rankingData = new String[6];
+                rankingData[0] = rs.getString("flag");          // Flag photo path
+                rankingData[1] = rs.getString("country");       // Country name
+                rankingData[2] = rs.getString("gold_medals");   // Gold medals
+                rankingData[3] = rs.getString("silver_medals"); // Silver medals
+                rankingData[4] = rs.getString("bronze_medals"); // Bronze medals
+                rankingData[5] = rs.getString("total_medals");  // Total medals
+
+                // Print each entry for debugging
+                System.out.println("Country: " + rankingData[1] + ", Gold: " + rankingData[2] + ", Silver: " + rankingData[3] + ", Bronze: " + rankingData[4] + ", Total: " + rankingData[5]);
+
+                rankingList.add(rankingData);
+            }
+
+            System.out.println("Total records retrieved: " + rankingList.size());
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            // Clean up resources
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+            System.out.println("Resources closed.");
+        }
+
+        return rankingList;
+    }
+
+
+    
+    public static List<String[]> getOlympicsSummary() throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> olympicsSummaryList = new ArrayList<>();
+
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection(host, uName, pass);
+
+            // Prepare and execute the stored procedure call
+            stmt = con.prepareCall("{ call get_olympics_summary() }");
+            rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                String[] summaryData = new String[8];
+                summaryData[0] = rs.getString("id_olympic");
+                summaryData[1] = rs.getString("olympic_name");
+                summaryData[2] = rs.getString("year");
+                summaryData[3] = rs.getString("country_name");
+                summaryData[4] = rs.getString("total_participants");
+                summaryData[5] = rs.getString("total_countries");
+                summaryData[6] = rs.getString("total_medals");
+                summaryData[7] = rs.getString("total_events");
+
+                // Add each Olympic summary to the list
+                olympicsSummaryList.add(summaryData);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            // Clean up resources
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        }
+
+        return olympicsSummaryList;
+    }
+
+    public static void main(String[] args) {
+        try {
+            List<String[]> olympicsSummaries = getOlympicsSummary();
+            for (String[] summary : olympicsSummaries) {
+                System.out.println("Olympic ID: " + summary[0]);
+                System.out.println("Name: " + summary[1]);
+                System.out.println("Year: " + summary[2]);
+                System.out.println("Host Country: " + summary[3]);
+                System.out.println("Total Participants: " + summary[4]);
+                System.out.println("Total Countries: " + summary[5]);
+                System.out.println("Total Medals: " + summary[6]);
+                System.out.println("Total Events: " + summary[7]);
+                System.out.println("---------------------------------");
             }
         } catch (SQLException e) {
-            if (e.getErrorCode() == -20002) {
-                System.out.println("ERROR");
-            } else {
-                System.out.println("SQL Error: " + e.getMessage());
-            }
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                System.out.println("Error closing resources: " + e.getMessage());
-            }
+            System.out.println("Error retrieving Olympics summary: " + e.getMessage());
         }
-        System.out.println(recordsList);
-
-        return recordsList;
     }
     
 }
