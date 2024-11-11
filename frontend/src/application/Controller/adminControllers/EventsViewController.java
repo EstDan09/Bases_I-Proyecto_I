@@ -71,25 +71,25 @@ public class EventsViewController {
     // Initialize the controller and set up the TableView
     @FXML
     public void initialize() throws SQLException {
-        eventIdColumn.setCellValueFactory(new PropertyValueFactory<Event, String>("id"));
-        eventColumn.setCellValueFactory(new PropertyValueFactory<Event, String>("name"));        
+        eventIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        eventColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         sportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSport().getName()));
         categoryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategory().getName()));
         teamColumn.setCellValueFactory(cellData -> {
             List<Teams> participants = cellData.getValue().getParticipants();
             String participantsString = participants.stream()
-                    .map(Teams::getName)  // Extract team names
-                    .collect(Collectors.joining(", "));  // Join them as a single string
+                    .map(Teams::getName)
+                    .collect(Collectors.joining(", "));
             return new SimpleStringProperty(participantsString);
-        });    
-        //teamColumn.setCellValueFactory(new PropertyValueFactory<Event, String>("team"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<Event, String>("date"));
-        startingTimeColumn.setCellValueFactory(new PropertyValueFactory<Event, String>("startingTime"));
-        
+        });
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        startingTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startingTime"));
+
         // Populate the table with data from the DB
-        ObservableList<Event> eventsList = EventsDB.getEventsList();	
-        eventsTableView.setItems(eventsList);     
+        ObservableList<Event> eventsList = EventsDB.getEventsList();    
+        eventsTableView.setItems(eventsList);
     }
+
 
     // Action method for adding a new item
     @FXML

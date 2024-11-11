@@ -11,7 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.Model.Country;
 import application.Model.Nationality;
+import application.Model.People;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.Arrays;
 import oracle.jdbc.OracleTypes;
@@ -393,6 +397,66 @@ public class ConnectDB {
             if (con != null) con.close();
         }
     }
+    
+    public static ObservableList<People> getPeopleList() throws SQLException {
+        ObservableList<People> peopleList = FXCollections.observableArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Establish the connection
+            con = DriverManager.getConnection("jdbc:mysql://your_database_url", "username", "password");
+
+            // Call the stored procedure
+            stmt = con.prepareCall("{ call get_all_people() }");
+
+            // Execute the procedure and process the result set
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Extract fields from each row
+                int id = rs.getInt("id_person");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String identification = rs.getString("identification_number");
+                String birthDate = rs.getString("birth_date");
+                String role = rs.getString("role");
+                String nationalityName = rs.getString("nationality_name");
+                String countryName = rs.getString("country_name");
+                String countryId = rs.getString("id_country_represents"); // Changed to String for Country ID
+
+                // Trainer information (if available)
+                People trainer = null;
+                if (rs.getString("trainer_first_name") != null && rs.getString("trainer_last_name") != null) {
+                    trainer = new People();
+                    trainer.setFirst_name(rs.getString("trainer_first_name"));
+                    trainer.setLast_name(rs.getString("trainer_last_name"));
+                }
+
+                // Create nationality and country objects if necessary
+                Nationality nationality = new Nationality(rs.getInt("nationality_id"), nationalityName);
+                Country country = new Country(countryId, countryName); // Updated to use String for countryId
+
+                // Create the People object
+                People person = new People(id, firstName, lastName, identification, null, nationality, birthDate, null, 
+                                           null, country, null, null, null, null, null, null, null, null, role, trainer);
+                peopleList.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        }
+
+        return peopleList;
+    }
+
+
+
 
     public static List<String> getAllPhones() throws SQLException {
         Connection con = null;

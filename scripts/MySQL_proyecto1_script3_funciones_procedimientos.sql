@@ -3160,3 +3160,207 @@ DELIMITER ;
 
 CALL get_record('all', 0);
 
+DELIMITER //
+DROP FUNCTION  IF EXISTS check_role_person;
+CREATE FUNCTION  check_role_person(given_id_person int) RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+    DECLARE role varchar(20) default 'User';
+
+	IF EXISTS(SELECT 1 FROM trainer WHERE id_trainer = given_id_person) THEN
+		set role = 'Trainer';
+	ELSEIF EXISTS(SELECT 1 FROM athlete WHERE id_athlete = given_id_person) THEN
+		set role = 'Athlete';
+	ELSE 
+		set role = (select CASE WHEN id_role = 1 THEN 'User' ELSE 'Admin' END from user_person where id_user = given_id_person);		
+    END IF;
+    
+    RETURN role;
+END //
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_all_people;
+CREATE PROCEDURE get_all_people()
+BEGIN
+    SELECT person.id_person, 
+	person.first_name, 
+	person.last_name, 
+	person.birth_date, 
+	person.identification_number, 
+	person.id_gender, 
+	person.id_id_type, 
+    check_role_person(person.id_person) as role,
+	person.id_country_represents, 
+	country.name as country_name, 
+	person.id_district,
+	trainer.id_person as trainer_id,
+	trainer.first_name as trainer_first_name,
+	trainer.last_name as trainer_last_name,
+    nationality.id_nationality as nationality_id,
+    nationality.name as nationality_name
+	FROM person
+	INNER JOIN country on person.id_country_represents = country.id_country
+    LEFT JOIN person_nationality on person.id_person = person_nationality.id_person
+    LEFT JOIN nationality on person_nationality.id_nationality = nationality.id_nationality
+	LEFT JOIN athlete on person.id_person = athlete.id_athlete
+	LEFT JOIN person as trainer on athlete.id_trainer = trainer.id_person;
+END //
+DELIMITER ;
+
+CALL get_all_people();
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_all_regions_by_provinces;
+CREATE PROCEDURE get_all_regions_by_provinces(IN given_id_province int)
+BEGIN
+    SELECT id_region AS ID, name AS Name
+    FROM region    
+	WHERE id_region = given_id_province;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_all_provinces_by_country;
+CREATE PROCEDURE get_all_provinces_by_country(IN given_id_Country int)
+BEGIN
+    SELECT p.id_province AS ID, p.name AS Name, c.name AS Country
+    FROM province p
+    INNER JOIN country c ON p.id_country = c.id_country
+	WHERE c.id_country = given_id_Country;
+END //
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS register_person_trainer;
+CREATE PROCEDURE register_person_trainer(
+    IN fname_given VARCHAR(25),
+    IN lname_given VARCHAR(25),
+    IN bdate_given VARCHAR(10),  -- 'DD-MM-YYYY'
+    IN idnumber_given INT,
+    IN gender_given VARCHAR(25),
+    IN country_given VARCHAR(50),
+    IN nationality_given VARCHAR(50),
+    IN district_id INT,
+    IN idtype_given VARCHAR(25),
+    IN path_given VARCHAR(255),
+    IN phone_number_given INT,
+    IN email_given VARCHAR(50)
+)
+BEGIN
+
+    DECLARE clone_checker INT DEFAULT 0;
+    DECLARE gender_id INT DEFAULT 0;
+    DECLARE nationality_id INT DEFAULT 0;
+    DECLARE country_id INT DEFAULT 0;
+    DECLARE idtype_id INT DEFAULT 0;
+    DECLARE phone_id INT DEFAULT 0;
+    DECLARE current_person_id INT DEFAULT 0;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;  
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'An error occurred on Person-Trainerphone, transaction rolled back';
+    END;
+    
+    START TRANSACTION;
+
+    SELECT COUNT(*) INTO clone_checker
+    FROM person
+    WHERE identification_number = idnumber_given;
+
+    IF clone_checker > 0 THEN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Person already registered';
+    ELSE
+        -- Retrieve foreign key IDs
+        CALL get_id_by_gender_name(gender_given, gender_id);
+        CALL get_country_id(country_given, country_id);
+        CALL get_id_by_nationality_name(nationality_given, nationality_id);
+        CALL get_id_by_identification_type_name(idtype_given, idtype_id);
+
+        IF (gender_id > 0) AND (country_id > 0) AND (district_id > 0) AND 
+           (idtype_id > 0) AND (nationality_id > 0) THEN
+           
+            INSERT INTO person (first_name, last_name, birth_date, 
+                                identification_number, id_gender, id_id_type, 
+                                id_country_represents, id_district)
+            VALUES (fname_given, lname_given, STR_TO_DATE(bdate_given, '%d-%m-%Y'), 
+                    idnumber_given, gender_id, idtype_id, country_id, district_id);
+		
+            SET current_person_id = LAST_INSERT_ID();
+
+            CALL register_person_nationality(current_person_id, nationality_id);
+            CALL register_photo(path_given, current_person_id);
+            CALL register_email(email_given, current_person_id);
+
+            CALL get_id_by_phone_number(phone_number_given, phone_id);
+            IF phone_id = 0 THEN
+                CALL register_phone(phone_number_given);
+                CALL get_id_by_phone_number(phone_number_given, phone_id);
+			ELSE
+				CALL register_person_phone(current_person_id, phone_id);
+            END IF;
+            
+            CALL register_trainer(current_person_id);
+
+        ELSE
+            ROLLBACK;
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid foreign key data';
+        END IF;
+    END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_all_districts_by_region;
+CREATE PROCEDURE get_all_districts_by_region(IN given_id_region int)
+BEGIN
+    SELECT id_district AS ID, name AS Name
+    FROM district    
+	WHERE id_district = given_id_region;
+END //
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_all_trainers_by_country;
+CREATE PROCEDURE get_all_trainers_by_country(IN given_id_country int)
+BEGIN
+    SELECT p.id_person AS ID, p.first_name AS FirstName, p.last_name AS LastName
+    FROM trainer t
+    INNER JOIN person p on t.id_trainer = p.id_person
+	WHERE p.id_country_represents = given_id_country;
+END //
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS get_all_events_Am;
+CREATE PROCEDURE get_all_events_Am()
+BEGIN
+    SELECT 
+        e.id_event AS event_id,
+        e.name AS event_name,
+        s.name AS sport_name,
+        c.title AS category_title,
+        GROUP_CONCAT(t.name ORDER BY t.name SEPARATOR ', ') AS participating_teams,
+        e.date_event AS event_date,
+        e.time_event AS event_time
+    FROM 
+        event e
+    JOIN 
+        sport s ON e.id_sport = s.id_sport
+    JOIN 
+        category c ON e.id_category = c.id_category
+    LEFT JOIN 
+        team_event te ON e.id_event = te.id_event
+    LEFT JOIN 
+        team t ON te.id_team = t.id_team
+    GROUP BY 
+        e.id_event
+    ORDER BY 
+        e.date_event, e.time_event;
+END //
+DELIMITER ;
+
+
+call get_all_events_Am();

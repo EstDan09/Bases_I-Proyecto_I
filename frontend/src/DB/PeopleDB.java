@@ -51,7 +51,7 @@ public class PeopleDB {
 	        					rs.getString("birth_date"), 
 	        					new Gender(rs.getInt("id_gender"), null), 
 	        					null, 
-	        					new Country(rs.getInt("id_country_represents"), rs.getString("country_name")), 
+	        					new Country(rs.getString("id_country_represents"), rs.getString("country_name")), 
 	        					null, 
 	        					null, 
 	        					new District(rs.getInt("id_district"), null), 
