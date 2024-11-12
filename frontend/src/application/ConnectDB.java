@@ -2376,4 +2376,90 @@ public class ConnectDB {
         }
     }
     
+    public static List<String[]> getAllAthletesB() throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> athleteList = new ArrayList<>();
+
+        try {
+            // Establecer conexión
+        	con = DriverManager.getConnection(host, uName, pass);
+
+            // Preparar y ejecutar la llamada al procedimiento almacenado
+            stmt = con.prepareCall("{CALL get_all_athletesb()}");
+            rs = stmt.executeQuery();
+
+            // Procesar el resultado
+            while (rs.next()) {
+                String[] athleteData = new String[5];
+                athleteData[0] = rs.getString("nombre");            // Nombre del atleta
+                athleteData[1] = rs.getString("apellido");          // Apellido del atleta
+                athleteData[2] = rs.getString("edad");              // Edad del atleta
+                athleteData[3] = rs.getString("juego_olimpico");    // Juego olímpico
+                athleteData[4] = rs.getString("pais_represents");   // País que representa
+
+                // Debug: Imprimir cada registro de atleta (opcional)
+                System.out.println("Nombre: " + athleteData[0] + ", Apellido: " + athleteData[1]);
+                System.out.println("Edad: " + athleteData[2] + ", Juego Olímpico: " + athleteData[3]);
+                System.out.println("País: " + athleteData[4]);
+
+                athleteList.add(athleteData);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error SQL: " + e.getMessage());
+        } finally {
+            // Liberar recursos
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        }
+
+        return athleteList;
+    }
+    
+    public static List<String[]> getAllTrainerssB() throws SQLException {
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+        List<String[]> trainersList = new ArrayList<>();
+
+        try {
+            // Establecer conexión
+        	con = DriverManager.getConnection(host, uName, pass);
+
+            // Preparar y ejecutar la llamada al procedimiento almacenado
+            stmt = con.prepareCall("{CALL get_all_trainersb()}");
+            rs = stmt.executeQuery();
+
+            // Procesar el resultado
+            while (rs.next()) {
+                String[] athleteData = new String[5];
+                athleteData[0] = rs.getString("nombre");            // Nombre del atleta
+                athleteData[1] = rs.getString("apellido");          // Apellido del atleta
+                athleteData[2] = rs.getString("edad");              // Edad del atleta
+                athleteData[3] = rs.getString("juego_olimpico");    // Juego olímpico
+                athleteData[4] = rs.getString("pais_represents");   // País que representa
+
+                // Debug: Imprimir cada registro de atleta (opcional)
+                System.out.println("Nombre: " + athleteData[0] + ", Apellido: " + athleteData[1]);
+                System.out.println("Edad: " + athleteData[2] + ", Juego Olímpico: " + athleteData[3]);
+                System.out.println("País: " + athleteData[4]);
+
+                trainersList.add(athleteData);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error SQL: " + e.getMessage());
+        } finally {
+            // Liberar recursos
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        }
+
+        return trainersList;
+    }
+    
 }

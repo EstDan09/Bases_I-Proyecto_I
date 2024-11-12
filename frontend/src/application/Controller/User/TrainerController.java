@@ -1,8 +1,12 @@
 package application.Controller.User;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import application.ConnectDB;
+import application.Model.Athlete;
 import application.Model.Trainer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,8 +71,28 @@ public class TrainerController implements Initializable {
             new Trainer("Liu", "Wang", 50, "2016 Rio", "China"),
             new Trainer("Maria", "Garcia", 42, "2024 Paris", "Spain")
         );
+        try {
+        	loadTrainers();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         // Set the items to the TableView
         table.setItems(trainerList);
+    }
+    
+    private void loadTrainers() throws SQLException {
+        List<String[]> list = ConnectDB.getAllTrainerssB();
+        for (String[] game : list) {
+            String name = game[0];  
+            String lname = game[1];  
+            int year = Integer.parseInt(game[2]); 
+            String olym = game[3];
+            String country = game[4];
+
+            // Add the OlympicGame object to the observable list
+            trainerList.add(new Trainer(name, lname, year, olym, country));
+        }
     }
 }
