@@ -106,7 +106,7 @@ public class EventController implements Initializable {
         try {
             List<String[]> sports = ConnectDB.getAllSports();
             for (String[] s : sports) {
-                sportCB.getItems().add(s[0]);
+                sportCB.getItems().add(s[1]);
             }
         } catch (SQLException ex) {
             System.out.println("No data in sport Table");
@@ -116,7 +116,7 @@ public class EventController implements Initializable {
     // Load Olympic game names into ComboBox
     private void loadOlympicGames() {
         try {
-            List<String[]> olympicList = ConnectDB.getOlympicDetails();
+            List<String[]> olympicList = ConnectDB.getOlympicsSummary();
             for (String[] o : olympicList) {
                 olympicCB.getItems().add(o[1]);
             }

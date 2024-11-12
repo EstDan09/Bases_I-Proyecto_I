@@ -1615,21 +1615,21 @@ public class ConnectDB {
 
         try {
             // Establish the connection
-            con = DriverManager.getConnection(host, uName, pass);
+            con = DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
 
             // Prepare and execute the stored procedure call
-            stmt = con.prepareCall("{ call get_all_sports() }");
+            stmt = con.prepareCall("{CALL get_all_sports()}");
             rs = stmt.executeQuery();
 
             // Process the result set
             while (rs.next()) {
                 String[] sportData = new String[4];
-                sportData[0] = rs.getString("id_sport");        // Sport ID
-                sportData[1] = rs.getString("name");            // Sport name
-                sportData[2] = rs.getString("description_sport"); // Sport description
-                sportData[3] = rs.getString("rules");           // Sport rules
+                sportData[0] = rs.getString("id_sport");            // Sport ID
+                sportData[1] = rs.getString("name");                // Sport name
+                sportData[2] = rs.getString("description_sport");   // Sport description
+                sportData[3] = rs.getString("rules");               // Sport rules
 
-                // Debug output for each sport data (Optional)
+                // Debug output for each sport data (optional)
                 System.out.println("ID: " + sportData[0]);
                 System.out.println("Name: " + sportData[1]);
                 System.out.println("Description: " + sportData[2]);
@@ -1640,6 +1640,8 @@ public class ConnectDB {
 
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+
         } finally {
             // Clean up resources
             if (rs != null) rs.close();
@@ -1649,7 +1651,7 @@ public class ConnectDB {
 
         return sportsList;
     }
-
+    
     public static int getSportId(String sportName) throws SQLException {
         Connection con = null;
         CallableStatement stmt = null;

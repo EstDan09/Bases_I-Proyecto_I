@@ -19,6 +19,7 @@ public class Main extends Application {
 
 			//ConnectDB.getAllNationalities();
 			ConnectDB.getMedalRankingByOlympic("all");
+			//ConnectDB.getAllSports();
 
 
 //			ConnectDB.getAllSports();
