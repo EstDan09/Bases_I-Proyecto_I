@@ -1,5 +1,6 @@
 package DB;
 
+import application.ConnectDB;
 import application.Model.Category;
 import application.Model.Country;
 import application.Model.Event;
@@ -10,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,43 +21,64 @@ import java.util.List;
 
 public class EventsDB {
 
-    public static ObservableList<Event> getEventsList() throws SQLException {
-    	List<Teams> teams = new ArrayList<>();
-    	teams.add(new Teams(1, "Costa Rica", new Country(1, "Costa Rica"), null, null));
-    	teams.add(new Teams(2, "USA", new Country(2, "USA"), null, null));
-    	
-    	
-        ObservableList<Event> eventsList = FXCollections.observableArrayList(
-        		new Event(
-        				1, 
-        				"Evento 1", 
-        				new Category(1, "Category 1"), 
-        				new Sport(0, "Futbol"), 
-        				"10/10/2025", 
-        				"10:00", 
-        				teams));
-        /*String query = "SELECT * FROM events"; //ver cual es la tabla en la BD
+	public static ObservableList<Event> getEventsList() throws SQLException {
+	    Connection con = null;
+	    CallableStatement stmt = null;
+	    ResultSet rs = null;
 
-        try (Connection conn = DatabaseConnection.getConnection(); // Connect
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+	    try {
+	        // Establish the connection
+	        con =  DriverManager.getConnection(ConnectDB.host, ConnectDB.uName, ConnectDB.pass);
 
-            while (rs.next()) {
-                String id = rs.getString("id");
-                String event = rs.getString("event");
-                String category = rs.getString("category");
-                String sport = rs.getString("sport");
-                String team = rs.getString("team");
-                String date = rs.getString("date");
+	        // Prepare the callable statement for the stored procedure
+	        stmt = con.prepareCall("{CALL get_all_events_Am()}");
 
-                eventsList.add(new EventsAdmi(id, event, category, sport, team, date));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }*/
-        return eventsList;
-    }
+	        // Execute the stored procedure
+	        rs = stmt.executeQuery();
+
+	        List<Event> eventsList = new ArrayList<>();
+
+	        // Process the result set
+	        while (rs.next()) {
+	            int eventId = rs.getInt("event_id");
+	            String eventName = rs.getString("event_name");
+	            String sportName = rs.getString("sport_name");
+	            String categoryTitle = rs.getString("category_title");
+	            String eventDate = rs.getString("event_date");
+	            String eventTime = rs.getString("event_time");
+
+	            // Parse participating teams
+	            String[] teamNames = rs.getString("participating_teams").split(", ");
+	            List<Teams> participants = new ArrayList<>();
+	            for (String teamName : teamNames) {
+	                participants.add(new Teams(0, teamName, null, null, null));
+	            }
+
+	            // Create Event object and add it to the list
+	            Event event = new Event(
+	                    eventId,
+	                    eventName,
+	                    new Category(0, categoryTitle),
+	                    new Sport(0, sportName),
+	                    eventDate,
+	                    eventTime,
+	                    participants
+	            );
+	            eventsList.add(event);
+	        }
+
+	        return FXCollections.observableArrayList(eventsList);
+	    } catch (SQLException e) {
+	        System.out.println("SQL Error: " + e.getMessage());
+	    } finally {
+	        if (rs != null) rs.close(); // Close ResultSet
+	        if (stmt != null) stmt.close(); // Close CallableStatement
+	        if (con != null) con.close(); // Close Connection
+	    }
+
+	    return null;
+	}
+
 
 
     public static void addEvent(Event event) throws SQLException {

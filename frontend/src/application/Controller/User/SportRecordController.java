@@ -64,11 +64,11 @@ public class SportRecordController implements Initializable {
 
     // LOADERS ====================================================================
     private void loadTable() {
-        //String selectedSport = sportCB.getValue() != null ? sportCB.getValue() : "all";
-        //int selectedOlympicYear = olympicCB.getValue() != null ? Integer.parseInt(olympicCB.getValue()) : 0;
+        String selectedSport = sportCB.getValue() != null ? sportCB.getValue() : "all";
+        int selectedOlympicYear = olympicCB.getValue() != null ? Integer.parseInt(olympicCB.getValue()) : 0;
 
         try {
-            List<String[]> list = ConnectDB.getTopScoresBySport("all", 0);
+            List<String[]> list = ConnectDB.getTopScoresBySport(selectedSport, selectedOlympicYear);
             topScoresList.clear();
             for (String[] data : list) {
                 String sportNameData = data[1];
@@ -100,18 +100,18 @@ public class SportRecordController implements Initializable {
             }
         } catch (SQLException ex) {
             System.out.println("No data in sport Table");
-        }
+        }   
     }
 
-    // LOADER FOR OLYMPIC COMBOBOX
+    // Load Olympic game names into ComboBox
     private void loadOlympicGames() {
         try {
             List<String[]> olympicList = ConnectDB.getOlympicsSummary();
             for (String[] o : olympicList) {
-                olympicCB.getItems().add(o[1]);
+                olympicCB.getItems().add(o[2]);
             }
         } catch (SQLException ex) {
             System.out.println("No data in Olympic Table");
-        }
+        }   
     }
 }

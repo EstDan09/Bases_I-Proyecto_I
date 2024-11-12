@@ -96,7 +96,7 @@ public class CountryController implements Initializable {
 
         for (String[] data : rankingData) {
             String countryName = data[1];
-            String flagPath = data[0];
+            String flagPath = "/resources/crc.png";
             int goldCount = Integer.parseInt(data[2]);
             int silverCount = Integer.parseInt(data[3]);
             int bronzeCount = Integer.parseInt(data[4]);
